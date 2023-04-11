@@ -8,6 +8,7 @@ import { useLoading } from "../contexts/hooks/Loanding";
 import { useAuth } from "../contexts/hooks/Auth";
 import Loading from "../components/loanding";
 import NewName from "../pages/NewName";
+import Register from "../pages/Register";
 
 const Routes = () => {
   const { isLoading } = useAuth();
@@ -18,6 +19,7 @@ const Routes = () => {
   return (
     <Router>
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
       <Route element={<PrivateRoutes />}>
         <Route path="/" element={<NewName />} />
         <Route path="/inventario" element={<NewInventario />} />

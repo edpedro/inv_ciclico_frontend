@@ -26,6 +26,7 @@ interface AuthContextData {
   isLoading: boolean;
   signIn: (username: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
+  register: (name: string, username: string, password: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -90,6 +91,22 @@ export const AuthProvider = ({ children }: Props) => {
     }
   }
 
+  async function register(name: string, username: string, password: string) {
+    try {
+      await api.post("users", {
+        name,
+        username,
+        password,
+      });
+
+      navigate("/login");
+
+      toast.success("Cadastro efetuado com sucesso!");
+    } catch (error) {
+      toast.error("Informações invalida!");
+    }
+  }
+
   async function signOut() {
     setAuthData(undefined);
     setAuthenticated(false);
@@ -100,7 +117,15 @@ export const AuthProvider = ({ children }: Props) => {
 
   return (
     <AuthContext.Provider
-      value={{ authenticated, token, authData, signIn, isLoading, signOut }}
+      value={{
+        authenticated,
+        token,
+        authData,
+        signIn,
+        isLoading,
+        signOut,
+        register,
+      }}
     >
       {children}
     </AuthContext.Provider>

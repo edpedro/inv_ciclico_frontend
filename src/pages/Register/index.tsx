@@ -3,26 +3,35 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { toast } from "react-toastify";
+import { useAuth } from "../../contexts/hooks/Auth";
+import { Link } from "react-router-dom";
 
 const theme = createTheme();
 
 export default function Register() {
+  const { register } = useAuth();
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const name = data.get("name");
+    const username = data.get("username");
+    const password = data.get("password");
+
+    if (!username || !password || !name) {
+      toast.error("Favor preencher todos dados!");
+
+      return null;
+    }
+
+    register(name as string, username as string, password as string);
   };
 
   return (
@@ -69,7 +78,6 @@ export default function Register() {
               name="username"
               autoComplete="username"
               color="success"
-              autoFocus
             />
             <TextField
               margin="normal"
@@ -94,12 +102,12 @@ export default function Register() {
               }}
               color="success"
             >
-              Acessar
+              Cadastrar
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
-                  Criar Usuario
+                <Link to="/login" style={{ textDecoration: "none" }}>
+                  Login
                 </Link>
               </Grid>
             </Grid>
