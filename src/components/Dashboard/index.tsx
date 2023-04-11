@@ -23,6 +23,7 @@ import {
   mainListItems,
   secondaryListItems,
 } from "../../components/listItems/listItems";
+import { useAuth } from "../../contexts/hooks/Auth";
 
 const drawerWidth: number = 220;
 
@@ -84,6 +85,9 @@ interface Props {
 
 const Dashboard: React.FC<Props> = ({ children }) => {
   const [open, setOpen] = useState(true);
+
+  const { signOut, authData } = useAuth();
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -101,6 +105,8 @@ const Dashboard: React.FC<Props> = ({ children }) => {
 
   const handleClose = () => {
     setAnchorEl(null);
+
+    signOut();
   };
 
   return (
@@ -157,7 +163,7 @@ const Dashboard: React.FC<Props> = ({ children }) => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Eduardo</MenuItem>
+                <Typography sx={{ m: 1 }}>{authData?.name}</Typography>
                 <MenuItem onClick={handleClose}>Sair</MenuItem>
               </Menu>
             </div>

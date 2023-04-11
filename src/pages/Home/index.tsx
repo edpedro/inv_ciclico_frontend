@@ -18,9 +18,9 @@ function createData(
 }
 
 const rows = [
-  createData("inventario_ciclico_movel", "20/03/2023", "Pendente", "Eduardo"),
-  createData("inventario_ciclico_movel", "20/03/2023", "Pendente", "Eduardo"),
-  createData("inventario_ciclico_movel", "20/03/2023", "Pendente", "Eduardo"),
+  createData("inventario_ciclico_movel1", "20/03/2023", "Pendente", "Eduardo"),
+  createData("inventario_ciclico_movel2", "20/03/2023", "Pendente", "Eduardo"),
+  createData("inventario_ciclico_movel3", "20/03/2023", "Pendente", "Eduardo"),
 ];
 
 export default function Home() {

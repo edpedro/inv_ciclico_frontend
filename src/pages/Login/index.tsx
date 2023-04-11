@@ -10,17 +10,28 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { UIuser } from "../../types";
+import { toast } from "react-toastify";
+import { useAuth } from "../../contexts/hooks/Auth";
 
 const theme = createTheme();
 
 export default function Login() {
+  const { signIn } = useAuth();
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const username = data.get("username");
+    const password = data.get("password");
+
+    if (!username || !password) {
+      toast.error("Favor preencher todos dados!");
+
+      return null;
+    }
+
+    signIn(username as string, password as string);
   };
 
   return (
