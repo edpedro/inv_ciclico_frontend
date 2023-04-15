@@ -3,8 +3,15 @@ import Routes from "./router";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AppProvider from "./contexts";
+import { useLoading } from "./contexts/hooks/Loanding";
+import Loading from "./components/loanding";
 
 function App() {
+  const { isLoadingFetch } = useLoading();
+
+  if (isLoadingFetch) {
+    return <Loading />;
+  }
   return (
     <>
       <BrowserRouter>

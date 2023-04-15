@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -13,6 +13,10 @@ import FormControl from "@mui/material/FormControl";
 import ListItemText from "@mui/material/ListItemText";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
+import { useAuth } from "../../contexts/hooks/Auth";
+import { UInameCreate } from "../../types";
+import { useName } from "../../contexts/hooks/NewName";
+import { toast } from "react-toastify";
 
 const style = {
   position: "absolute" as "absolute",
@@ -28,6 +32,7 @@ const style = {
 interface UIPropsModal {
   setOpen: (value: boolean) => void;
   open: boolean;
+  idUpdate: string;
 }
 
 const ITEM_HEIGHT = 48;
@@ -41,29 +46,79 @@ const MenuProps = {
   },
 };
 
-const names = ["Eduardo", "Pedro", "Tiago", "Rafhael", "Silva"];
+interface SelectedItem {
+  name: string;
+  id: string | undefined;
+}
 
-export default function ModalAddName({ open, setOpen }: UIPropsModal) {
-  const [personName, setPersonName] = useState<string[]>([]);
+export default function ModalAddName({
+  open,
+  setOpen,
+  idUpdate,
+}: UIPropsModal) {
+  const { listAllUserData, lisUserData } = useAuth();
+  const { createName, updateNameData, updateName } = useName();
+
+  const [name, setName] = useState<string>("");
+  const [date, setDate] = useState<string>("");
+
+  const [userIds, setUsersIds] = useState<string[]>([]);
+  const [selectedItems, setSelectedItems] = useState<SelectedItem[]>([]);
+
   const handleClose = () => setOpen(false);
 
-  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
+  useEffect(() => {
+    listAllUserData();
+
+    if (updateNameData) {
+      setName(updateNameData?.name as string);
+      setDate(updateNameData?.date as string);
+    }
+    if (!idUpdate) {
+      setName("");
+      setDate("");
+    }
+  }, [updateNameData, idUpdate]);
+
+  const handleChange = (event: SelectChangeEvent<typeof userIds>) => {
     const {
       target: { value },
     } = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
+
+    if (Array.isArray(value)) {
+      const items = value!.map((name: string) => {
+        const item = lisUserData!.find((user) => user.name === name);
+        return { name, id: item?.id };
+      });
+
+      const ids = items!
+        .map((item) => item.id)
+        .filter((id) => id !== undefined) as string[];
+
+      setUsersIds(ids);
+      setSelectedItems(items);
+    }
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+
+    const name = data.get("name") as string;
+    const date = data.get("date") as string;
+    const user_id = userIds as string[];
+
+    if (!name || !date || user_id.length <= 0) {
+      toast.error("Favor preencher todos dados!");
+
+      return;
+    }
+
+    const newData: UInameCreate = { name, date, user_id };
+
+    idUpdate ? updateName(idUpdate, newData) : createName(newData);
+
+    setOpen(false);
   };
 
   return (
@@ -89,7 +144,7 @@ export default function ModalAddName({ open, setOpen }: UIPropsModal) {
               </Typography>
               <Box
                 component="form"
-                onSubmit={() => {}}
+                onSubmit={handleSubmit}
                 noValidate
                 sx={{ mt: 1 }}
               >
@@ -100,6 +155,8 @@ export default function ModalAddName({ open, setOpen }: UIPropsModal) {
                   id="name"
                   label="Nome"
                   name="name"
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
                   autoComplete="name"
                   color="success"
                   autoFocus
@@ -111,30 +168,38 @@ export default function ModalAddName({ open, setOpen }: UIPropsModal) {
                   name="date"
                   type="date"
                   id="date"
+                  value={date}
+                  onChange={(event) => setDate(event.target.value)}
                   autoComplete="current-date"
                   color="success"
                 />
                 <FormControl sx={{ mt: 2 }} fullWidth>
-                  <InputLabel id="demo-multiple-checkbox-label">
+                  <InputLabel id="demo-multiple-checkbox-label" sx={{}}>
                     Usuarios
                   </InputLabel>
                   <Select
                     fullWidth
                     labelId="demo-multiple-checkbox-label"
                     id="demo-multiple-checkbox"
+                    color="success"
                     multiple
-                    value={personName}
+                    value={selectedItems.map((i) => i.name)}
                     onChange={handleChange}
-                    input={<OutlinedInput label="Tag" />}
+                    input={<OutlinedInput label="Usuarios" />}
                     renderValue={(selected) => selected.join(", ")}
                     MenuProps={MenuProps}
                   >
-                    {names.map((name) => (
-                      <MenuItem key={name} value={name}>
-                        <Checkbox checked={personName.indexOf(name) > -1} />
-                        <ListItemText primary={name} />
-                      </MenuItem>
-                    ))}
+                    {lisUserData &&
+                      lisUserData.map((user) => (
+                        <MenuItem key={user.id} value={user.name}>
+                          <Checkbox
+                            checked={selectedItems.some(
+                              (i) => i.name === user.name
+                            )}
+                          />
+                          <ListItemText primary={user.name} />
+                        </MenuItem>
+                      ))}
                   </Select>
                 </FormControl>
                 <Button

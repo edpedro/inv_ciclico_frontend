@@ -105,7 +105,9 @@ const Dashboard: React.FC<Props> = ({ children }) => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
 
+  const handleExit = () => {
     signOut();
   };
 
@@ -164,7 +166,7 @@ const Dashboard: React.FC<Props> = ({ children }) => {
                 onClose={handleClose}
               >
                 <Typography sx={{ m: 1 }}>{authData?.name}</Typography>
-                <MenuItem onClick={handleClose}>Sair</MenuItem>
+                <MenuItem onClick={handleExit}>Sair</MenuItem>
               </Menu>
             </div>
           </Toolbar>

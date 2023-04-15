@@ -1,4 +1,4 @@
-import React, { ReactNode, createContext, useContext, useState } from "react";
+import { ReactNode, createContext, useContext, useState } from "react";
 
 type Props = {
   children?: ReactNode;
@@ -14,7 +14,7 @@ const LoadingContext = createContext<LoadingContextData>(
 );
 
 export const LoadingProvider = ({ children }: Props) => {
-  const [isLoadingFetch, setIsLoadingFetch] = useState(false);
+  const [isLoadingFetch, setIsLoadingFetch] = useState(true);
 
   const setLoadingFetch = (newIsLoading: boolean) => {
     setIsLoadingFetch(newIsLoading);

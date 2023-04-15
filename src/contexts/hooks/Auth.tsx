@@ -21,11 +21,13 @@ interface UItoken {
 
 interface AuthContextData {
   authData?: UIuser;
+  lisUserData?: UIuser[];
   token?: UItoken;
   authenticated: boolean;
   isLoading: boolean;
   signIn: (username: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
+  listAllUserData: () => Promise<void>;
   register: (name: string, username: string, password: string) => Promise<void>;
 }
 
@@ -33,10 +35,10 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider = ({ children }: Props) => {
   const [authData, setAuthData] = useState<UIuser>();
+  const [lisUserData, setListUserData] = useState<UIuser[]>();
   const [token, setToken] = useState<UItoken>();
   const [authenticated, setAuthenticated] = useState(false);
   const [isLoading, setisLoading] = useState(true);
-  // const { setLoading } = useLoading();
 
   const navigate = useNavigate();
 
@@ -86,7 +88,6 @@ export const AuthProvider = ({ children }: Props) => {
 
       navigate("/");
     } catch (error) {
-      console.log(error);
       toast.error("Login e Senha invalida!");
     }
   }
@@ -111,8 +112,16 @@ export const AuthProvider = ({ children }: Props) => {
     setAuthData(undefined);
     setAuthenticated(false);
 
+    api.defaults.headers.authorization = null;
+
     localStorage.removeItem("@data");
     localStorage.removeItem("@token");
+  }
+
+  async function listAllUserData() {
+    const { data } = await api.get("users");
+
+    setListUserData(data);
   }
 
   return (
@@ -125,6 +134,8 @@ export const AuthProvider = ({ children }: Props) => {
         isLoading,
         signOut,
         register,
+        lisUserData,
+        listAllUserData,
       }}
     >
       {children}

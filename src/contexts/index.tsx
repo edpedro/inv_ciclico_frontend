@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 
 import { AuthProvider } from "./hooks/Auth";
 import { LoadingProvider } from "./hooks/Loanding";
+import { NewNameProvider } from "./hooks/NewName";
 
 interface AppProviderProps {
   children: ReactNode;
@@ -10,7 +11,9 @@ interface AppProviderProps {
 const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   return (
     <AuthProvider>
-      <LoadingProvider>{children} </LoadingProvider>
+      <LoadingProvider>
+        <NewNameProvider>{children}</NewNameProvider>
+      </LoadingProvider>
     </AuthProvider>
   );
 };
