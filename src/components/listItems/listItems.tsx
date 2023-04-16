@@ -9,27 +9,37 @@ import PeopleIcon from "@mui/icons-material/People";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import LayersIcon from "@mui/icons-material/Layers";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import { Link } from "react-router-dom";
 
 export const mainListItems = (
   <>
-    <ListItemButton>
-      <ListItemIcon>
-        <DashboardIcon />
-      </ListItemIcon>
-      <ListItemText primary="Home" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Criar Nome" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <BarChartIcon />
-      </ListItemIcon>
-      <ListItemText primary="Criar Inventário" />
-    </ListItemButton>
+    <Link to="/" style={{ textDecoration: "none", color: "#000" }}>
+      <ListItemButton>
+        <ListItemIcon>
+          <DashboardIcon />
+        </ListItemIcon>
+        <ListItemText primary="Home" />
+      </ListItemButton>
+    </Link>
+    <Link
+      to="/name/inventario"
+      style={{ textDecoration: "none", color: "#000" }}
+    >
+      <ListItemButton>
+        <ListItemIcon>
+          <AssignmentIcon />
+        </ListItemIcon>
+        <ListItemText primary="Criar Nome" />
+      </ListItemButton>
+    </Link>
+    <Link to="/inventario" style={{ textDecoration: "none", color: "#000" }}>
+      <ListItemButton>
+        <ListItemIcon>
+          <BarChartIcon />
+        </ListItemIcon>
+        <ListItemText primary="Criar Inventário" />
+      </ListItemButton>
+    </Link>
     {/* <ListItemButton>
       <ListItemIcon>
         <LayersIcon />
@@ -50,11 +60,13 @@ export const secondaryListItems = (
     <ListSubheader component="div" inset>
       Usuarios
     </ListSubheader>
-    <ListItemButton>
-      <ListItemIcon>
-        <PeopleIcon />
-      </ListItemIcon>
-      <ListItemText primary="Criar Usuario" />
-    </ListItemButton>
+    <Link to="/register" style={{ textDecoration: "none", color: "#000" }}>
+      <ListItemButton>
+        <ListItemIcon>
+          <PeopleIcon />
+        </ListItemIcon>
+        <ListItemText primary="Criar Usuario" />
+      </ListItemButton>
+    </Link>
   </>
 );

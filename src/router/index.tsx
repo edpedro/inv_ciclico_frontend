@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { Routes as Router, Route, Navigate, Outlet } from "react-router-dom";
 import Login from "../pages/Login";
 import Home from "../pages/Home";
-import NewInventario from "../pages/NewInventario";
+import Inventario from "../pages/Inventario";
 import PrivateRoutes from "../components/PrivateRoutes";
 import { useLoading } from "../contexts/hooks/Loanding";
 import { useAuth } from "../contexts/hooks/Auth";
@@ -23,8 +23,9 @@ const Routes = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route element={<PrivateRoutes />}>
-        <Route path="/" element={<ListName />} />
-        <Route path="/inventario" element={<NewInventario />} />
+        <Route path="/" element={<Inventario />} />
+        <Route path="/name/inventario" element={<ListName />} />
+        <Route path="/inventario" element={<Inventario />} />
       </Route>
       <Route path="*" element={<Home />} />
     </Router>
