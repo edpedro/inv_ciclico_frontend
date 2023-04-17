@@ -82,7 +82,7 @@ export const NewNameProvider = ({ children }: Props) => {
       toast.success("Cadastro realizado com sucesso.");
     } catch (error) {
       setLoadingFetch(false);
-      toast.error("Erro no cadastro");
+      toast.error("Nome do inventario já cadastrado");
     }
   }, []);
 

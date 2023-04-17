@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -10,6 +10,10 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { useName } from "../../contexts/hooks/NewName";
+import { toast } from "react-toastify";
+import { UIinventarioCreate } from "../../types";
+import { useInventario } from "../../contexts/hooks/Inventario";
 
 const style = {
   position: "absolute" as "absolute",
@@ -28,20 +32,54 @@ interface UIPropsModal {
 }
 
 export default function ModalAddInventario({ open, setOpen }: UIPropsModal) {
+  const { nameData, loadNameData } = useName();
+  const { createInventario } = useInventario();
+
+  const [name, setName] = useState("");
+  const [idInventario, setIdInventario] = useState("");
+  const [file, setFile] = useState<File | null>();
+
+  useEffect(() => {
+    loadNameData();
+  }, []);
+
   const handleClose = () => setOpen(false);
-  const [age, setAge] = useState("");
+
+  const handleChange = (event: SelectChangeEvent) => {
+    const {
+      target: { value },
+    } = event;
+
+    setName(value);
+
+    const filterName = nameData!.filter((data) => data.name === value);
+    setIdInventario(filterName[0].id);
+  };
+
+  const handleFileInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (file !== null && file !== undefined) {
+      setFile(file);
+    }
+  };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value as string);
+    if (!idInventario || file === undefined) {
+      return toast.error("Favor preencher todos dados!");
+    }
+    if (file !== null && file !== undefined) {
+      const newData: UIinventarioCreate = {
+        baseNameInventario_id: idInventario,
+        file,
+      };
+
+      createInventario(newData);
+    }
+    setOpen(false);
   };
 
   return (
@@ -67,7 +105,7 @@ export default function ModalAddInventario({ open, setOpen }: UIPropsModal) {
               </Typography>
               <Box
                 component="form"
-                onSubmit={() => {}}
+                onSubmit={handleSubmit}
                 noValidate
                 sx={{
                   mt: 1,
@@ -88,8 +126,18 @@ export default function ModalAddInventario({ open, setOpen }: UIPropsModal) {
                     },
                   }}
                 >
-                  <input hidden accept="image/*" multiple type="file" />
+                  <input
+                    hidden
+                    accept=".xlsx"
+                    type="file"
+                    onChange={handleFileInputChange}
+                  />
                   <FileCopyIcon />
+                  {file && (
+                    <Typography variant="caption" display="block" gutterBottom>
+                      {file.name} ({file.size} bytes)
+                    </Typography>
+                  )}
                 </Button>
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">Nome</InputLabel>
@@ -98,7 +146,7 @@ export default function ModalAddInventario({ open, setOpen }: UIPropsModal) {
                     fullWidth
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={age}
+                    value={name}
                     label="Nome"
                     color="success"
                     onChange={handleChange}
@@ -106,9 +154,12 @@ export default function ModalAddInventario({ open, setOpen }: UIPropsModal) {
                       width: "300px",
                     }}
                   >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    {nameData &&
+                      nameData.map((value) => (
+                        <MenuItem key={value.id} value={value.name}>
+                          {value.name}
+                        </MenuItem>
+                      ))}
                   </Select>
                 </FormControl>
                 <Button

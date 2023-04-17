@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Dashboard from "../../components/Dashboard";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -7,11 +7,9 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import ModalAddName from "../../components/ModalAddName";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
 import ModalAddInventario from "../../components/ModalAddInventario";
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
@@ -21,75 +19,69 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-
-function createData(
-  item: string,
-  descricao: string,
-  endereco: string,
-  tipoEstoque: string,
-  catItem: string,
-  saldoWms: number,
-  saldoFisico: number,
-  status: string,
-  username_id: string
-) {
-  return {
-    item,
-    descricao,
-    endereco,
-    tipoEstoque,
-    catItem,
-    saldoWms,
-    saldoFisico,
-    status,
-    username_id,
-  };
-}
-
-const rows = [
-  createData(
-    "22017521",
-    "OTTERBOX SYMMETRY IPHONE 6 ROSA/VERDE",
-    "ARM F.22.2",
-    "ESTOQUE LIVRE",
-    "MOVEL",
-    1,
-    2,
-    "false",
-    "Eduardo"
-  ),
-  createData(
-    "22017522",
-    "OTTERBOX SYMMETRY IPHONE 6 ROSA/VERDE",
-    "ARM F.22.2",
-    "ESTOQUE LIVRE",
-    "MOVEL",
-    1,
-    2,
-    "false",
-    "Eduardo"
-  ),
-];
-const bull = (
-  <Box
-    component="span"
-    sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
-  >
-    •
-  </Box>
-);
+import { useName } from "../../contexts/hooks/NewName";
+import { useInventario } from "../../contexts/hooks/Inventario";
+import { useLoading } from "../../contexts/hooks/Loanding";
+import ModalDeleteInventario from "../../components/ModalDeleteInventario";
+import { toast } from "react-toastify";
 
 export default function Inventario() {
+  const { nameData, loadNameData } = useName();
+  const { listIdInventarioData, inventarioData, downloadInventario } =
+    useInventario();
+
   const [open, setOpen] = useState(false);
+
+  const [idDelete, setIdDelete] = useState("");
+  const [name, setName] = useState("");
+  const [date, setDate] = useState("");
+  const [update, setUpdate] = useState(false);
+
+  const [openDelete, setOpenDelete] = useState(false);
+
+  useEffect(() => {
+    loadNameData();
+
+    setUpdate(false);
+  }, [update]);
+
   const handleOpen = () => setOpen(true);
 
-  const [age, setAge] = useState("");
+  function handleOpenDelete() {
+    if (inventarioData && inventarioData.length > 0) {
+      setOpenDelete(true);
+    }
+  }
 
   const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value as string);
+    const {
+      target: { value },
+    } = event;
+
+    setName(value);
+
+    const filterName = nameData!.filter((data) => data.name === value);
+    setIdDelete(filterName[0].id);
+    setDate(filterName[0].date);
+    listIdInventarioData(filterName[0].id);
   };
+
+  function handleDownload() {
+    if (inventarioData && inventarioData.length > 0) {
+      downloadInventario(idDelete, name, date);
+    }
+  }
+
+  function handleUpdate() {
+    setUpdate(true);
+    if (idDelete) {
+      listIdInventarioData(idDelete);
+    } else {
+      toast.error("Favor selecione inventario para atualizar");
+    }
+  }
+
   return (
     <Dashboard>
       <Typography variant="h5" gutterBottom sx={{ marginBottom: "20px" }}>
@@ -111,7 +103,7 @@ export default function Inventario() {
       </Button>
       <Card
         sx={{
-          width: 300,
+          width: 550,
           height: 90,
           marginBottom: 2,
         }}
@@ -123,19 +115,25 @@ export default function Inventario() {
             alignItems: "center",
           }}
         >
-          <Box sx={{ width: 150 }}>
+          <Box sx={{ width: 250 }}>
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Age</InputLabel>
+              <InputLabel id="demo-simple-select-label">
+                Nome Inventario
+              </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={age}
-                label="Age"
+                value={name}
+                label="Nome Inventario"
+                color="success"
                 onChange={handleChange}
               >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+                {nameData &&
+                  nameData.map((value) => (
+                    <MenuItem key={value.id} value={value.name}>
+                      {value.name}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
           </Box>
@@ -151,8 +149,40 @@ export default function Inventario() {
             <Typography sx={{ marginBottom: 1 }}>Ações</Typography>
 
             <Box>
-              <DownloadForOfflineIcon fontSize="small" />
-              <DeleteForeverIcon fontSize="small" sx={{ marginLeft: 3 }} />
+              <DownloadForOfflineIcon
+                fontSize="small"
+                sx={{ cursor: "pointer" }}
+                onClick={() => handleDownload()}
+              />
+              <DeleteForeverIcon
+                onClick={() => handleOpenDelete()}
+                fontSize="small"
+                sx={{ marginLeft: 3, cursor: "pointer" }}
+              />
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              marginLeft: 5,
+              display: " flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Box>
+              <Button
+                fullWidth
+                variant="contained"
+                sx={{
+                  borderColor: "#48BD69",
+                  color: "#fff",
+                }}
+                color="success"
+                onClick={handleUpdate}
+              >
+                Atualizar
+              </Button>
             </Box>
           </Box>
         </CardContent>
@@ -172,24 +202,39 @@ export default function Inventario() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.item}>
+            {inventarioData ? (
+              inventarioData.map((inventario) => (
+                <TableRow key={inventario.id}>
+                  <TableCell component="th" scope="row">
+                    {inventario.item}
+                  </TableCell>
+                  <TableCell>{inventario.descricao}</TableCell>
+                  <TableCell>{inventario.endereco}</TableCell>
+                  <TableCell>{inventario.tipoEstoque}</TableCell>
+                  <TableCell>{inventario.catItem}</TableCell>
+                  <TableCell>{inventario.saldoWms}</TableCell>
+                  <TableCell>{inventario.saldoFisico}</TableCell>
+                  <TableCell>{inventario.user?.name}</TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
                 <TableCell component="th" scope="row">
-                  {row.item}
+                  Dados não encontrados
                 </TableCell>
-                <TableCell>{row.descricao}</TableCell>
-                <TableCell>{row.endereco}</TableCell>
-                <TableCell>{row.tipoEstoque}</TableCell>
-                <TableCell>{row.catItem}</TableCell>
-                <TableCell>{row.saldoWms}</TableCell>
-                <TableCell>{row.saldoFisico}</TableCell>
-                <TableCell>{row.username_id}</TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
       </TableContainer>
       {open && <ModalAddInventario open={open} setOpen={setOpen} />}
+      {openDelete && (
+        <ModalDeleteInventario
+          openDelete={openDelete}
+          setOpenDelete={setOpenDelete}
+          idDelete={idDelete}
+        />
+      )}
     </Dashboard>
   );
 }

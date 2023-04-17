@@ -23,7 +23,7 @@ const Routes = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route element={<PrivateRoutes />}>
-        <Route path="/" element={<Inventario />} />
+        <Route path="/" element={<Home />} />
         <Route path="/name/inventario" element={<ListName />} />
         <Route path="/inventario" element={<Inventario />} />
       </Route>
