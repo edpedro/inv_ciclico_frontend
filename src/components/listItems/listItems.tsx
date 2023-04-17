@@ -40,18 +40,6 @@ export const mainListItems = (
         <ListItemText primary="Criar Inventário" />
       </ListItemButton>
     </Link>
-    {/* <ListItemButton>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <ListItemText primary="Consultar Endereço" />
-    </ListItemButton> */}
-    {/* <ListItemButton>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <ListItemText primary="Baixar Inventario" />
-    </ListItemButton> */}
   </>
 );
 
@@ -60,13 +48,13 @@ export const secondaryListItems = (
     <ListSubheader component="div" inset>
       Usuarios
     </ListSubheader>
-    <Link to="/register" style={{ textDecoration: "none", color: "#000" }}>
+    {/* <Link to="/register" style={{ textDecoration: "none", color: "#000" }}>
       <ListItemButton>
         <ListItemIcon>
           <PeopleIcon />
         </ListItemIcon>
         <ListItemText primary="Criar Usuario" />
       </ListItemButton>
-    </Link>
+    </Link> */}
   </>
 );

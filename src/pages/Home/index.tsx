@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Dashboard from "../../components/Dashboard";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -7,6 +8,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
+import { useName } from "../../contexts/hooks/NewName";
+import { format } from "date-fns";
+import { utcToZonedTime } from "date-fns-tz";
 
 function createData(
   name: string,
@@ -24,6 +28,14 @@ const rows = [
 ];
 
 export default function Home() {
+  const { nameData, loadNameData } = useName();
+
+  useEffect(() => {
+    loadNameData();
+  }, []);
+
+  const fusoHorario = "America/Sao_Paulo";
+
   return (
     <Dashboard>
       <Typography
@@ -47,16 +59,24 @@ export default function Home() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.name}>
-                <TableCell component="th" scope="row">
-                  {row.name}
-                </TableCell>
-                <TableCell>{row.calories}</TableCell>
-                <TableCell>{row.fat}</TableCell>
-                <TableCell>{row.carbs}</TableCell>
-              </TableRow>
-            ))}
+            {nameData &&
+              nameData.map((data) => (
+                <TableRow key={data.id}>
+                  <TableCell component="th" scope="row">
+                    {data.name}
+                  </TableCell>
+                  <TableCell>
+                    {format(
+                      utcToZonedTime(data.date, fusoHorario),
+                      "dd/MM/yyyy"
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {data.status ? "Finalizando" : "Pendente"}
+                  </TableCell>
+                  <TableCell>{data.user.name}</TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
