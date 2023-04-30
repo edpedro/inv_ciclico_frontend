@@ -76,7 +76,7 @@ export default function ListName() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {nameData &&
+            {nameData && nameData.length > 0 ? (
               nameData.map((data) => (
                 <TableRow key={data.id}>
                   <TableCell component="th" scope="row">
@@ -105,7 +105,14 @@ export default function ListName() {
                     />
                   </TableCell>
                 </TableRow>
-              ))}
+              ))
+            ) : (
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  Dados não encontrados
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>

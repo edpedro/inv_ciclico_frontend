@@ -193,7 +193,7 @@ export default function ModalAddUsers({
                   }}
                   color="success"
                 >
-                  Cadastrar
+                  {idUpdate ? "Atualizar" : "Cadastrar"}
                 </Button>
               </Box>
             </Box>

@@ -13,21 +13,6 @@ import { format } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import Loading from "../../components/loanding";
 
-function createData(
-  name: string,
-  calories: string,
-  fat: string,
-  carbs: string
-) {
-  return { name, calories, fat, carbs };
-}
-
-const rows = [
-  createData("inventario_ciclico_movel1", "20/03/2023", "Pendente", "Eduardo"),
-  createData("inventario_ciclico_movel2", "20/03/2023", "Pendente", "Eduardo"),
-  createData("inventario_ciclico_movel3", "20/03/2023", "Pendente", "Eduardo"),
-];
-
 export default function Home() {
   const { nameData, loadNameData } = useName();
 
@@ -61,7 +46,7 @@ export default function Home() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {nameData &&
+            {nameData && nameData.length > 0 ? (
               nameData.map((data) => (
                 <TableRow key={data.id}>
                   <TableCell component="th" scope="row">
@@ -78,7 +63,14 @@ export default function Home() {
                   </TableCell>
                   <TableCell>{data.user.name}</TableCell>
                 </TableRow>
-              ))}
+              ))
+            ) : (
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  Dados não encontrados
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>

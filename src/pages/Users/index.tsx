@@ -73,7 +73,7 @@ export default function Users() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {lisUserData &&
+            {lisUserData && lisUserData.length > 0 ? (
               lisUserData.map((data) => (
                 <TableRow key={data.id}>
                   <TableCell component="th" scope="row">
@@ -97,7 +97,14 @@ export default function Users() {
                     />
                   </TableCell>
                 </TableRow>
-              ))}
+              ))
+            ) : (
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  Dados não encontrados
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>

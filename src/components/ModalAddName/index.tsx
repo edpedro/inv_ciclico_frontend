@@ -57,7 +57,7 @@ export default function ModalAddName({
   idUpdate,
 }: UIPropsModal) {
   const { listAllUserData, lisUserData } = useUsers();
-  const { createName, updateNameData, updateName } = useName();
+  const { createName, updateNameData, updateName, nameData } = useName();
 
   const [name, setName] = useState<string>("");
   const [date, setDate] = useState<string>("");
@@ -71,12 +71,28 @@ export default function ModalAddName({
     listAllUserData();
 
     if (updateNameData) {
+      const filterUserIds = nameData!
+        .filter((name) => {
+          return name.id === idUpdate;
+        })
+        .flatMap((name) => name.users.map((user) => user.user_id));
+
+      const filterNames = lisUserData
+        ?.filter((value) => {
+          return filterUserIds.includes(value.id);
+        })
+        .map(({ id, name }) => ({ id, name })) as SelectedItem[];
+
       setName(updateNameData?.name as string);
       setDate(updateNameData?.date as string);
+      setSelectedItems(filterNames);
+      setUsersIds(filterUserIds);
     }
     if (!idUpdate) {
       setName("");
       setDate("");
+      setSelectedItems([]);
+      setUsersIds([]);
     }
   }, [updateNameData, idUpdate]);
 
@@ -108,7 +124,7 @@ export default function ModalAddName({
     const date = data.get("date") as string;
     const user_id = userIds as string[];
 
-    if (!name || !date || user_id.length <= 0) {
+    if (!name || !date) {
       toast.error("Favor preencher todos dados!");
 
       return;
@@ -202,6 +218,7 @@ export default function ModalAddName({
                       ))}
                   </Select>
                 </FormControl>
+
                 <Button
                   type="submit"
                   fullWidth
@@ -214,7 +231,7 @@ export default function ModalAddName({
                   }}
                   color="success"
                 >
-                  Cadastrar
+                  {idUpdate ? "Atualizar" : "Cadastrar"}
                 </Button>
               </Box>
             </Box>

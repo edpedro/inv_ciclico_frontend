@@ -24,6 +24,12 @@ export interface UInameList {
   name: string;
   status: boolean;
   user: UIuser;
+  users: {
+    user_id: string;
+    nameInventario_id: string;
+    assignedAt: string;
+    assignedBy: string;
+  }[];
 }
 
 export interface IFile {
