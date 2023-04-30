@@ -84,7 +84,9 @@ export default function ModalAddUsers({
       }
     }
 
-    const newDate: UIuser = { name, username, password, rules };
+    const newDate: any = password
+      ? { name, username, password, rules }
+      : { name, username, rules };
 
     idUpdate
       ? updateUser(idUpdate, newDate)
