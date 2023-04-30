@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import { useName } from "../../contexts/hooks/NewName";
 import { format } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
+import Loading from "../../components/loanding";
 
 function createData(
   name: string,
@@ -48,6 +49,7 @@ export default function Home() {
       <Typography variant="h6" gutterBottom sx={{ marginBottom: "20px" }}>
         Todos Inventarios
       </Typography>
+      <Loading />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="caption table">
           <TableHead>

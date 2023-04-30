@@ -7,6 +7,8 @@ type Props = {
 interface LoadingContextData {
   isLoadingFetch: boolean;
   setLoadingFetch: (isLoading: boolean) => void;
+  isLoading: boolean;
+  setLoading: (isLoading: boolean) => void;
 }
 
 const LoadingContext = createContext<LoadingContextData>(
@@ -14,14 +16,21 @@ const LoadingContext = createContext<LoadingContextData>(
 );
 
 export const LoadingProvider = ({ children }: Props) => {
-  const [isLoadingFetch, setIsLoadingFetch] = useState(true);
+  const [isLoadingFetch, setIsLoadingFetch] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const setLoadingFetch = (newIsLoading: boolean) => {
     setIsLoadingFetch(newIsLoading);
   };
 
+  const setLoading = (newIsLoading: boolean) => {
+    setIsLoading(newIsLoading);
+  };
+
   return (
-    <LoadingContext.Provider value={{ isLoadingFetch, setLoadingFetch }}>
+    <LoadingContext.Provider
+      value={{ isLoadingFetch, setLoadingFetch, isLoading, setLoading }}
+    >
       {children}
     </LoadingContext.Provider>
   );

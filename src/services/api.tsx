@@ -1,9 +1,8 @@
-import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from "axios";
-import { useLoading } from "../contexts/hooks/Loanding";
+import axios, { InternalAxiosRequestConfig } from "axios";
 
 const api = axios.create({
-  baseURL: "https://invciclicobackend-production.up.railway.app/",
-  //baseURL: "http://localhost:3333/",
+  //baseURL: "https://invciclicobackend-production.up.railway.app/",
+  baseURL: "http://localhost:3000/",
 });
 
 api.interceptors.request.use(

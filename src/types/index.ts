@@ -1,9 +1,16 @@
 export interface UIuser {
   id?: string;
   sub?: string;
-  name?: string;
+  name: string;
   username: string;
   password: string;
+  rules: string;
+}
+export interface UIuserList {
+  id: string;
+  name: string;
+  username: string;
+  rules: string;
 }
 
 export interface UInameCreate {

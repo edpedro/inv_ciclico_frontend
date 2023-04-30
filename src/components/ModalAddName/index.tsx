@@ -13,10 +13,10 @@ import FormControl from "@mui/material/FormControl";
 import ListItemText from "@mui/material/ListItemText";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
-import { useAuth } from "../../contexts/hooks/Auth";
 import { UInameCreate } from "../../types";
 import { useName } from "../../contexts/hooks/NewName";
 import { toast } from "react-toastify";
+import { useUsers } from "../../contexts/hooks/Users";
 
 const style = {
   position: "absolute" as "absolute",
@@ -56,7 +56,7 @@ export default function ModalAddName({
   setOpen,
   idUpdate,
 }: UIPropsModal) {
-  const { listAllUserData, lisUserData } = useAuth();
+  const { listAllUserData, lisUserData } = useUsers();
   const { createName, updateNameData, updateName } = useName();
 
   const [name, setName] = useState<string>("");

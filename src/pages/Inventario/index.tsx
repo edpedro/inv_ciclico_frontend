@@ -22,9 +22,9 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { useName } from "../../contexts/hooks/NewName";
 import { useInventario } from "../../contexts/hooks/Inventario";
-import { useLoading } from "../../contexts/hooks/Loanding";
 import ModalDeleteInventario from "../../components/ModalDeleteInventario";
 import { toast } from "react-toastify";
+import Loading from "../../components/loanding";
 
 export default function Inventario() {
   const { nameData, loadNameData } = useName();
@@ -101,6 +101,7 @@ export default function Inventario() {
       >
         <FileCopyIcon />
       </Button>
+
       <Card
         sx={{
           width: 550,
@@ -187,6 +188,7 @@ export default function Inventario() {
           </Box>
         </CardContent>
       </Card>
+      <Loading />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="caption table">
           <TableHead>

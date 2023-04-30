@@ -11,15 +11,13 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import ModalAddName from "../../components/ModalAddName";
-import { useName } from "../../contexts/hooks/NewName";
-import ModalDelete from "../../components/ModalDelete";
-import { format } from "date-fns";
-import { utcToZonedTime } from "date-fns-tz";
+import ModalAddUsers from "../../components/ModalAddUsers";
+import { useUsers } from "../../contexts/hooks/Users";
+import ModalDeleteUser from "../../components/ModalDeleteUser";
 import Loading from "../../components/loanding";
 
-export default function ListName() {
-  const { nameData, loadNameData, listNameData } = useName();
+export default function Users() {
+  const { listAllUserData, lisUserData, listUserFindOneData } = useUsers();
 
   const [idDelete, setIdDelete] = useState("");
   const [idUpdate, setIdUpdate] = useState("");
@@ -32,7 +30,7 @@ export default function ListName() {
   };
 
   useEffect(() => {
-    loadNameData();
+    listAllUserData();
   }, []);
 
   function handleDelete(id: string) {
@@ -41,16 +39,15 @@ export default function ListName() {
   }
 
   function handleUpdate(id: string) {
-    listNameData(id);
+    listUserFindOneData(id);
     setOpen(true);
     setIdUpdate(id);
   }
-  const fusoHorario = "America/Sao_Paulo";
 
   return (
     <Dashboard>
       <Typography variant="h5" gutterBottom sx={{ marginBottom: "20px" }}>
-        Criar Nome para Inventário
+        Controle de acesso Usuario
       </Typography>
       <Button
         onClick={handleOpen}
@@ -62,7 +59,7 @@ export default function ListName() {
         }}
         color="success"
       >
-        Criar Nome
+        Criar Usuario
       </Button>
       <Loading />
       <TableContainer component={Paper}>
@@ -70,26 +67,21 @@ export default function ListName() {
           <TableHead>
             <TableRow>
               <TableCell>Nome</TableCell>
-              <TableCell>Data</TableCell>
-              <TableCell>Status</TableCell>
+              <TableCell>Usuario</TableCell>
+              <TableCell>Autorização</TableCell>
               <TableCell>Ações</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {nameData &&
-              nameData.map((data) => (
+            {lisUserData &&
+              lisUserData.map((data) => (
                 <TableRow key={data.id}>
                   <TableCell component="th" scope="row">
                     {data.name}
                   </TableCell>
+                  <TableCell>{data.username}</TableCell>
                   <TableCell>
-                    {format(
-                      utcToZonedTime(data.date, fusoHorario),
-                      "dd/MM/yyyy"
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {data.status ? "Finalizando" : "Pendente"}
+                    {data.rules === "user" ? "Usuario" : "Administrador"}
                   </TableCell>
                   <TableCell>
                     <EditIcon
@@ -109,11 +101,12 @@ export default function ListName() {
           </TableBody>
         </Table>
       </TableContainer>
+
       {open && (
-        <ModalAddName open={open} setOpen={setOpen} idUpdate={idUpdate} />
+        <ModalAddUsers open={open} setOpen={setOpen} idUpdate={idUpdate} />
       )}
       {openDelete && (
-        <ModalDelete
+        <ModalDeleteUser
           openDelete={openDelete}
           setOpenDelete={setOpenDelete}
           idDelete={idDelete}

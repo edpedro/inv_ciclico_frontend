@@ -1,6 +1,6 @@
 import { FormEvent } from "react";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
@@ -12,11 +12,13 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { toast } from "react-toastify";
 import { useAuth } from "../../contexts/hooks/Auth";
 import { Link } from "react-router-dom";
+import { useLoading } from "../../contexts/hooks/Loanding";
 
 const theme = createTheme();
 
 export default function Login() {
   const { signIn } = useAuth();
+  const { isLoading } = useLoading();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -79,7 +81,7 @@ export default function Login() {
               autoComplete="current-password"
               color="success"
             />
-            <Button
+            <LoadingButton
               type="submit"
               fullWidth
               variant="contained"
@@ -90,9 +92,11 @@ export default function Login() {
                 color: "#fff",
               }}
               color="success"
+              loading={isLoading}
+              loadingIndicator="Carregando…"
             >
               Acessar
-            </Button>
+            </LoadingButton>
             <Grid container>
               <Grid item xs>
                 <Link to="/register" style={{ textDecoration: "none" }}>

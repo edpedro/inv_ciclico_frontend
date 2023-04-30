@@ -4,6 +4,7 @@ import { AuthProvider } from "./hooks/Auth";
 import { LoadingProvider } from "./hooks/Loanding";
 import { NewNameProvider } from "./hooks/NewName";
 import { InventarioProvider } from "./hooks/Inventario";
+import { UsersProvider } from "./hooks/Users";
 
 interface AppProviderProps {
   children: ReactNode;
@@ -11,13 +12,15 @@ interface AppProviderProps {
 
 const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   return (
-    <AuthProvider>
-      <LoadingProvider>
-        <NewNameProvider>
-          <InventarioProvider>{children}</InventarioProvider>
-        </NewNameProvider>
-      </LoadingProvider>
-    </AuthProvider>
+    <LoadingProvider>
+      <AuthProvider>
+        <UsersProvider>
+          <NewNameProvider>
+            <InventarioProvider>{children}</InventarioProvider>
+          </NewNameProvider>
+        </UsersProvider>
+      </AuthProvider>
+    </LoadingProvider>
   );
 };
 

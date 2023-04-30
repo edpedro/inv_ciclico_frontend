@@ -1,4 +1,4 @@
-import { useState, ReactNode, ChangeEvent, MouseEvent } from "react";
+import { useState, ReactNode, MouseEvent } from "react";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
@@ -13,9 +13,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Container from "@mui/material/Container";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import Switch from "@mui/material/Switch";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 
@@ -92,12 +89,7 @@ const Dashboard: React.FC<Props> = ({ children }) => {
     setOpen(!open);
   };
 
-  const [auth, setAuth] = useState(true);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setAuth(event.target.checked);
-  };
 
   const handleMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -205,7 +197,9 @@ const Dashboard: React.FC<Props> = ({ children }) => {
           }}
         >
           <Container maxWidth="lg" sx={{ mt: 8, mb: 4 }}>
-            <main>{children}</main>
+            <>
+              <main>{children}</main>
+            </>
           </Container>
         </Box>
       </Box>

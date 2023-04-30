@@ -9,7 +9,7 @@ import api from "../../services/api";
 import { toast } from "react-toastify";
 import { UIuser } from "../../types";
 import { useNavigate } from "react-router-dom";
-import { LoadingProvider, useLoading } from "./Loanding";
+import { useLoading } from "./Loanding";
 
 type Props = {
   children?: ReactNode;
@@ -24,10 +24,9 @@ interface AuthContextData {
   lisUserData?: UIuser[];
   token?: UItoken;
   authenticated: boolean;
-  isLoading: boolean;
+  isLoadingStorage: boolean;
   signIn: (username: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
-  listAllUserData: () => Promise<void>;
   register: (name: string, username: string, password: string) => Promise<void>;
 }
 
@@ -35,10 +34,11 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider = ({ children }: Props) => {
   const [authData, setAuthData] = useState<UIuser>();
-  const [lisUserData, setListUserData] = useState<UIuser[]>();
   const [token, setToken] = useState<UItoken>();
   const [authenticated, setAuthenticated] = useState(false);
-  const [isLoading, setisLoading] = useState(true);
+  const [isLoadingStorage, setIsLoadingStorage] = useState(true);
+
+  const { setLoading } = useLoading();
 
   const navigate = useNavigate();
 
@@ -47,9 +47,10 @@ export const AuthProvider = ({ children }: Props) => {
   }, []);
 
   async function loadStorageData(): Promise<void> {
-    const token = localStorage.getItem("@token");
-    const data = localStorage.getItem("@data");
     try {
+      const token = localStorage.getItem("@token");
+      const data = localStorage.getItem("@data");
+
       if (token && data) {
         const _token: UItoken = JSON.parse(token);
         const _data: UIuser = JSON.parse(data);
@@ -62,18 +63,29 @@ export const AuthProvider = ({ children }: Props) => {
       }
     } catch (error) {
     } finally {
-      setisLoading(false);
+      setIsLoadingStorage(false);
     }
   }
 
   async function signIn(username: string, password: string): Promise<void> {
     try {
+      setLoading(true);
       const {
         data: { payload, token },
       } = await api.post("/auth/login", {
         username,
         password,
       });
+
+      if (payload.rules === "user") {
+        toast.error(`${payload.name} - Login não autorizado!`);
+        setAuthData(undefined);
+        setToken(undefined);
+
+        setAuthenticated(false);
+
+        return;
+      }
 
       setAuthData(payload);
       setToken(token);
@@ -85,9 +97,10 @@ export const AuthProvider = ({ children }: Props) => {
 
       api.defaults.headers.authorization = `Bearer ${token}`;
       toast.success("Login efetuado com sucesso!");
-
+      setLoading(false);
       navigate("/");
     } catch (error) {
+      setLoading(false);
       toast.error("Login e Senha invalida!");
     }
   }
@@ -98,6 +111,7 @@ export const AuthProvider = ({ children }: Props) => {
         name,
         username,
         password,
+        rules: "admin",
       });
 
       navigate("/login");
@@ -118,24 +132,16 @@ export const AuthProvider = ({ children }: Props) => {
     localStorage.removeItem("@token");
   }
 
-  async function listAllUserData() {
-    const { data } = await api.get("users");
-
-    setListUserData(data);
-  }
-
   return (
     <AuthContext.Provider
       value={{
+        isLoadingStorage,
         authenticated,
         token,
         authData,
         signIn,
-        isLoading,
         signOut,
         register,
-        lisUserData,
-        listAllUserData,
       }}
     >
       {children}
