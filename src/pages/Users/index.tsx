@@ -81,7 +81,7 @@ export default function Users() {
                   </TableCell>
                   <TableCell>{data.username}</TableCell>
                   <TableCell>
-                    {data.rules === "user" ? "Usuario" : "Administrador"}
+                    {data.role === "user" ? "Usuario" : "Administrador"}
                   </TableCell>
                   <TableCell>
                     <EditIcon

@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { UIuser, UIuserList } from "../../types";
 import { useNavigate } from "react-router-dom";
 import { useLoading } from "./Loanding";
+import { useAuth } from "./Auth";
 
 type Props = {
   children?: ReactNode;
@@ -24,7 +25,8 @@ interface UserContextData {
     name: string,
     username: string,
     password: string,
-    rules: string
+    role: string,
+    createdById: string
   ) => Promise<void>;
   deleteUser: (id: string) => void;
   updateUser: (id: string, data: UIuser) => void;
@@ -39,6 +41,7 @@ export const UsersProvider = ({ children }: Props) => {
   const [update, setUpdate] = useState(false);
 
   const { setLoadingFetch } = useLoading();
+  const { authData } = useAuth();
 
   const navigate = useNavigate();
 
@@ -52,7 +55,8 @@ export const UsersProvider = ({ children }: Props) => {
     name: string,
     username: string,
     password: string,
-    rules: string
+    role: string,
+    createdById: string
   ): Promise<void> {
     try {
       setLoadingFetch(true);
@@ -60,7 +64,8 @@ export const UsersProvider = ({ children }: Props) => {
         name,
         username,
         password,
-        rules,
+        role,
+        createdById,
       });
 
       navigate("/users");
@@ -89,19 +94,9 @@ export const UsersProvider = ({ children }: Props) => {
 
   async function listAllUserData() {
     setLoadingFetch(true);
-    const { data } = await api.get("users");
+    const { data } = await api.get(`users/invited/${authData?.sub}`);
 
-    const dataUser = localStorage.getItem("@data");
-
-    if (dataUser) {
-      const _data: UIuser = JSON.parse(dataUser);
-
-      const filterName = data!.filter(
-        (user: UIuserList) => user.name !== _data.name
-      );
-
-      setListUserData(filterName);
-    }
+    setListUserData(data);
 
     setLoadingFetch(false);
   }

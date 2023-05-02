@@ -21,7 +21,6 @@ interface UItoken {
 
 interface AuthContextData {
   authData?: UIuser;
-  lisUserData?: UIuser[];
   token?: UItoken;
   authenticated: boolean;
   isLoadingStorage: boolean;
@@ -77,11 +76,11 @@ export const AuthProvider = ({ children }: Props) => {
         password,
       });
 
-      if (payload.rules === "user") {
+      if (payload.role === "user") {
         toast.error(`${payload.name} - Login não autorizado!`);
         setAuthData(undefined);
         setToken(undefined);
-
+        setLoading(false);
         setAuthenticated(false);
 
         return;
@@ -111,7 +110,7 @@ export const AuthProvider = ({ children }: Props) => {
         name,
         username,
         password,
-        rules: "admin",
+        role: "admin",
       });
 
       navigate("/login");

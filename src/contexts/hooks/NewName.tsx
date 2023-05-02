@@ -36,7 +36,6 @@ export const NewNameProvider = ({ children }: Props) => {
   const [update, setUpdate] = useState(false);
 
   const { setLoadingFetch } = useLoading();
-  const { authData } = useAuth();
 
   useEffect(() => {
     loadNameData();
@@ -49,11 +48,7 @@ export const NewNameProvider = ({ children }: Props) => {
       setLoadingFetch(true);
       const { data } = await api.get("/nameinv");
 
-      const filteredData = data.filter(
-        (value: UInameList) => value.user.id === authData?.sub
-      );
-
-      setNameData(filteredData);
+      setNameData(data);
       setLoadingFetch(false);
     } catch (error) {
       setLoadingFetch(false);

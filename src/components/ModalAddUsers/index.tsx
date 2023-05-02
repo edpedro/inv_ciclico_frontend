@@ -13,6 +13,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { toast } from "react-toastify";
 import { UIuser } from "../../types";
 import { useUsers } from "../../contexts/hooks/Users";
+import { useAuth } from "../../contexts/hooks/Auth";
 
 const style = {
   position: "absolute" as "absolute",
@@ -35,7 +36,7 @@ interface UserFormData extends FormData {
   name: string;
   username: string;
   password: string;
-  rules: string;
+  role: string;
 }
 
 export default function ModalAddUsers({
@@ -44,8 +45,9 @@ export default function ModalAddUsers({
   idUpdate,
 }: UIPropsModal) {
   const { registerUsers, updateUser, userFindData } = useUsers();
+  const { authData } = useAuth();
 
-  const [rules, setRules] = useState("");
+  const [role, setRole] = useState("");
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -54,43 +56,44 @@ export default function ModalAddUsers({
     if (userFindData) {
       setName(userFindData?.name as string);
       setUsername(userFindData?.username as string);
-      setRules(userFindData?.rules as string);
+      setRole(userFindData?.role as string);
     }
     if (!idUpdate) {
       setName("");
       setUsername("");
-      setRules("");
+      setRole("");
     }
   }, [userFindData, idUpdate]);
 
   const handleClose = () => setOpen(false);
 
   const handleChange = (event: SelectChangeEvent) => {
-    setRules(event.target.value as string);
+    setRole(event.target.value as string);
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (idUpdate === "") {
-      if (!username || !password || !name || !rules) {
+      if (!username || !password || !name || !role) {
         toast.error("Favor preencher todos dados!");
 
         return null;
-      } else if (!username || !name || !rules) {
+      } else if (!username || !name || !role) {
         toast.error("Favor preencher todos dados!");
 
         return null;
       }
     }
+    const createdById = authData?.sub as string;
 
     const newDate: any = password
-      ? { name, username, password, rules }
-      : { name, username, rules };
+      ? { name, username, password, role }
+      : { name, username, role };
 
     idUpdate
       ? updateUser(idUpdate, newDate)
-      : registerUsers(name, username, password, rules);
+      : registerUsers(name, username, password, role, createdById);
 
     setOpen(false);
   };
@@ -171,7 +174,7 @@ export default function ModalAddUsers({
                     fullWidth
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={rules}
+                    value={role}
                     label="Autorização"
                     color="success"
                     onChange={handleChange}

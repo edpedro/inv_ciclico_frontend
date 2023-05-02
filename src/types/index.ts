@@ -4,13 +4,14 @@ export interface UIuser {
   name: string;
   username: string;
   password: string;
-  rules: string;
+  role: string;
+  createdById?: string;
 }
 export interface UIuserList {
   id: string;
   name: string;
   username: string;
-  rules: string;
+  role: string;
 }
 
 export interface UInameCreate {
