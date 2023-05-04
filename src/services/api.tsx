@@ -1,23 +1,59 @@
-import axios, { InternalAxiosRequestConfig } from "axios";
+import axios, { AxiosInstance } from "axios";
+import { useLoading } from "../contexts/hooks/Loanding";
 
-const api = axios.create({
-  baseURL: "https://invciclicobackend-production.up.railway.app/",
-  //baseURL: "http://localhost:3000/",
-});
+interface UItoken {
+  token: undefined | string;
+}
 
-api.interceptors.request.use(
-  (config: InternalAxiosRequestConfig<any>) => {
-    const token = JSON.parse(localStorage.getItem("@token") as string);
+const useApi = () => {
+  const { setLoadingFetch } = useLoading();
 
-    if (token) {
-      config.headers.authorization = `Bearer ${token}`;
+  let needsRedirect = false;
+
+  const api: AxiosInstance = axios.create({
+    baseURL: "https://invciclicobackend-production.up.railway.app/",
+    //baseURL: "http://localhost:3000/",
+  });
+
+  const token = localStorage.getItem("@token");
+
+  api.interceptors.request.use(
+    (config) => {
+      if (token) {
+        const _token: UItoken = JSON.parse(token);
+        config.headers.authorization = `Bearer ${_token}`;
+      }
+      setLoadingFetch(true);
+      return config;
+    },
+    (error) => {
+      setLoadingFetch(false);
+      return Promise.reject(error);
     }
+  );
 
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
+  api.interceptors.response.use(
+    (response) => {
+      setLoadingFetch(false);
+      return response;
+    },
+    async (error) => {
+      setLoadingFetch(false);
+
+      if (error.response.status === 401) {
+        needsRedirect = true;
+      }
+      return Promise.reject(error);
+    }
+  );
+
+  if (needsRedirect) {
+    localStorage.clear();
+    window.location.href = "/login";
+    needsRedirect = false;
   }
-);
 
-export default api;
+  return api;
+};
+
+export default useApi;

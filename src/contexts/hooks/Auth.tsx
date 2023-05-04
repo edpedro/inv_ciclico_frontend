@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import api from "../../services/api";
+import useApi from "../../services/api";
 import { toast } from "react-toastify";
 import { UIuser } from "../../types";
 import { useNavigate } from "react-router-dom";
@@ -39,6 +39,8 @@ export const AuthProvider = ({ children }: Props) => {
 
   const { setLoading } = useLoading();
 
+  const api = useApi();
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,7 +55,6 @@ export const AuthProvider = ({ children }: Props) => {
       if (token && data) {
         const _token: UItoken = JSON.parse(token);
         const _data: UIuser = JSON.parse(data);
-
         api.defaults.headers.authorization = `Bearer ${_token}`;
 
         setAuthenticated(true);
@@ -69,6 +70,7 @@ export const AuthProvider = ({ children }: Props) => {
   async function signIn(username: string, password: string): Promise<void> {
     try {
       setLoading(true);
+
       const {
         data: { payload, token },
       } = await api.post("/auth/login", {
@@ -94,7 +96,7 @@ export const AuthProvider = ({ children }: Props) => {
       localStorage.setItem("@data", JSON.stringify(payload));
       localStorage.setItem("@token", JSON.stringify(token));
 
-      api.defaults.headers.authorization = `Bearer ${token}`;
+      //api.defaults.headers.authorization = `Bearer ${token}`;
       toast.success("Login efetuado com sucesso!");
       setLoading(false);
       navigate("/");

@@ -182,7 +182,7 @@ export default function ModalAddUsers({
                       width: "300px",
                     }}
                   >
-                    <MenuItem value="Admin">Administrador</MenuItem>
+                    <MenuItem value="admin">Administrador</MenuItem>
                     <MenuItem value="user">Usuario</MenuItem>
                   </Select>
                 </FormControl>

@@ -6,11 +6,9 @@ import {
   useEffect,
   useState,
 } from "react";
-import api from "../../services/api";
+import useApi from "../../services/api";
 import { toast } from "react-toastify";
 import { UInameList, UInameCreate } from "../../types";
-import { useLoading } from "./Loanding";
-import { useAuth } from "./Auth";
 
 type Props = {
   children?: ReactNode;
@@ -35,7 +33,7 @@ export const NewNameProvider = ({ children }: Props) => {
   const [updateNameData, setUpdateNameData] = useState<UInameList>();
   const [update, setUpdate] = useState(false);
 
-  const { setLoadingFetch } = useLoading();
+  const api = useApi();
 
   useEffect(() => {
     loadNameData();
@@ -45,66 +43,52 @@ export const NewNameProvider = ({ children }: Props) => {
 
   async function loadNameData() {
     try {
-      setLoadingFetch(true);
       const { data } = await api.get("/nameinv");
 
       setNameData(data);
-      setLoadingFetch(false);
-    } catch (error) {
-      setLoadingFetch(false);
-    }
+    } catch (error) {}
   }
 
   async function listNameData(id: string) {
     try {
-      setLoadingFetch(true);
       const { data } = await api.get(`/nameinv/${id}`);
 
       setUpdateNameData(data);
-      setLoadingFetch(false);
-    } catch (error) {
-      setLoadingFetch(false);
-    }
+    } catch (error) {}
   }
 
   const createName = useCallback(async (newData: UInameCreate) => {
     try {
-      setLoadingFetch(true);
       await api.post("/nameinv", newData);
 
       setUpdate(true);
-      setLoadingFetch(false);
+
       toast.success("Cadastro realizado com sucesso.");
     } catch (error) {
-      setLoadingFetch(false);
       toast.error("Nome do inventario já cadastrado");
     }
   }, []);
 
   const deleteName = useCallback(async (id: string) => {
     try {
-      setLoadingFetch(true);
       await api.delete(`/nameinv/${id}`);
 
       setUpdate(true);
-      setLoadingFetch(false);
+
       toast.success("Deletado com sucesso.");
     } catch (error) {
-      setLoadingFetch(false);
       toast.error("Erro ao deletar");
     }
   }, []);
 
   const updateName = useCallback(async (id: string, newData: UInameCreate) => {
     try {
-      setLoadingFetch(true);
       await api.patch(`/nameinv/${id}`, newData);
 
       setUpdate(true);
-      setLoadingFetch(false);
+
       toast.success("Atualizado com sucesso.");
     } catch (error) {
-      setLoadingFetch(false);
       toast.error("Erro ao atualizar");
     }
   }, []);

@@ -6,11 +6,10 @@ import {
   useEffect,
   useState,
 } from "react";
-import api from "../../services/api";
+import useApi from "../../services/api";
 import { toast } from "react-toastify";
 import { UIuser, UIuserList } from "../../types";
 import { useNavigate } from "react-router-dom";
-import { useLoading } from "./Loanding";
 import { useAuth } from "./Auth";
 
 type Props = {
@@ -40,7 +39,8 @@ export const UsersProvider = ({ children }: Props) => {
   const [userFindData, setUserFindData] = useState<UIuserList>();
   const [update, setUpdate] = useState(false);
 
-  const { setLoadingFetch } = useLoading();
+  const api = useApi();
+
   const { authData } = useAuth();
 
   const navigate = useNavigate();
@@ -59,7 +59,6 @@ export const UsersProvider = ({ children }: Props) => {
     createdById: string
   ): Promise<void> {
     try {
-      setLoadingFetch(true);
       await api.post("users", {
         name,
         username,
@@ -70,61 +69,48 @@ export const UsersProvider = ({ children }: Props) => {
 
       navigate("/users");
 
-      setLoadingFetch(false);
       setUpdate(true);
 
       toast.success("Cadastro efetuado com sucesso!");
     } catch (error) {
-      setLoadingFetch(false);
       toast.error("Informações invalida!");
     }
   }
 
   async function listUserFindOneData(id: string) {
     try {
-      setLoadingFetch(true);
       const { data } = await api.get(`/users/${id}`);
 
       setUserFindData(data);
-      setLoadingFetch(false);
-    } catch (error) {
-      setLoadingFetch(false);
-    }
+    } catch (error) {}
   }
 
   async function listAllUserData() {
-    setLoadingFetch(true);
     const { data } = await api.get(`users/invited/${authData?.sub}`);
 
     setListUserData(data);
-
-    setLoadingFetch(false);
   }
 
   const deleteUser = useCallback(async (id: string) => {
     try {
-      setLoadingFetch(true);
       await api.delete(`/users/${id}`);
 
       setUpdate(true);
-      setLoadingFetch(false);
+
       toast.success("Deletado com sucesso.");
     } catch (error) {
-      setLoadingFetch(false);
       toast.error("Erro ao deletar");
     }
   }, []);
 
   const updateUser = useCallback(async (id: string, newData: UIuser) => {
     try {
-      setLoadingFetch(true);
       await api.patch(`/users/${id}`, newData);
 
       setUpdate(true);
-      setLoadingFetch(false);
+
       toast.success("Atualizado com sucesso.");
     } catch (error) {
-      setLoadingFetch(false);
       toast.error("Erro ao atualizar");
     }
   }, []);
