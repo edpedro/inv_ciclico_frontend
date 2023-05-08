@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { useLoading } from "../contexts/hooks/Loanding";
 
 interface UItoken {
@@ -16,6 +16,10 @@ const useApi = () => {
   });
 
   const token = localStorage.getItem("@token");
+
+  const config: AxiosRequestConfig<any> = {
+    headers: {},
+  };
 
   api.interceptors.request.use(
     (config) => {
@@ -49,6 +53,9 @@ const useApi = () => {
 
   if (needsRedirect) {
     localStorage.clear();
+    if (config.headers) {
+      config.headers.authorization = undefined;
+    }
     window.location.href = "/login";
     needsRedirect = false;
   }
