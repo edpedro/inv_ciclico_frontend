@@ -96,7 +96,7 @@ export const AuthProvider = ({ children }: Props) => {
       localStorage.setItem("@data", JSON.stringify(payload));
       localStorage.setItem("@token", JSON.stringify(token));
 
-      //api.defaults.headers.authorization = `Bearer ${token}`;
+      api.defaults.headers.authorization = `Bearer ${token}`;
       toast.success("Login efetuado com sucesso!");
       setLoading(false);
       navigate("/");
