@@ -23,7 +23,8 @@ export interface UInameList {
   id: string;
   date: string;
   name: string;
-  status: boolean;
+  firstStatus: boolean;
+  secondStatus: boolean;
   user: UIuser;
   users: {
     user_id: string;
@@ -52,8 +53,10 @@ export interface UIinventarioList {
   tipoEstoque: string;
   catItem: string;
   saldoWms: number;
-  saldoFisico?: number;
-  status: boolean;
+  firstCount: number;
+  secondCount: number;
+  firstStatus: boolean;
+  secondStatus: boolean;
   username_id?: string;
   baseNameInventario_id: string;
   user?: {

@@ -12,6 +12,7 @@ import { useName } from "../../contexts/hooks/NewName";
 import { format } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import Loading from "../../components/loanding";
+import { UInameList } from "../../types";
 
 export default function Home() {
   const { nameData, loadNameData } = useName();
@@ -21,6 +22,16 @@ export default function Home() {
   }, []);
 
   const fusoHorario = "America/Sao_Paulo";
+
+  function status(data: UInameList) {
+    let status = "pendente";
+
+    if (!data.secondStatus) {
+      status = "Divergência";
+    } else if (data.firstStatus) {
+      let status = "Finalizado";
+    }
+  }
 
   return (
     <Dashboard>
@@ -58,8 +69,15 @@ export default function Home() {
                       "dd/MM/yyyy"
                     )}
                   </TableCell>
+
                   <TableCell>
-                    {data.status ? "Finalizando" : "Pendente"}
+                    {!data.secondStatus && !data.firstStatus
+                      ? "Pendente"
+                      : !data.secondStatus
+                      ? "Divergência"
+                      : data.firstStatus
+                      ? "Finalizado"
+                      : "Pendente"}
                   </TableCell>
                   <TableCell>{data.user.name}</TableCell>
                 </TableRow>

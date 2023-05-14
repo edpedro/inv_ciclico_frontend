@@ -190,7 +190,7 @@ export default function Inventario() {
       </Card>
       <Loading />
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="caption table">
+        <Table sx={{ minWidth: 800 }} aria-label="caption table">
           <TableHead>
             <TableRow>
               <TableCell>Item</TableCell>
@@ -199,7 +199,9 @@ export default function Inventario() {
               <TableCell>Tipo Estoque</TableCell>
               <TableCell>Categoria</TableCell>
               <TableCell>Wms</TableCell>
-              <TableCell>Fisico</TableCell>
+              <TableCell>1°</TableCell>
+              <TableCell>2°</TableCell>
+              <TableCell>Div</TableCell>
               <TableCell>Usuario</TableCell>
             </TableRow>
           </TableHead>
@@ -207,15 +209,19 @@ export default function Inventario() {
             {inventarioData ? (
               inventarioData.map((inventario) => (
                 <TableRow key={inventario.id}>
-                  <TableCell component="th" scope="row">
-                    {inventario.item}
-                  </TableCell>
+                  <TableCell>{inventario.item}</TableCell>
                   <TableCell>{inventario.descricao}</TableCell>
                   <TableCell>{inventario.endereco}</TableCell>
                   <TableCell>{inventario.tipoEstoque}</TableCell>
                   <TableCell>{inventario.catItem}</TableCell>
                   <TableCell>{inventario.saldoWms}</TableCell>
-                  <TableCell>{inventario.saldoFisico}</TableCell>
+                  <TableCell>{inventario.firstCount}</TableCell>
+                  <TableCell>{inventario.secondCount}</TableCell>
+                  <TableCell>
+                    {inventario.secondCount
+                      ? inventario.secondCount - inventario.saldoWms
+                      : inventario.firstCount - inventario.saldoWms}
+                  </TableCell>
                   <TableCell>{inventario.user?.name}</TableCell>
                 </TableRow>
               ))

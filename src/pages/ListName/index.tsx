@@ -89,7 +89,13 @@ export default function ListName() {
                     )}
                   </TableCell>
                   <TableCell>
-                    {data.status ? "Finalizando" : "Pendente"}
+                    {!data.secondStatus && !data.firstStatus
+                      ? "Pendente"
+                      : !data.secondStatus
+                      ? "Divergência"
+                      : data.firstStatus
+                      ? "Finalizado"
+                      : "Pendente"}
                   </TableCell>
                   <TableCell>
                     <EditIcon
