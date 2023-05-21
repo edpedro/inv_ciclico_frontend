@@ -193,9 +193,9 @@ export default function Inventario() {
         <Table sx={{ minWidth: 800 }} aria-label="caption table">
           <TableHead>
             <TableRow>
-              <TableCell>Item</TableCell>
-              <TableCell>Descricao</TableCell>
-              <TableCell>Endereco</TableCell>
+              <TableCell sx={{ width: 120 }}>Item</TableCell>
+              <TableCell sx={{ width: 250 }}>Descricao</TableCell>
+              <TableCell sx={{ width: 110 }}>Endereco</TableCell>
               <TableCell>Tipo Estoque</TableCell>
               <TableCell>Categoria</TableCell>
               <TableCell>Wms</TableCell>
@@ -209,7 +209,9 @@ export default function Inventario() {
             {inventarioData ? (
               inventarioData.map((inventario) => (
                 <TableRow key={inventario.id}>
-                  <TableCell>{inventario.item}</TableCell>
+                  <TableCell component="th" scope="row">
+                    {inventario.item}
+                  </TableCell>
                   <TableCell>{inventario.descricao}</TableCell>
                   <TableCell>{inventario.endereco}</TableCell>
                   <TableCell>{inventario.tipoEstoque}</TableCell>
