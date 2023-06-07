@@ -5,6 +5,7 @@ import { LoadingProvider } from "./hooks/Loanding";
 import { NewNameProvider } from "./hooks/NewName";
 import { InventarioProvider } from "./hooks/Inventario";
 import { UsersProvider } from "./hooks/Users";
+import { DashboardProvider } from "./hooks/Dashboard";
 
 interface AppProviderProps {
   children: ReactNode;
@@ -16,7 +17,9 @@ const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
       <AuthProvider>
         <UsersProvider>
           <NewNameProvider>
-            <InventarioProvider>{children}</InventarioProvider>
+            <InventarioProvider>
+              <DashboardProvider>{children}</DashboardProvider>
+            </InventarioProvider>
           </NewNameProvider>
         </UsersProvider>
       </AuthProvider>

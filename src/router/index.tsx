@@ -10,6 +10,7 @@ import ListName from "../pages/ListName";
 import Register from "../pages/Register";
 import Users from "../pages/Users";
 import { useLoading } from "../contexts/hooks/Loanding";
+import Dashboard from "../pages/Dashboard";
 
 const Routes = () => {
   const { isLoadingStorage } = useAuth();
@@ -32,6 +33,7 @@ const Routes = () => {
       <Route path="/register" element={<Register />} />
       <Route element={<PrivateRoutes />}>
         <Route path="/" element={<Home />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/name/inventario" element={<ListName />} />
         <Route path="/inventario" element={<Inventario />} />
         <Route path="/users" element={<Users />} />

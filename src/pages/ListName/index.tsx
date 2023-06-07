@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Dashboard from "../../components/Dashboard";
+import Painel from "../../components/Painel";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -48,7 +48,7 @@ export default function ListName() {
   const fusoHorario = "America/Sao_Paulo";
 
   return (
-    <Dashboard>
+    <Painel>
       <Typography variant="h5" gutterBottom sx={{ marginBottom: "20px" }}>
         Criar Nome para Inventário
       </Typography>
@@ -132,6 +132,6 @@ export default function ListName() {
           idDelete={idDelete}
         />
       )}
-    </Dashboard>
+    </Painel>
   );
 }

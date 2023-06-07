@@ -16,10 +16,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 
-import {
-  mainListItems,
-  secondaryListItems,
-} from "../../components/listItems/listItems";
+import { mainListItems, secondaryListItems } from "../listItems/listItems";
 import { useAuth } from "../../contexts/hooks/Auth";
 
 const drawerWidth: number = 220;
@@ -80,7 +77,7 @@ interface Props {
   children: ReactNode;
 }
 
-const Dashboard: React.FC<Props> = ({ children }) => {
+const Painel: React.FC<Props> = ({ children }) => {
   const [open, setOpen] = useState(true);
 
   const { signOut, authData } = useAuth();
@@ -207,4 +204,4 @@ const Dashboard: React.FC<Props> = ({ children }) => {
   );
 };
 
-export default Dashboard;
+export default Painel;

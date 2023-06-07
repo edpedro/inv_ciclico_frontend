@@ -65,3 +65,19 @@ export interface UIinventarioList {
     username: string;
   };
 }
+
+export interface UIdashboardList {
+  totalSKU: number;
+  totalEndereco: number;
+  acuracidade: string;
+  totalSegundaContagem: number;
+  totalPrimeiraContagem: number;
+  totalSomaDivergencias: number;
+  totalSomaWms: number;
+  totalSomaContagem: number;
+  totalFalta: number;
+  totalSobra: number;
+  totalDivergencia: number;
+  totalAcertos: number;
+  evolucaoContagem: string;
+}

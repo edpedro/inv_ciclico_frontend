@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import Dashboard from "../../components/Dashboard";
+import Painel from "../../components/Painel";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -34,7 +34,7 @@ export default function Home() {
   }
 
   return (
-    <Dashboard>
+    <Painel>
       <Typography
         variant="h4"
         gutterBottom
@@ -92,6 +92,6 @@ export default function Home() {
           </TableBody>
         </Table>
       </TableContainer>
-    </Dashboard>
+    </Painel>
   );
 }
