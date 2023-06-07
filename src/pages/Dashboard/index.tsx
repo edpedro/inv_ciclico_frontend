@@ -33,8 +33,11 @@ export default function Dashboard() {
     setNameInv(value);
 
     const filterName = nameData!.filter((data) => data.name === value);
-    setIdDashboard(filterName[0].id);
-    ListDashboard(filterName[0].id);
+
+    if (value) {
+      setIdDashboard(filterName[0].id);
+      //ListDashboard(filterName[0].id);
+    }
   };
 
   useEffect(() => {
@@ -53,7 +56,7 @@ export default function Dashboard() {
       clearTimeout(timeoutId);
     };
   }, [idDashboard]);
-
+  console.log(dashboardData);
   return (
     <Painel>
       <Box
