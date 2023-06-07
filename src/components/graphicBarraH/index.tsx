@@ -25,20 +25,13 @@ const GraphicBarraH = () => {
     yField: "year",
     seriesField: "year",
     label: {
-      position: "middle",
-
+      position: "middle" as "middle",
       offset: 4,
     },
     legend: {
-      position: "top",
+      position: "top" as "top",
     },
-    color: (data: DataItem) => {
-      if (data.year === "Falta") {
-        return "#db111b";
-      } else if (data.year === "Sobra") {
-        return "#ebb504";
-      }
-    },
+    color: ["#ebb504", "#db111b"],
   };
   const columnStyle = {
     width: "280px",

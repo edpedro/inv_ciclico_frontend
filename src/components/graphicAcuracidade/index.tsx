@@ -11,7 +11,7 @@ const GraphicAcuracidade = () => {
     },
     startAngle: Math.PI,
     endAngle: 2 * Math.PI,
-    indicator: false,
+    indicator: false || undefined,
     statistic: {
       title: {
         offsetY: -36,
