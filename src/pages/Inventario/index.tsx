@@ -84,23 +84,29 @@ export default function Inventario() {
 
   return (
     <Painel>
-      <Typography variant="h5" gutterBottom sx={{ marginBottom: "20px" }}>
-        Criar Inventário
-      </Typography>
-      <Button
-        onClick={handleOpen}
-        variant="contained"
-        component="label"
-        sx={{
-          marginBottom: "30px",
-          backgroundColor: "#48BD69",
-          "&:hover": {
-            backgroundColor: "#3D9449",
-          },
-        }}
-      >
-        <FileCopyIcon />
-      </Button>
+      <Box sx={{ display: "flex", flexDirection: "row" }}>
+        <Button
+          onClick={handleOpen}
+          variant="contained"
+          component="label"
+          sx={{
+            marginBottom: "30px",
+            backgroundColor: "#48BD69",
+            "&:hover": {
+              backgroundColor: "#3D9449",
+            },
+          }}
+        >
+          <FileCopyIcon />
+        </Button>
+        <Typography
+          variant="h5"
+          gutterBottom
+          sx={{ marginBottom: "15px", marginLeft: "10px" }}
+        >
+          Upload Excel
+        </Typography>
+      </Box>
 
       <Card
         sx={{
@@ -118,9 +124,7 @@ export default function Inventario() {
         >
           <Box sx={{ width: 250 }}>
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">
-                Nome Inventario
-              </InputLabel>
+              <InputLabel id="demo-simple-select-label">Inventario</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
@@ -189,13 +193,13 @@ export default function Inventario() {
         </CardContent>
       </Card>
       <Loading />
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 800 }} aria-label="caption table">
+      <TableContainer component={Paper} sx={{ maxHeight: 400 }}>
+        <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
               <TableCell sx={{ width: 120 }}>Item</TableCell>
               <TableCell sx={{ width: 250 }}>Descricao</TableCell>
-              <TableCell sx={{ width: 110 }}>Endereco</TableCell>
+              <TableCell sx={{ width: 120 }}>Endereco</TableCell>
               <TableCell>Tipo Estoque</TableCell>
               <TableCell>Categoria</TableCell>
               <TableCell>Wms</TableCell>
@@ -208,7 +212,12 @@ export default function Inventario() {
           <TableBody>
             {inventarioData ? (
               inventarioData.map((inventario) => (
-                <TableRow key={inventario.id}>
+                <TableRow
+                  hover
+                  role="checkbox"
+                  tabIndex={-1}
+                  key={inventario.id}
+                >
                   <TableCell component="th" scope="row">
                     {inventario.item}
                   </TableCell>
