@@ -31,7 +31,7 @@ const GraphicBarraH = () => {
     legend: {
       position: "top" as "top",
     },
-    color: ["#ebb504", "#db111b"],
+    color: ["#db111b", "#ebb504"],
   };
   const columnStyle = {
     width: "280px",

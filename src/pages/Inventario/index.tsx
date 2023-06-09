@@ -7,24 +7,19 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import FileCopyIcon from "@mui/icons-material/FileCopy";
 import ModalAddInventario from "../../components/ModalAddInventario";
-import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { SelectChangeEvent } from "@mui/material/Select";
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import { useName } from "../../contexts/hooks/NewName";
 import { useInventario } from "../../contexts/hooks/Inventario";
 import ModalDeleteInventario from "../../components/ModalDeleteInventario";
+import { debounce } from "lodash";
 import { toast } from "react-toastify";
 import Loading from "../../components/loanding";
+import { UIinventarioList } from "../../types";
+import Search from "../../components/Search";
+import UploadExcel from "../../components/UploadExcel";
+import ActionInventario from "../../components/ActionInventario";
 
 export default function Inventario() {
   const { nameData, loadNameData } = useName();
@@ -39,6 +34,10 @@ export default function Inventario() {
   const [update, setUpdate] = useState(false);
 
   const [openDelete, setOpenDelete] = useState(false);
+
+  const [searchData, setSearchData] = useState<UIinventarioList[]>();
+
+  const search = searchData !== undefined ? searchData : inventarioData;
 
   useEffect(() => {
     loadNameData();
@@ -82,118 +81,42 @@ export default function Inventario() {
     }
   }
 
+  const handleSeach = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+
+    const filterInvData = inventarioData?.filter((data) => {
+      return Object.values(data).some((value) => {
+        if (value === null) {
+          return false;
+        }
+        return value.toString().toLowerCase().includes(newValue.toLowerCase());
+      });
+    });
+
+    setSearchData(filterInvData);
+  }, 500);
+
   return (
     <Painel>
-      <Box sx={{ display: "flex", flexDirection: "row" }}>
-        <Button
-          onClick={handleOpen}
-          variant="contained"
-          component="label"
-          sx={{
-            marginBottom: "30px",
-            backgroundColor: "#48BD69",
-            "&:hover": {
-              backgroundColor: "#3D9449",
-            },
-          }}
-        >
-          <FileCopyIcon />
-        </Button>
-        <Typography
-          variant="h5"
-          gutterBottom
-          sx={{ marginBottom: "15px", marginLeft: "10px" }}
-        >
-          Upload Excel
-        </Typography>
-      </Box>
-
-      <Card
+      <UploadExcel handleOpen={handleOpen} />
+      <Box
         sx={{
-          width: 550,
-          height: 90,
-          marginBottom: 2,
+          display: "flex",
+          flexDirection: "row",
         }}
       >
-        <CardContent
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <Box sx={{ width: 250 }}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Inventario</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={name}
-                label="Nome Inventario"
-                color="success"
-                onChange={handleChange}
-              >
-                {nameData &&
-                  nameData.map((value) => (
-                    <MenuItem key={value.id} value={value.name}>
-                      {value.name}
-                    </MenuItem>
-                  ))}
-              </Select>
-            </FormControl>
-          </Box>
-          <Box
-            sx={{
-              marginLeft: 5,
-              display: " flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography sx={{ marginBottom: 1 }}>Ações</Typography>
+        <ActionInventario
+          name={name}
+          handleOpenDelete={handleOpenDelete}
+          handleChange={handleChange}
+          handleDownload={handleDownload}
+          handleUpdate={handleUpdate}
+        />
+        <Search handleSeach={handleSeach} />
+      </Box>
 
-            <Box>
-              <DownloadForOfflineIcon
-                fontSize="small"
-                sx={{ cursor: "pointer" }}
-                onClick={() => handleDownload()}
-              />
-              <DeleteForeverIcon
-                onClick={() => handleOpenDelete()}
-                fontSize="small"
-                sx={{ marginLeft: 3, cursor: "pointer" }}
-              />
-            </Box>
-          </Box>
-          <Box
-            sx={{
-              marginLeft: 5,
-              display: " flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Box>
-              <Button
-                fullWidth
-                variant="contained"
-                sx={{
-                  borderColor: "#48BD69",
-                  color: "#fff",
-                }}
-                color="success"
-                onClick={handleUpdate}
-              >
-                Atualizar
-              </Button>
-            </Box>
-          </Box>
-        </CardContent>
-      </Card>
       <Loading />
-      <TableContainer component={Paper} sx={{ maxHeight: 400 }}>
+      <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -210,8 +133,8 @@ export default function Inventario() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {inventarioData ? (
-              inventarioData.map((inventario) => (
+            {search !== undefined && search?.length > 0 ? (
+              search.map((inventario) => (
                 <TableRow
                   hover
                   role="checkbox"

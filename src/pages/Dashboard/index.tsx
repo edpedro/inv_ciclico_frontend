@@ -17,6 +17,7 @@ import SelectAutoInv from "../../components/SelectAutoInv";
 import { SelectChangeEvent } from "@mui/material/Select";
 import { useDashboard } from "../../contexts/hooks/Dashboard";
 import { useName } from "../../contexts/hooks/NewName";
+import Loading from "../../components/loanding";
 
 export default function Dashboard() {
   const { dashboardData, ListDashboard, setUIRemoveData } = useDashboard();
@@ -47,7 +48,7 @@ export default function Dashboard() {
         ListDashboard(idDashboard);
       }
 
-      timeoutId = setTimeout(polling, 50000); // 90000 ms = 100 s
+      timeoutId = setTimeout(polling, 50000);
     };
 
     polling();
@@ -56,9 +57,10 @@ export default function Dashboard() {
       clearTimeout(timeoutId);
     };
   }, [idDashboard]);
-  console.log(dashboardData);
+
   return (
     <Painel>
+      <Loading />
       <Box
         sx={{
           display: "flex",
