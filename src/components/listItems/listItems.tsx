@@ -35,7 +35,7 @@ export const mainListItems = (
         <ListItemIcon>
           <AssignmentIcon />
         </ListItemIcon>
-        <ListItemText primary="Criar Nome" />
+        <ListItemText primary="Criar Inventário" />
       </ListItemButton>
     </Link>
     <Link to="/inventario" style={{ textDecoration: "none", color: "#000" }}>
@@ -43,7 +43,7 @@ export const mainListItems = (
         <ListItemIcon>
           <BarChartIcon />
         </ListItemIcon>
-        <ListItemText primary="Criar Inventário" />
+        <ListItemText primary="Inventário" />
       </ListItemButton>
     </Link>
   </>

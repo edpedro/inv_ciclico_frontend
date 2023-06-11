@@ -48,7 +48,7 @@ export const InventarioProvider = ({ children }: Props) => {
       listIdInventarioData("");
       toast.success("Inventario cadastrado com sucesso.");
     } catch (error) {
-      toast.error("Nome já cadastrado");
+      toast.error("Erro ao fazer upload");
     }
   }, []);
 
@@ -81,7 +81,7 @@ export const InventarioProvider = ({ children }: Props) => {
 
         toast.success("Download com sucesso.");
       } catch (error) {
-        toast.error("'Erro ao fazer download do arquivo");
+        toast.error("Erro ao fazer download do arquivo");
       }
     },
     []

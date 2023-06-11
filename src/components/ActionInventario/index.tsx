@@ -33,6 +33,9 @@ export default function ActionInventario({
         width: 550,
         height: 80,
         marginBottom: 2,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
       <CardContent
@@ -40,6 +43,7 @@ export default function ActionInventario({
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
+          justifyContent: "center",
         }}
       >
         <Box sx={{ width: 250 }}>

@@ -7,6 +7,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
 import ModalAddInventario from "../../components/ModalAddInventario";
 import { SelectChangeEvent } from "@mui/material/Select";
 import Box from "@mui/material/Box";
@@ -64,6 +65,7 @@ export default function Inventario() {
     setIdDelete(filterName[0].id);
     setDate(filterName[0].date);
     listIdInventarioData(filterName[0].id);
+    setSearchData(undefined);
   };
 
   function handleDownload() {
@@ -98,7 +100,9 @@ export default function Inventario() {
 
   return (
     <Painel>
-      <UploadExcel handleOpen={handleOpen} />
+      <Typography variant="h6" gutterBottom sx={{ marginBottom: "8px" }}>
+        Inventário
+      </Typography>
       <Box
         sx={{
           display: "flex",
@@ -116,7 +120,7 @@ export default function Inventario() {
       </Box>
 
       <Loading />
-      <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
+      <TableContainer component={Paper} sx={{ maxHeight: 480 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -169,7 +173,6 @@ export default function Inventario() {
           </TableBody>
         </Table>
       </TableContainer>
-      {open && <ModalAddInventario open={open} setOpen={setOpen} />}
       {openDelete && (
         <ModalDeleteInventario
           openDelete={openDelete}

@@ -1,4 +1,4 @@
-import { FormEvent, useState, useEffect } from "react";
+import { FormEvent, useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -6,11 +6,6 @@ import Modal from "@mui/material/Modal";
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { useName } from "../../contexts/hooks/NewName";
 import { toast } from "react-toastify";
 import { UIinventarioCreate } from "../../types";
 import { useInventario } from "../../contexts/hooks/Inventario";
@@ -27,34 +22,21 @@ const style = {
 };
 
 interface UIPropsModal {
-  setOpen: (value: boolean) => void;
-  open: boolean;
+  setOpenAddInventario: (value: boolean) => void;
+  openAddInventario: boolean;
+  idInventario: string;
 }
 
-export default function ModalAddInventario({ open, setOpen }: UIPropsModal) {
-  const { nameData, loadNameData } = useName();
+export default function ModalAddInventario({
+  openAddInventario,
+  setOpenAddInventario,
+  idInventario,
+}: UIPropsModal) {
   const { createInventario } = useInventario();
 
-  const [name, setName] = useState("");
-  const [idInventario, setIdInventario] = useState("");
   const [file, setFile] = useState<File | null>();
 
-  useEffect(() => {
-    loadNameData();
-  }, []);
-
-  const handleClose = () => setOpen(false);
-
-  const handleChange = (event: SelectChangeEvent) => {
-    const {
-      target: { value },
-    } = event;
-
-    setName(value);
-
-    const filterName = nameData!.filter((data) => data.name === value);
-    setIdInventario(filterName[0].id);
-  };
+  const handleClose = () => setOpenAddInventario(false);
 
   const handleFileInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -79,13 +61,13 @@ export default function ModalAddInventario({ open, setOpen }: UIPropsModal) {
 
       createInventario(newData);
     }
-    setOpen(false);
+    setOpenAddInventario(false);
   };
 
   return (
     <div>
       <Modal
-        open={open}
+        open={openAddInventario}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -101,7 +83,7 @@ export default function ModalAddInventario({ open, setOpen }: UIPropsModal) {
               }}
             >
               <Typography component="h1" variant="h5">
-                Criar Inventario
+                Excel
               </Typography>
               <Box
                 component="form"
@@ -118,11 +100,14 @@ export default function ModalAddInventario({ open, setOpen }: UIPropsModal) {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
+                    height: "100px",
+                    width: "300px",
                     marginTop: "15px",
                     marginBottom: "20px",
+                    border: "1px solid #3D9449",
                     backgroundColor: "#48BD69",
                     "&:hover": {
-                      backgroundColor: "#3D9449",
+                      backgroundColor: "#8dcc95",
                     },
                   }}
                 >
@@ -132,36 +117,20 @@ export default function ModalAddInventario({ open, setOpen }: UIPropsModal) {
                     type="file"
                     onChange={handleFileInputChange}
                   />
-                  <FileCopyIcon />
+                  <FileCopyIcon
+                    sx={{
+                      color: "#fff",
+                      "&:hover": {
+                        color: "#3D9449",
+                      },
+                    }}
+                  />
                   {file && (
                     <Typography variant="caption" display="block" gutterBottom>
                       {file.name} ({file.size} bytes)
                     </Typography>
                   )}
                 </Button>
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Nome</InputLabel>
-                  <Select
-                    required
-                    fullWidth
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={name}
-                    label="Nome"
-                    color="success"
-                    onChange={handleChange}
-                    sx={{
-                      width: "300px",
-                    }}
-                  >
-                    {nameData &&
-                      nameData.map((value) => (
-                        <MenuItem key={value.id} value={value.name}>
-                          {value.name}
-                        </MenuItem>
-                      ))}
-                  </Select>
-                </FormControl>
                 <Button
                   type="submit"
                   fullWidth
@@ -174,7 +143,7 @@ export default function ModalAddInventario({ open, setOpen }: UIPropsModal) {
                   }}
                   color="success"
                 >
-                  Cadastrar
+                  Upload
                 </Button>
               </Box>
             </Box>

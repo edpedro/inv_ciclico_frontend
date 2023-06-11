@@ -14,17 +14,26 @@ import Button from "@mui/material/Button";
 import ModalAddName from "../../components/ModalAddName";
 import { useName } from "../../contexts/hooks/NewName";
 import ModalDelete from "../../components/ModalDelete";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { format } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import Loading from "../../components/loanding";
+import ModalAddInventario from "../../components/ModalAddInventario";
 
 export default function ListName() {
   const { nameData, loadNameData, listNameData } = useName();
 
   const [idDelete, setIdDelete] = useState("");
   const [idUpdate, setIdUpdate] = useState("");
+  const [idInventario, setIdInventario] = useState("");
   const [open, setOpen] = useState(false);
+  const [openAddInventario, setOpenAddInventario] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+
+  const handleOpenAddInventario = (id: string) => {
+    setOpenAddInventario(true);
+    setIdInventario(id);
+  };
 
   const handleOpen = () => {
     setOpen(true);
@@ -50,7 +59,7 @@ export default function ListName() {
   return (
     <Painel>
       <Typography variant="h5" gutterBottom sx={{ marginBottom: "20px" }}>
-        Criar Nome para Inventário
+        Criar Inventário
       </Typography>
       <Button
         onClick={handleOpen}
@@ -98,6 +107,12 @@ export default function ListName() {
                       : "Pendente"}
                   </TableCell>
                   <TableCell>
+                    <UploadFileIcon
+                      fontSize="small"
+                      sx={{ marginRight: "10px", cursor: "pointer" }}
+                      onClick={() => handleOpenAddInventario(data.id)}
+                    />
+
                     <EditIcon
                       fontSize="small"
                       sx={{ marginRight: "10px", cursor: "pointer" }}
@@ -122,6 +137,13 @@ export default function ListName() {
           </TableBody>
         </Table>
       </TableContainer>
+      {openAddInventario && (
+        <ModalAddInventario
+          openAddInventario={openAddInventario}
+          setOpenAddInventario={setOpenAddInventario}
+          idInventario={idInventario}
+        />
+      )}
       {open && (
         <ModalAddName open={open} setOpen={setOpen} idUpdate={idUpdate} />
       )}
