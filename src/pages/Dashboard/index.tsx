@@ -84,17 +84,18 @@ export default function Dashboard() {
       {dashboardData ? (
         <Grid container spacing={2}>
           <Grid item xs={3}>
-            <Card sx={{ borderRadius: 3, width: 210, height: 80 }}>
+            <Card sx={{ borderRadius: 1, width: 258, height: 80 }}>
               <Box
                 sx={{
-                  p: 1,
+                  marginTop: 1,
                   display: "flex",
                   flexDirection: "row",
                   alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
                 <Box>
-                  <ListIcon color="primary" sx={{ fontSize: 40 }} />
+                  <ListIcon sx={{ fontSize: 40, color: "#1bad47" }} />
                 </Box>
                 <Box
                   sx={{
@@ -120,19 +121,19 @@ export default function Dashboard() {
             </Card>
           </Grid>
           <Grid item xs={3}>
-            <Card sx={{ borderRadius: 3, width: 210, height: 80 }}>
+            <Card sx={{ borderRadius: 1, width: 258, height: 80 }}>
               <Box
                 sx={{
-                  p: 1,
+                  marginTop: 1,
                   display: "flex",
                   flexDirection: "row",
                   alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
                 <Box>
                   <VerticalShadesClosedIcon
-                    color="primary"
-                    sx={{ fontSize: 30 }}
+                    sx={{ fontSize: 30, color: "#1bad47" }}
                   />
                 </Box>
                 <Box
@@ -159,17 +160,18 @@ export default function Dashboard() {
             </Card>
           </Grid>
           <Grid item xs={3}>
-            <Card sx={{ borderRadius: 3, width: 200, height: 80 }}>
+            <Card sx={{ borderRadius: 1, width: 258, height: 80 }}>
               <Box
                 sx={{
-                  p: 1,
+                  marginTop: 1,
                   display: "flex",
                   flexDirection: "row",
                   alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
                 <Box>
-                  <Filter1Icon color="primary" sx={{ fontSize: 28 }} />
+                  <Filter1Icon sx={{ fontSize: 28, color: "#1bad47" }} />
                 </Box>
                 <Box
                   sx={{
@@ -195,17 +197,18 @@ export default function Dashboard() {
             </Card>
           </Grid>
           <Grid item xs={3}>
-            <Card sx={{ borderRadius: 3, width: 210, height: 80 }}>
+            <Card sx={{ borderRadius: 1, width: 258, height: 80 }}>
               <Box
                 sx={{
-                  p: 1,
+                  marginTop: 1,
                   display: "flex",
                   flexDirection: "row",
                   alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
                 <Box>
-                  <Filter2Icon color="primary" sx={{ fontSize: 28 }} />
+                  <Filter2Icon sx={{ fontSize: 28, color: "#1bad47" }} />
                 </Box>
                 <Box
                   sx={{
