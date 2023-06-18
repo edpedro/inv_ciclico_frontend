@@ -11,8 +11,8 @@ const useApi = () => {
   let needsRedirect = false;
 
   const api: AxiosInstance = axios.create({
-    baseURL: "https://invciclicobackend-production.up.railway.app/",
-    //baseURL: "http://localhost:3000/",
+    //baseURL: "https://invciclicobackend-production.up.railway.app/",
+    baseURL: "http://localhost:3000/",
   });
 
   const token = localStorage.getItem("@token");

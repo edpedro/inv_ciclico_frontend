@@ -74,6 +74,8 @@ export const InventarioProvider = ({ children }: Props) => {
       try {
         await api.patch(`/ciclico/second/${id}`, data);
 
+        listIdInventarioData(id);
+
         toast.success("Atualizado com sucesso.");
       } catch (error) {
         toast.error("Erro ao atualizar");
