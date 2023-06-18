@@ -19,8 +19,9 @@ import { toast } from "react-toastify";
 import Loading from "../../components/loanding";
 import { UIinventarioList } from "../../types";
 import Search from "../../components/Search";
-import UploadExcel from "../../components/UploadExcel";
 import ActionInventario from "../../components/ActionInventario";
+import EditIcon from "@mui/icons-material/Edit";
+import ModalUpdateSecond from "../../components/ModalUpdateSecond";
 
 export default function Inventario() {
   const { nameData, loadNameData } = useName();
@@ -28,7 +29,7 @@ export default function Inventario() {
     useInventario();
 
   const [open, setOpen] = useState(false);
-
+  const [updateSecondData, setUpdateSecondData] = useState<UIinventarioList>();
   const [idDelete, setIdDelete] = useState("");
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
@@ -45,8 +46,6 @@ export default function Inventario() {
 
     setUpdate(false);
   }, [update]);
-
-  const handleOpen = () => setOpen(true);
 
   function handleOpenDelete() {
     if (inventarioData && inventarioData.length > 0) {
@@ -81,6 +80,15 @@ export default function Inventario() {
     } else {
       toast.error("Favor selecione inventario para atualizar");
     }
+  }
+
+  function handleUpdateSecond(id: number) {
+    const result = inventarioData?.find((data) => {
+      return data.id === id;
+    });
+
+    setUpdateSecondData(result);
+    setOpen(true);
   }
 
   const handleSeach = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -134,6 +142,7 @@ export default function Inventario() {
               <TableCell>2°</TableCell>
               <TableCell>Div</TableCell>
               <TableCell>Usuario</TableCell>
+              <TableCell>Ações</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -161,6 +170,15 @@ export default function Inventario() {
                       : inventario.firstCount - inventario.saldoWms}
                   </TableCell>
                   <TableCell>{inventario.user?.name}</TableCell>
+                  <TableCell>
+                    {inventario.secondCount !== null && (
+                      <EditIcon
+                        fontSize="small"
+                        sx={{ marginRight: "10px", cursor: "pointer" }}
+                        onClick={() => handleUpdateSecond(inventario.id)}
+                      />
+                    )}
+                  </TableCell>
                 </TableRow>
               ))
             ) : (
@@ -178,6 +196,13 @@ export default function Inventario() {
           openDelete={openDelete}
           setOpenDelete={setOpenDelete}
           idDelete={idDelete}
+        />
+      )}
+      {open && (
+        <ModalUpdateSecond
+          open={open}
+          setOpen={setOpen}
+          updateSecondData={updateSecondData}
         />
       )}
     </Painel>

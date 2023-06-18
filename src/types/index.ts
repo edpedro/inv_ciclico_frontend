@@ -81,3 +81,8 @@ export interface UIdashboardList {
   totalAcertos: number;
   evolucaoContagem: string;
 }
+
+export interface UIsecondUpdate {
+  id: number;
+  saldoFisico: number;
+}

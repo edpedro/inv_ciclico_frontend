@@ -6,7 +6,11 @@ import {
   useCallback,
 } from "react";
 import useApi from "../../services/api";
-import { UIinventarioCreate, UIinventarioList } from "../../types";
+import {
+  UIinventarioCreate,
+  UIinventarioList,
+  UIsecondUpdate,
+} from "../../types";
 import { toast } from "react-toastify";
 
 type Props = {
@@ -19,6 +23,7 @@ interface InventarioContextData {
   deleteInventario: (id: string) => Promise<void>;
   downloadInventario: (id: string, name: string, date: string) => Promise<void>;
   createInventario: (data: UIinventarioCreate) => Promise<void>;
+  updateAdminSecondCount: (id: string, data: UIsecondUpdate) => Promise<void>;
 }
 
 const InventarioContext = createContext<InventarioContextData>(
@@ -63,6 +68,20 @@ export const InventarioProvider = ({ children }: Props) => {
     }
   }, []);
 
+  const updateAdminSecondCount = useCallback(
+    async (id: string, data: UIsecondUpdate) => {
+      console.log(id, data);
+      try {
+        await api.patch(`/ciclico/second/${id}`, data);
+
+        toast.success("Atualizado com sucesso.");
+      } catch (error) {
+        toast.error("Erro ao atualizar");
+      }
+    },
+    []
+  );
+
   const downloadInventario = useCallback(
     async (id: string, name: string, date: string) => {
       try {
@@ -94,6 +113,7 @@ export const InventarioProvider = ({ children }: Props) => {
         inventarioData,
         deleteInventario,
         downloadInventario,
+        updateAdminSecondCount,
       }}
     >
       {children}
