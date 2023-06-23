@@ -86,7 +86,7 @@ export const UsersProvider = ({ children }: Props) => {
   }
 
   async function listAllUserData() {
-    const { data } = await api.get(`users/invited/${authData?.sub}`);
+    const { data } = await api.get(`points/users/`);
 
     setListUserData(data);
   }

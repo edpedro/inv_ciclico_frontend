@@ -69,6 +69,7 @@ export default function Users() {
               <TableCell>Nome</TableCell>
               <TableCell>Usuario</TableCell>
               <TableCell>Autorização</TableCell>
+              <TableCell>Pontos</TableCell>
               <TableCell>Ações</TableCell>
             </TableRow>
           </TableHead>
@@ -83,6 +84,7 @@ export default function Users() {
                   <TableCell>
                     {data.role === "user" ? "Usuario" : "Administrador"}
                   </TableCell>
+                  <TableCell>{data.totalPoints}</TableCell>
                   <TableCell>
                     <EditIcon
                       fontSize="small"

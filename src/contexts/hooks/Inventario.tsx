@@ -51,7 +51,7 @@ export const InventarioProvider = ({ children }: Props) => {
       });
 
       listIdInventarioData("");
-      toast.success("Inventario cadastrado com sucesso.");
+      toast.success("Upload com sucesso.");
     } catch (error) {
       toast.error("Erro ao fazer upload");
     }

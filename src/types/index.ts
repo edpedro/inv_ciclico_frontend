@@ -12,6 +12,7 @@ export interface UIuserList {
   name: string;
   username: string;
   role: string;
+  totalPoints?: number;
 }
 
 export interface UInameCreate {

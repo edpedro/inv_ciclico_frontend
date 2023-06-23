@@ -9,7 +9,6 @@ import { useAuth } from "../contexts/hooks/Auth";
 import ListName from "../pages/ListName";
 import Register from "../pages/Register";
 import Users from "../pages/Users";
-import { useLoading } from "../contexts/hooks/Loanding";
 import Dashboard from "../pages/Dashboard";
 
 const Routes = () => {
