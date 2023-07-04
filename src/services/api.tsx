@@ -11,7 +11,7 @@ const useApi = () => {
   let needsRedirect = false;
 
   const api: AxiosInstance = axios.create({
-    baseURL: "https://invciclicobackend-production.up.railway.app/",
+    baseURL: "https://invciclico.adaptable.app/",
     //baseURL: "http://localhost:3000/",
   });
 
