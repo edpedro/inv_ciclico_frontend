@@ -25,12 +25,14 @@ interface UIPropsModal {
   setOpenAddInventario: (value: boolean) => void;
   openAddInventario: boolean;
   idInventario: string;
+  nameInventario: string;
 }
 
 export default function ModalAddInventario({
   openAddInventario,
   setOpenAddInventario,
   idInventario,
+  nameInventario,
 }: UIPropsModal) {
   const { createInventario } = useInventario();
 
@@ -83,7 +85,7 @@ export default function ModalAddInventario({
               }}
             >
               <Typography component="h1" variant="h5">
-                Excel
+                {nameInventario}
               </Typography>
               <Box
                 component="form"
@@ -100,8 +102,8 @@ export default function ModalAddInventario({
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    height: "100px",
-                    width: "300px",
+                    height: "60px",
+                    width: "250px",
                     marginTop: "15px",
                     marginBottom: "20px",
                     border: "1px solid #3D9449",

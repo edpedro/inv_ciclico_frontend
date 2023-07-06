@@ -23,16 +23,18 @@ import ModalAddInventario from "../../components/ModalAddInventario";
 export default function ListName() {
   const { nameData, loadNameData, listNameData } = useName();
 
-  const [idDelete, setIdDelete] = useState("");
-  const [idUpdate, setIdUpdate] = useState("");
-  const [idInventario, setIdInventario] = useState("");
+  const [idDelete, setIdDelete] = useState<string>("");
+  const [idUpdate, setIdUpdate] = useState<string>("");
+  const [idInventario, setIdInventario] = useState<string>("");
+  const [nameInventario, setNameInventario] = useState<string>("");
   const [open, setOpen] = useState(false);
   const [openAddInventario, setOpenAddInventario] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
 
-  const handleOpenAddInventario = (id: string) => {
+  const handleOpenAddInventario = (id: string, name: string) => {
     setOpenAddInventario(true);
     setIdInventario(id);
+    setNameInventario(name);
   };
 
   const handleOpen = () => {
@@ -110,7 +112,9 @@ export default function ListName() {
                     <UploadFileIcon
                       fontSize="small"
                       sx={{ marginRight: "10px", cursor: "pointer" }}
-                      onClick={() => handleOpenAddInventario(data.id)}
+                      onClick={() =>
+                        handleOpenAddInventario(data.id, data.name)
+                      }
                     />
 
                     <EditIcon
@@ -142,6 +146,7 @@ export default function ListName() {
           openAddInventario={openAddInventario}
           setOpenAddInventario={setOpenAddInventario}
           idInventario={idInventario}
+          nameInventario={nameInventario}
         />
       )}
       {open && (
