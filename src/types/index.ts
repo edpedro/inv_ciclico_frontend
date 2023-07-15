@@ -92,3 +92,30 @@ export interface UIwmsUpdate {
   id: number;
   saldoWms: number;
 }
+
+export interface UIhistoricList {
+  id: number;
+  item: string;
+  descricao: string;
+  endereco: string;
+  tipoEstoque: string;
+  catItem: string;
+  saldoWms: number;
+  firstCount: number;
+  secondCount: number;
+  firstStatus: boolean;
+  secondStatus: boolean;
+  username_id?: string;
+  baseNameInventario: {
+    name: string;
+    date: string;
+  };
+  user?: {
+    id: string;
+    name: string;
+    username: string;
+  };
+}
+export interface UIitemHistoric {
+  item: string;
+}

@@ -1,4 +1,4 @@
-import { FormEvent, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Button from "@mui/material/Button";
@@ -6,13 +6,18 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
-import FileCopyIcon from "@mui/icons-material/FileCopy";
 import TextField from "@mui/material/TextField";
 import { toast } from "react-toastify";
-import { UIinventarioList, UIsecondUpdate, UIwmsUpdate } from "../../types";
+import {
+  UIinventarioList,
+  UIitemHistoric,
+  UIsecondUpdate,
+  UIwmsUpdate,
+} from "../../types";
 import { useInventario } from "../../contexts/hooks/Inventario";
-import { useLoading } from "../../contexts/hooks/Loanding";
 import Loading from "../loanding";
+import ModalHistoric from "../ModalHistoric";
+import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
 
 const style = {
   position: "absolute" as "absolute",
@@ -36,11 +41,14 @@ export default function ModalUpdateSecond({
   open,
   updateSecondData,
 }: UIPropsModal) {
-  const { updateAdminSecondCount, updateAdminWms } = useInventario();
+  const { updateAdminSecondCount, updateAdminWms, historicAllItem } =
+    useInventario();
 
-  const [saldoFisico, setSaldoFisico] = useState<number>();
-  const [saldoWms, setSaldoWms] = useState<number>();
+  const [saldoFisico, setSaldoFisico] = useState<number>(0);
+  const [saldoWms, setSaldoWms] = useState<number>(0);
   const [idItem, setIdItem] = useState<number>();
+
+  const [openHistoric, setOpenHistoric] = useState(false);
 
   useEffect(() => {
     if (updateSecondData) {
@@ -78,6 +86,14 @@ export default function ModalUpdateSecond({
     updateAdminWms(id, data);
   };
 
+  function handleHistoric() {
+    const data: UIitemHistoric = {
+      item: updateSecondData?.item ?? "",
+    };
+    historicAllItem(data);
+    setOpenHistoric(true);
+  }
+
   return (
     <div>
       <Modal
@@ -97,9 +113,24 @@ export default function ModalUpdateSecond({
                 alignItems: "center",
               }}
             >
-              <Typography component="h1" variant="h5">
-                Status
-              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Typography component="h1" variant="h5">
+                  Status
+                </Typography>
+                <CancelPresentationIcon
+                  fontSize="small"
+                  color="error"
+                  sx={{ marginLeft: "10px", cursor: "pointer" }}
+                  onClick={handleClose}
+                />
+              </Box>
+
               <Box component="form" noValidate>
                 <Button
                   type="button"
@@ -111,6 +142,7 @@ export default function ModalUpdateSecond({
                     borderColor: "#48BD69",
                     color: "#000",
                   }}
+                  onClick={handleHistoric}
                   color="success"
                 >
                   Historico do Item
@@ -210,6 +242,12 @@ export default function ModalUpdateSecond({
           </Container>
         </Box>
       </Modal>
+      {openHistoric && (
+        <ModalHistoric
+          openHistoric={openHistoric}
+          setOpenHistoric={setOpenHistoric}
+        />
+      )}
     </div>
   );
 }

@@ -7,8 +7,10 @@ import {
 } from "react";
 import useApi from "../../services/api";
 import {
+  UIhistoricList,
   UIinventarioCreate,
   UIinventarioList,
+  UIitemHistoric,
   UIsecondUpdate,
   UIwmsUpdate,
 } from "../../types";
@@ -20,12 +22,14 @@ type Props = {
 
 interface InventarioContextData {
   inventarioData?: UIinventarioList[];
+  historicData?: UIhistoricList[];
   listIdInventarioData: (id: string) => Promise<void>;
   deleteInventario: (id: string) => Promise<void>;
   downloadInventario: (id: string, name: string, date: string) => Promise<void>;
   createInventario: (data: UIinventarioCreate) => Promise<void>;
   updateAdminSecondCount: (id: string, data: UIsecondUpdate) => Promise<void>;
   updateAdminWms: (id: string, data: UIwmsUpdate) => Promise<void>;
+  historicAllItem: (dataItem: UIitemHistoric) => Promise<void>;
 }
 
 const InventarioContext = createContext<InventarioContextData>(
@@ -36,6 +40,7 @@ export const InventarioProvider = ({ children }: Props) => {
   const api = useApi();
 
   const [inventarioData, setInventarioData] = useState<UIinventarioList[]>();
+  const [historicData, setHistoricData] = useState<UIhistoricList[]>();
 
   const listIdInventarioData = useCallback(async (id: string) => {
     try {
@@ -120,6 +125,11 @@ export const InventarioProvider = ({ children }: Props) => {
     },
     []
   );
+
+  const historicAllItem = useCallback(async (dataItem: UIitemHistoric) => {
+    const { data } = await api.post("/ciclico/historico", dataItem);
+    setHistoricData(data);
+  }, []);
   return (
     <InventarioContext.Provider
       value={{
@@ -130,6 +140,8 @@ export const InventarioProvider = ({ children }: Props) => {
         downloadInventario,
         updateAdminSecondCount,
         updateAdminWms,
+        historicAllItem,
+        historicData,
       }}
     >
       {children}

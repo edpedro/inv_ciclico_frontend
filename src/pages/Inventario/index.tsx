@@ -8,7 +8,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
-import ModalAddInventario from "../../components/ModalAddInventario";
 import { SelectChangeEvent } from "@mui/material/Select";
 import Box from "@mui/material/Box";
 import { useName } from "../../contexts/hooks/NewName";
@@ -20,7 +19,6 @@ import Loading from "../../components/loanding";
 import { UIinventarioList } from "../../types";
 import Search from "../../components/Search";
 import ActionInventario from "../../components/ActionInventario";
-import EditIcon from "@mui/icons-material/Edit";
 import IosShareIcon from "@mui/icons-material/IosShare";
 import ModalUpdateSecond from "../../components/ModalUpdateSecond";
 
@@ -84,11 +82,14 @@ export default function Inventario() {
   }
 
   function handleUpdateSecond(id: number) {
-    const result = inventarioData?.find((data) => {
-      return data.id === id;
-    });
+    if (id) {
+      const result = inventarioData?.find((data) => {
+        return data.id === id;
+      });
 
-    setUpdateSecondData(result);
+      setUpdateSecondData(result);
+    }
+
     setOpen(true);
   }
 
