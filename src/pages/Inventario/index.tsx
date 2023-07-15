@@ -21,6 +21,7 @@ import { UIinventarioList } from "../../types";
 import Search from "../../components/Search";
 import ActionInventario from "../../components/ActionInventario";
 import EditIcon from "@mui/icons-material/Edit";
+import IosShareIcon from "@mui/icons-material/IosShare";
 import ModalUpdateSecond from "../../components/ModalUpdateSecond";
 
 export default function Inventario() {
@@ -172,7 +173,7 @@ export default function Inventario() {
                   <TableCell>{inventario.user?.name}</TableCell>
                   <TableCell>
                     {inventario.secondCount !== null && (
-                      <EditIcon
+                      <IosShareIcon
                         fontSize="small"
                         sx={{ marginRight: "10px", cursor: "pointer" }}
                         onClick={() => handleUpdateSecond(inventario.id)}

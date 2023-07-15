@@ -156,7 +156,7 @@ export default function ModalAddName({
               }}
             >
               <Typography component="h1" variant="h5">
-                Criar Nome
+                {idUpdate ? "Atualizar" : "Criar Nome"}
               </Typography>
               <Box
                 component="form"

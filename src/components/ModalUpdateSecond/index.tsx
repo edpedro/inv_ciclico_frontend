@@ -1,5 +1,6 @@
 import { FormEvent, useState, useEffect } from "react";
 import Box from "@mui/material/Box";
+import LoadingButton from "@mui/lab/LoadingButton";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
@@ -8,12 +9,10 @@ import Container from "@mui/material/Container";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
 import TextField from "@mui/material/TextField";
 import { toast } from "react-toastify";
-import {
-  UIinventarioCreate,
-  UIinventarioList,
-  UIsecondUpdate,
-} from "../../types";
+import { UIinventarioList, UIsecondUpdate, UIwmsUpdate } from "../../types";
 import { useInventario } from "../../contexts/hooks/Inventario";
+import { useLoading } from "../../contexts/hooks/Loanding";
+import Loading from "../loanding";
 
 const style = {
   position: "absolute" as "absolute",
@@ -37,13 +36,15 @@ export default function ModalUpdateSecond({
   open,
   updateSecondData,
 }: UIPropsModal) {
-  const { updateAdminSecondCount } = useInventario();
+  const { updateAdminSecondCount, updateAdminWms } = useInventario();
 
   const [saldoFisico, setSaldoFisico] = useState<number>();
+  const [saldoWms, setSaldoWms] = useState<number>();
   const [idItem, setIdItem] = useState<number>();
 
   useEffect(() => {
     if (updateSecondData) {
+      setSaldoWms(updateSecondData.saldoWms as number);
       setSaldoFisico(updateSecondData.secondCount as number);
       setIdItem(updateSecondData.id as number);
     }
@@ -51,20 +52,30 @@ export default function ModalUpdateSecond({
 
   const handleClose = () => setOpen(false);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
+  const handleUpdateSecondCount = () => {
     if (!idItem || saldoFisico === undefined || Number.isNaN(saldoFisico)) {
       toast.error("Favor preencher todos os dados!");
       return null;
     }
-
     const data: UIsecondUpdate = { id: idItem, saldoFisico };
     const id = updateSecondData?.baseNameInventario_id || "";
 
     updateAdminSecondCount(id, data);
+  };
 
-    setOpen(false);
+  const handleUpdateWms = () => {
+    if (!idItem || saldoWms === undefined || Number.isNaN(saldoWms)) {
+      toast.error("Favor preencher todos os dados!");
+      return null;
+    }
+    if (saldoWms <= 0) {
+      toast.error("Favor digitar saldo maior 0");
+      return null;
+    }
+    const data: UIwmsUpdate = { id: idItem, saldoWms };
+    const id = updateSecondData?.baseNameInventario_id || "";
+
+    updateAdminWms(id, data);
   };
 
   return (
@@ -78,6 +89,7 @@ export default function ModalUpdateSecond({
         <Box sx={style}>
           <Container component="main" maxWidth="xs">
             <CssBaseline />
+            <Loading />
             <Box
               sx={{
                 display: "flex",
@@ -86,16 +98,23 @@ export default function ModalUpdateSecond({
               }}
             >
               <Typography component="h1" variant="h5">
-                Segunda Contagem
+                Status
               </Typography>
-              <Box
-                component="form"
-                onSubmit={handleSubmit}
-                noValidate
-                sx={{
-                  mt: 1,
-                }}
-              >
+              <Box component="form" noValidate>
+                <Button
+                  type="button"
+                  fullWidth
+                  variant="outlined"
+                  sx={{
+                    mt: 3,
+                    mb: 1,
+                    borderColor: "#48BD69",
+                    color: "#000",
+                  }}
+                  color="success"
+                >
+                  Historico do Item
+                </Button>
                 <TextField
                   disabled
                   margin="normal"
@@ -108,36 +127,84 @@ export default function ModalUpdateSecond({
                   color="success"
                   autoFocus
                 />
-                <TextField
-                  required
-                  type="number"
-                  margin="normal"
-                  fullWidth
-                  id="saldoFisico"
-                  label="Quantidade"
-                  name="saldoFisico"
-                  value={saldoFisico}
-                  onChange={(event) =>
-                    setSaldoFisico(parseInt(event.target.value))
-                  }
-                  autoComplete="saldoFisico"
-                  color="success"
-                  autoFocus
-                />
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
+                <Box
                   sx={{
-                    mt: 3,
-                    mb: 2,
-                    borderColor: "#48BD69",
-                    color: "#fff",
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
                   }}
-                  color="success"
                 >
-                  Atualizar
-                </Button>
+                  <TextField
+                    required
+                    type="number"
+                    margin="normal"
+                    fullWidth
+                    id="saldoWms"
+                    label="Saldo Wms"
+                    name="saldoWms"
+                    value={saldoWms}
+                    onChange={(event) =>
+                      setSaldoWms(parseInt(event.target.value))
+                    }
+                    autoComplete="saldoWms"
+                    color="success"
+                    autoFocus
+                  />
+                  <LoadingButton
+                    type="button"
+                    fullWidth
+                    variant="contained"
+                    sx={{
+                      ml: 5,
+                      width: 140,
+                      borderColor: "#48BD69",
+                      color: "#fff",
+                    }}
+                    color="success"
+                    onClick={handleUpdateWms}
+                  >
+                    Atualizar
+                  </LoadingButton>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <TextField
+                    required
+                    type="number"
+                    margin="normal"
+                    fullWidth
+                    id="saldoFisico"
+                    label="Saldo Segunda Contagem"
+                    name="saldoFisico"
+                    value={saldoFisico}
+                    onChange={(event) =>
+                      setSaldoFisico(parseInt(event.target.value))
+                    }
+                    autoComplete="saldoFisico"
+                    color="success"
+                    autoFocus
+                  />
+                  <LoadingButton
+                    type="button"
+                    fullWidth
+                    variant="contained"
+                    sx={{
+                      ml: 5,
+                      width: 140,
+                      borderColor: "#48BD69",
+                      color: "#fff",
+                    }}
+                    color="success"
+                    onClick={handleUpdateSecondCount}
+                  >
+                    Atualizar
+                  </LoadingButton>
+                </Box>
               </Box>
             </Box>
           </Container>

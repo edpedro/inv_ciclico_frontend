@@ -87,3 +87,8 @@ export interface UIsecondUpdate {
   id: number;
   saldoFisico: number;
 }
+
+export interface UIwmsUpdate {
+  id: number;
+  saldoWms: number;
+}

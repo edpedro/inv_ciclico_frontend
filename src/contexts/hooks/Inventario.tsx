@@ -10,6 +10,7 @@ import {
   UIinventarioCreate,
   UIinventarioList,
   UIsecondUpdate,
+  UIwmsUpdate,
 } from "../../types";
 import { toast } from "react-toastify";
 
@@ -24,6 +25,7 @@ interface InventarioContextData {
   downloadInventario: (id: string, name: string, date: string) => Promise<void>;
   createInventario: (data: UIinventarioCreate) => Promise<void>;
   updateAdminSecondCount: (id: string, data: UIsecondUpdate) => Promise<void>;
+  updateAdminWms: (id: string, data: UIwmsUpdate) => Promise<void>;
 }
 
 const InventarioContext = createContext<InventarioContextData>(
@@ -70,7 +72,6 @@ export const InventarioProvider = ({ children }: Props) => {
 
   const updateAdminSecondCount = useCallback(
     async (id: string, data: UIsecondUpdate) => {
-      console.log(id, data);
       try {
         await api.patch(`/ciclico/second/${id}`, data);
 
@@ -78,11 +79,23 @@ export const InventarioProvider = ({ children }: Props) => {
 
         toast.success("Atualizado com sucesso.");
       } catch (error) {
-        toast.error("Erro ao atualizar");
+        toast.error("Não autorizado");
       }
     },
     []
   );
+
+  const updateAdminWms = useCallback(async (id: string, data: UIwmsUpdate) => {
+    try {
+      await api.patch(`/ciclico/wms/${id}`, data);
+
+      listIdInventarioData(id);
+
+      toast.success("Atualizado com sucesso.");
+    } catch (error) {
+      toast.error("Não autorizado");
+    }
+  }, []);
 
   const downloadInventario = useCallback(
     async (id: string, name: string, date: string) => {
@@ -116,6 +129,7 @@ export const InventarioProvider = ({ children }: Props) => {
         deleteInventario,
         downloadInventario,
         updateAdminSecondCount,
+        updateAdminWms,
       }}
     >
       {children}
