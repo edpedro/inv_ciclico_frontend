@@ -97,36 +97,42 @@ export default function ModalHistoric({
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {historicData && historicData.length > 0
-                      ? historicData.map((historic) => (
-                          <TableRow
-                            hover
-                            role="checkbox"
-                            tabIndex={-1}
-                            key={historic.id}
-                          >
-                            <TableCell component="th" scope="row">
-                              {format(
-                                utcToZonedTime(
-                                  historic.baseNameInventario.date,
-                                  fusoHorario
-                                ),
-                                "dd/MM/yyyy"
-                              )}
-                            </TableCell>
-                            <TableCell>{historic.item}</TableCell>
-                            <TableCell>{historic.descricao}</TableCell>
-                            <TableCell>{historic.endereco}</TableCell>
-                            <TableCell>{historic.saldoWms}</TableCell>
-                            <TableCell>{historic.firstCount}</TableCell>
-                            <TableCell>{historic.secondCount}</TableCell>
-                            <TableCell>{historic.user?.name}</TableCell>
-                            <TableCell>
-                              {historic.baseNameInventario.name}
-                            </TableCell>
-                          </TableRow>
-                        ))
-                      : null}
+                    {historicData && historicData.length > 0 ? (
+                      historicData.map((historic) => (
+                        <TableRow
+                          hover
+                          role="checkbox"
+                          tabIndex={-1}
+                          key={historic.id}
+                        >
+                          <TableCell component="th" scope="row">
+                            {format(
+                              utcToZonedTime(
+                                historic.baseNameInventario.date,
+                                fusoHorario
+                              ),
+                              "dd/MM/yyyy"
+                            )}
+                          </TableCell>
+                          <TableCell>{historic.item}</TableCell>
+                          <TableCell>{historic.descricao}</TableCell>
+                          <TableCell>{historic.endereco}</TableCell>
+                          <TableCell>{historic.saldoWms}</TableCell>
+                          <TableCell>{historic.firstCount}</TableCell>
+                          <TableCell>{historic.secondCount}</TableCell>
+                          <TableCell>{historic.user?.name}</TableCell>
+                          <TableCell>
+                            {historic.baseNameInventario.name}
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell component="th" scope="row">
+                          Dados não encontrados
+                        </TableCell>
+                      </TableRow>
+                    )}
                   </TableBody>
                 </Table>
               </TableContainer>
