@@ -173,13 +173,11 @@ export default function Inventario() {
                   </TableCell>
                   <TableCell>{inventario.user?.name}</TableCell>
                   <TableCell>
-                    {inventario.secondCount !== null && (
-                      <IosShareIcon
-                        fontSize="small"
-                        sx={{ marginRight: "10px", cursor: "pointer" }}
-                        onClick={() => handleUpdateSecond(inventario.id)}
-                      />
-                    )}
+                    <IosShareIcon
+                      fontSize="small"
+                      sx={{ marginRight: "10px", cursor: "pointer" }}
+                      onClick={() => handleUpdateSecond(inventario.id)}
+                    />
                   </TableCell>
                 </TableRow>
               ))
