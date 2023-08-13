@@ -77,7 +77,7 @@ export default function ListName() {
       </Button>
       <Loading />
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 450 }} aria-label="caption table">
+        <Table sx={{ minWidth: 650 }} aria-label="caption table">
           <TableHead>
             <TableRow>
               <TableCell>Nome</TableCell>
@@ -90,9 +90,7 @@ export default function ListName() {
             {nameData && nameData.length > 0 ? (
               nameData.map((data) => (
                 <TableRow key={data.id}>
-                  <TableCell component="th" scope="row">
-                    {data.name}
-                  </TableCell>
+                  <TableCell>{data.name}</TableCell>
                   <TableCell>
                     {format(
                       utcToZonedTime(data.date, fusoHorario),
@@ -111,7 +109,7 @@ export default function ListName() {
                   <TableCell>
                     <UploadFileIcon
                       fontSize="small"
-                      sx={{ marginRight: "10px", cursor: "pointer" }}
+                      sx={{ marginLeft: "10px", cursor: "pointer" }}
                       onClick={() =>
                         handleOpenAddInventario(data.id, data.name)
                       }
@@ -119,13 +117,13 @@ export default function ListName() {
 
                     <EditIcon
                       fontSize="small"
-                      sx={{ marginRight: "10px", cursor: "pointer" }}
+                      sx={{ marginLeft: "10px", cursor: "pointer" }}
                       onClick={() => handleUpdate(data.id)}
                     />
 
                     <DeleteForeverIcon
                       fontSize="small"
-                      sx={{ cursor: "pointer" }}
+                      sx={{ marginLeft: "10px", cursor: "pointer" }}
                       onClick={() => handleDelete(data.id)}
                     />
                   </TableCell>

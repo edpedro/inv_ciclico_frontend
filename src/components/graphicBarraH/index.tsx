@@ -1,5 +1,7 @@
 import { Bar } from "@ant-design/plots";
 import { useDashboard } from "../../contexts/hooks/Dashboard";
+import { useMemo } from "react";
+import { UIdashboardList } from "../../types";
 
 interface DataItem {
   year: string;

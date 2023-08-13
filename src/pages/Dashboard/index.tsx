@@ -20,7 +20,7 @@ import { useName } from "../../contexts/hooks/NewName";
 import Loading from "../../components/loanding";
 
 export default function Dashboard() {
-  const { dashboardData, ListDashboard, setUIRemoveData } = useDashboard();
+  const { dashboardData, ListDashboard } = useDashboard();
   const { nameData } = useName();
 
   const [nameInv, setNameInv] = useState("");

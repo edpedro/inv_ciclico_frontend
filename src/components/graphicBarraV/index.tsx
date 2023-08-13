@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Column } from "@ant-design/plots";
 import { IntervalGeometryLabelPosition } from "@antv/g2/lib/interface";
 import { useDashboard } from "../../contexts/hooks/Dashboard";
+import { UIdashboardList } from "../../types";
 
 interface DataItem {
   type: string;
@@ -11,14 +12,24 @@ interface DataItem {
 const GraphicBarraV: React.FC = () => {
   const { dashboardData } = useDashboard();
 
+  const { totalDivergencia, totalAcertos } = dashboardData as UIdashboardList;
+
+  const memoizedContextValue = useMemo(
+    () => ({
+      totalDivergencia,
+      totalAcertos,
+    }),
+    [dashboardData]
+  );
+
   const data: DataItem[] = [
     {
       type: "Divergência",
-      sales: dashboardData ? dashboardData?.totalDivergencia : 0,
+      sales: memoizedContextValue ? memoizedContextValue?.totalDivergencia : 0,
     },
     {
       type: "Acertos",
-      sales: dashboardData ? dashboardData?.totalAcertos : 0,
+      sales: memoizedContextValue ? memoizedContextValue?.totalAcertos : 0,
     },
   ];
   const config = {
