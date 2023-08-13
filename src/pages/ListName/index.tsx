@@ -19,6 +19,13 @@ import { format } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import Loading from "../../components/loanding";
 import ModalAddInventario from "../../components/ModalAddInventario";
+import { styled } from "@mui/material/styles";
+
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  textAlign: "center",
+  width: 80,
+}));
 
 export default function ListName() {
   const { nameData, loadNameData, listNameData } = useName();
@@ -98,13 +105,19 @@ export default function ListName() {
                     )}
                   </TableCell>
                   <TableCell>
-                    {!data.secondStatus && !data.firstStatus
-                      ? "Pendente"
-                      : !data.secondStatus
-                      ? "Divergência"
-                      : data.firstStatus
-                      ? "Finalizado"
-                      : "Pendente"}
+                    {!data.secondStatus && !data.firstStatus ? (
+                      <Item sx={{ backgroundColor: "#FFFF00" }}>Pendente</Item>
+                    ) : !data.secondStatus ? (
+                      <Item sx={{ backgroundColor: "#df3939" }}>
+                        Divergência
+                      </Item>
+                    ) : data.firstStatus ? (
+                      <Item sx={{ backgroundColor: "#48BD69" }}>
+                        Finalizando
+                      </Item>
+                    ) : (
+                      <Item sx={{ backgroundColor: "#FFFF00" }}>Pendente2</Item>
+                    )}
                   </TableCell>
                   <TableCell>
                     <UploadFileIcon
