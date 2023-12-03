@@ -9,6 +9,7 @@ import {
 import useApi from "../../services/api";
 import { toast } from "react-toastify";
 import { UInameList, UInameCreate } from "../../types";
+import { useAuth } from "./Auth";
 
 type Props = {
   children?: ReactNode;
@@ -35,8 +36,12 @@ export const NewNameProvider = ({ children }: Props) => {
 
   const api = useApi();
 
+  const { authenticated } = useAuth();
+
   useEffect(() => {
-    loadNameData();
+    if (authenticated) {
+      loadNameData();
+    }
 
     setUpdate(false);
   }, [update]);

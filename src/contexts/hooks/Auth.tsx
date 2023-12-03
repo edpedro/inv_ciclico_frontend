@@ -55,6 +55,7 @@ export const AuthProvider = ({ children }: Props) => {
       if (token && data) {
         const _token: UItoken = JSON.parse(token);
         const _data: UIuser = JSON.parse(data);
+
         api.defaults.headers.authorization = `Bearer ${_token}`;
 
         setAuthenticated(true);

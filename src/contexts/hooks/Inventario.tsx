@@ -4,6 +4,7 @@ import {
   useContext,
   useState,
   useCallback,
+  useEffect,
 } from "react";
 import useApi from "../../services/api";
 import {
@@ -15,6 +16,7 @@ import {
   UIwmsUpdate,
 } from "../../types";
 import { toast } from "react-toastify";
+import { useAuth } from "./Auth";
 
 type Props = {
   children?: ReactNode;

@@ -8,21 +8,14 @@ interface UItoken {
 const useApi = () => {
   const { setLoadingFetch } = useLoading();
 
-  let needsRedirect = false;
-
   const api: AxiosInstance = axios.create({
     baseURL: "https://invciclico.adaptable.app/",
     //baseURL: "http://localhost:3000/",
   });
 
-  const token = localStorage.getItem("@token");
-
-  const config: AxiosRequestConfig<any> = {
-    headers: {},
-  };
-
   api.interceptors.request.use(
     (config) => {
+      const token = localStorage.getItem("@token");
       if (token) {
         const _token: UItoken = JSON.parse(token);
         config.headers.authorization = `Bearer ${_token}`;
@@ -32,6 +25,7 @@ const useApi = () => {
     },
     (error) => {
       setLoadingFetch(false);
+      console.error(error);
       return Promise.reject(error);
     }
   );
@@ -45,20 +39,16 @@ const useApi = () => {
       setLoadingFetch(false);
 
       if (error.response.status === 401) {
-        needsRedirect = true;
+        localStorage.clear();
+        if (error.config.headers) {
+          error.config.headers.authorization = undefined;
+        }
+        window.location.href = "/login";
       }
+      console.error(error);
       return Promise.reject(error);
     }
   );
-
-  if (needsRedirect) {
-    localStorage.clear();
-    if (config.headers) {
-      config.headers.authorization = undefined;
-    }
-    window.location.href = "/login";
-    needsRedirect = false;
-  }
 
   return api;
 };

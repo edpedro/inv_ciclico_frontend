@@ -41,12 +41,14 @@ export const UsersProvider = ({ children }: Props) => {
 
   const api = useApi();
 
-  const { authData } = useAuth();
+  const { authenticated } = useAuth();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    listAllUserData();
+    if (authenticated) {
+      listAllUserData();
+    }
 
     setUpdate(false);
   }, [update]);

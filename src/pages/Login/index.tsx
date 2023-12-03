@@ -1,4 +1,4 @@
-import { FormEvent } from "react";
+import { FormEvent, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import LoadingButton from "@mui/lab/LoadingButton";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,12 +13,20 @@ import { toast } from "react-toastify";
 import { useAuth } from "../../contexts/hooks/Auth";
 import { Link } from "react-router-dom";
 import { useLoading } from "../../contexts/hooks/Loanding";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
 export default function Login() {
-  const { signIn } = useAuth();
+  const { signIn, authenticated } = useAuth();
   const { isLoading } = useLoading();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (authenticated) {
+      navigate("/");
+    }
+  }, [authenticated]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
