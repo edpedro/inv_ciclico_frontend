@@ -120,13 +120,30 @@ export default function ListName() {
                     )}
                   </TableCell>
                   <TableCell>
-                    <UploadFileIcon
-                      fontSize="small"
-                      sx={{ marginLeft: "10px", cursor: "pointer" }}
-                      onClick={() =>
-                        handleOpenAddInventario(data.id, data.name)
-                      }
-                    />
+                    {data.upload ? (
+                      <UploadFileIcon
+                        fontSize="small"
+                        sx={{
+                          marginLeft: "10px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() =>
+                          handleOpenAddInventario(data.id, data.name)
+                        }
+                      />
+                    ) : (
+                      <UploadFileIcon
+                        fontSize="small"
+                        sx={{
+                          marginLeft: "10px",
+                          cursor: "pointer",
+                          color: "#df3939",
+                        }}
+                        onClick={() =>
+                          handleOpenAddInventario(data.id, data.name)
+                        }
+                      />
+                    )}
 
                     <EditIcon
                       fontSize="small"

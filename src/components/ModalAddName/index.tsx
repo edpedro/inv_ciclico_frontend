@@ -13,6 +13,10 @@ import FormControl from "@mui/material/FormControl";
 import ListItemText from "@mui/material/ListItemText";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormLabel from "@mui/material/FormLabel";
 import { UInameCreate } from "../../types";
 import { useName } from "../../contexts/hooks/NewName";
 import { toast } from "react-toastify";
@@ -122,6 +126,7 @@ export default function ModalAddName({
 
     const name = data.get("name") as string;
     const date = data.get("date") as string;
+    const type = data.get("type") as string;
     const user_id = userIds as string[];
 
     if (!name || !date) {
@@ -130,7 +135,7 @@ export default function ModalAddName({
       return;
     }
 
-    const newData: UInameCreate = { name, date, user_id };
+    const newData: UInameCreate = { name, date, user_id, type };
 
     idUpdate ? updateName(idUpdate, newData) : createName(newData);
 
@@ -177,6 +182,27 @@ export default function ModalAddName({
                   color="success"
                   autoFocus
                 />
+                <FormControl>
+                  <RadioGroup
+                    row
+                    aria-labelledby="demo-form-control-label-placement"
+                    name="type"
+                    defaultValue="top"
+                  >
+                    <FormControlLabel
+                      value="geral"
+                      control={<Radio />}
+                      label="Geral"
+                      labelPlacement="start"
+                    />
+                    <FormControlLabel
+                      value="ciclico"
+                      control={<Radio />}
+                      label="Ciclico"
+                      labelPlacement="start"
+                    />
+                  </RadioGroup>
+                </FormControl>
                 <TextField
                   margin="normal"
                   required

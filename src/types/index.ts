@@ -18,6 +18,7 @@ export interface UIuserList {
 export interface UInameCreate {
   date: string;
   name: string;
+  type: string;
   user_id: string[];
 }
 export interface UInameList {
@@ -26,6 +27,7 @@ export interface UInameList {
   name: string;
   firstStatus: boolean;
   secondStatus: boolean;
+  upload: boolean;
   user: UIuser;
   users: {
     user_id: string;
