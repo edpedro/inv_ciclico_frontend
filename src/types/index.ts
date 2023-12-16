@@ -28,6 +28,7 @@ export interface UInameList {
   firstStatus: boolean;
   secondStatus: boolean;
   upload: boolean;
+  type: string;
   user: UIuser;
   users: {
     user_id: string;

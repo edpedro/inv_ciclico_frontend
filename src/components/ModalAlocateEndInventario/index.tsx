@@ -1,42 +1,22 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
 import Container from "@mui/material/Container";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import ListItemText from "@mui/material/ListItemText";
+import OutlinedInput from "@mui/material/OutlinedInput";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import { UInameCreate } from "../../types";
-import { useName } from "../../contexts/hooks/NewName";
 import { toast } from "react-toastify";
+import { UIinventarioCreate } from "../../types";
+import { useInventario } from "../../contexts/hooks/Inventario";
 import { useUsers } from "../../contexts/hooks/Users";
-
-const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 4,
-};
-
-interface UIPropsModal {
-  setOpen: (value: boolean) => void;
-  open: boolean;
-  idUpdate: string;
-}
+import { useName } from "../../contexts/hooks/NewName";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -49,27 +29,45 @@ const MenuProps = {
   },
 };
 
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
+};
+
 interface SelectedItem {
   name: string;
   id: string | undefined;
 }
 
-export default function ModalAddName({
-  open,
-  setOpen,
-  idUpdate,
+interface UIPropsModal {
+  setOpenAlocateEnd: (value: boolean) => void;
+  openAlocateEnd: boolean;
+  idInventario: string;
+  nameInventario: string;
+}
+
+export default function ModalAlocateEndInventario({
+  openAlocateEnd,
+  setOpenAlocateEnd,
+  idInventario,
+  nameInventario,
 }: UIPropsModal) {
-  const { listAllUserData, lisUserData } = useUsers();
+  const { createInventario } = useInventario();
   const { createName, updateNameData, updateName, nameData } = useName();
+  const { listAllUserData, lisUserData } = useUsers();
 
-  const [name, setName] = useState<string>("");
-  const [date, setDate] = useState<string>("");
-  const [type, setType] = useState<string>("");
-
-  const [userIds, setUsersIds] = useState<string[]>([]);
+  const [file, setFile] = useState<File | null>();
   const [selectedItems, setSelectedItems] = useState<SelectedItem[]>([]);
 
-  const handleClose = () => setOpen(false);
+  const [userIds, setUsersIds] = useState<string[]>([]);
+
+  const handleClose = () => setOpenAlocateEnd(false);
 
   useEffect(() => {
     listAllUserData();
@@ -77,7 +75,7 @@ export default function ModalAddName({
     if (updateNameData) {
       const filterUserIds = nameData!
         .filter((name) => {
-          return name.id === idUpdate;
+          return name.id === idInventario;
         })
         .flatMap((name) => name.users.map((user) => user.user_id));
 
@@ -87,20 +85,10 @@ export default function ModalAddName({
         })
         .map(({ id, name }) => ({ id, name })) as SelectedItem[];
 
-      setName(updateNameData?.name as string);
-      setDate(updateNameData?.date as string);
-      setType(updateNameData?.type as string);
       setSelectedItems(filterNames);
       setUsersIds(filterUserIds);
     }
-    if (!idUpdate) {
-      setName("");
-      setDate("");
-      setType("");
-      setSelectedItems([]);
-      setUsersIds([]);
-    }
-  }, [updateNameData, idUpdate]);
+  }, [updateNameData, idInventario]);
 
   const handleChange = (event: SelectChangeEvent<typeof userIds>) => {
     const {
@@ -124,30 +112,25 @@ export default function ModalAddName({
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
 
-    const name = data.get("name") as string;
-    const date = data.get("date") as string;
-    const type = data.get("type") as string;
-    const user_id = userIds as string[];
-
-    if (!name || !date) {
-      toast.error("Favor preencher todos dados!");
-
-      return;
+    if (!idInventario || file === undefined) {
+      return toast.error("Favor preencher todos dados!");
     }
+    if (file !== null && file !== undefined) {
+      const newData: UIinventarioCreate = {
+        baseNameInventario_id: idInventario,
+        file,
+      };
 
-    const newData: UInameCreate = { name, date, user_id, type };
-    console.log(newData);
-    idUpdate ? updateName(idUpdate, newData) : createName(newData);
-
-    setOpen(false);
+      createInventario(newData);
+    }
+    setOpenAlocateEnd(false);
   };
 
   return (
     <div>
       <Modal
-        open={open}
+        open={openAlocateEnd}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -163,62 +146,16 @@ export default function ModalAddName({
               }}
             >
               <Typography component="h1" variant="h5">
-                {idUpdate ? "Atualizar" : "Criar Nome"}
+                {nameInventario}
               </Typography>
               <Box
                 component="form"
                 onSubmit={handleSubmit}
                 noValidate
-                sx={{ mt: 1 }}
+                sx={{
+                  mt: 1,
+                }}
               >
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="name"
-                  label="Nome"
-                  name="name"
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
-                  autoComplete="name"
-                  color="success"
-                  autoFocus
-                />
-                <FormControl>
-                  <RadioGroup
-                    row
-                    aria-labelledby="demo-form-control-label-placement"
-                    name="type"
-                    value={type}
-                    onChange={(event) => setType(event.target.value)}
-                    defaultValue="top"
-                  >
-                    <FormControlLabel
-                      value="geral"
-                      control={<Radio />}
-                      label="Geral"
-                      labelPlacement="start"
-                    />
-                    <FormControlLabel
-                      value="ciclico"
-                      control={<Radio />}
-                      label="Ciclico"
-                      labelPlacement="start"
-                    />
-                  </RadioGroup>
-                </FormControl>
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="date"
-                  type="date"
-                  id="date"
-                  value={date}
-                  onChange={(event) => setDate(event.target.value)}
-                  autoComplete="current-date"
-                  color="success"
-                />
                 <FormControl sx={{ mt: 2 }} fullWidth>
                   <InputLabel id="demo-multiple-checkbox-label" sx={{}}>
                     Usuarios
@@ -248,7 +185,6 @@ export default function ModalAddName({
                       ))}
                   </Select>
                 </FormControl>
-
                 <Button
                   type="submit"
                   fullWidth
@@ -261,7 +197,7 @@ export default function ModalAddName({
                   }}
                   color="success"
                 >
-                  {idUpdate ? "Atualizar" : "Cadastrar"}
+                  Upload
                 </Button>
               </Box>
             </Box>

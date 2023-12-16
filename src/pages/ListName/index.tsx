@@ -19,7 +19,9 @@ import { format } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import Loading from "../../components/loanding";
 import ModalAddInventario from "../../components/ModalAddInventario";
+import AppsIcon from "@mui/icons-material/Apps";
 import { styled } from "@mui/material/styles";
+import ModalAlocateEndInventario from "../../components/ModalAlocateEndInventario";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -37,6 +39,7 @@ export default function ListName() {
   const [open, setOpen] = useState(false);
   const [openAddInventario, setOpenAddInventario] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+  const [openAlocateEnd, setOpenAlocateEnd] = useState(false);
 
   const handleOpenAddInventario = (id: string, name: string) => {
     setOpenAddInventario(true);
@@ -61,6 +64,12 @@ export default function ListName() {
   function handleUpdate(id: string) {
     listNameData(id);
     setOpen(true);
+    setIdUpdate(id);
+  }
+
+  function handleAlocateEnd(id: string) {
+    listNameData(id);
+    setOpenAlocateEnd(true);
     setIdUpdate(id);
   }
   const fusoHorario = "America/Sao_Paulo";
@@ -144,7 +153,11 @@ export default function ListName() {
                         }
                       />
                     )}
-
+                    <AppsIcon
+                      fontSize="small"
+                      sx={{ marginLeft: "10px", cursor: "pointer" }}
+                      onClick={() => handleAlocateEnd(data.id)}
+                    />
                     <EditIcon
                       fontSize="small"
                       sx={{ marginLeft: "10px", cursor: "pointer" }}
@@ -173,6 +186,14 @@ export default function ListName() {
         <ModalAddInventario
           openAddInventario={openAddInventario}
           setOpenAddInventario={setOpenAddInventario}
+          idInventario={idInventario}
+          nameInventario={nameInventario}
+        />
+      )}
+      {openAlocateEnd && (
+        <ModalAlocateEndInventario
+          openAlocateEnd={openAlocateEnd}
+          setOpenAlocateEnd={setOpenAlocateEnd}
           idInventario={idInventario}
           nameInventario={nameInventario}
         />
