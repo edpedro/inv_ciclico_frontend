@@ -75,13 +75,13 @@ export default function ModalAddName({
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
-    if (updateNameData) {
+    if (updateNameData && lisUserData) {
       const filterUserIds = nameData!
         .filter((name) => {
           return name.id === idUpdate;
         })
         .flatMap((name) => name.users.map((user) => user.user_id));
-      console.log(lisUserData);
+
       const filterNames = lisUserData
         ?.filter((value) => {
           return filterUserIds.includes(value.id);
@@ -101,7 +101,7 @@ export default function ModalAddName({
       setSelectedItems([]);
       setUsersIds([]);
     }
-  }, [updateNameData, idUpdate]);
+  }, [updateNameData, idUpdate, lisUserData]);
 
   const handleChange = (event: SelectChangeEvent<typeof userIds>) => {
     const {
