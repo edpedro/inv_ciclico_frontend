@@ -22,6 +22,7 @@ import ModalAddInventario from "../../components/ModalAddInventario";
 import AppsIcon from "@mui/icons-material/Apps";
 import { styled } from "@mui/material/styles";
 import ModalAlocateEndInventario from "../../components/ModalAlocateEndInventario";
+import { useUsers } from "../../contexts/hooks/Users";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -31,6 +32,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function ListName() {
   const { nameData, loadNameData, listNameData } = useName();
+  const { listAllUserData } = useUsers();
 
   const [idDelete, setIdDelete] = useState<string>("");
   const [idUpdate, setIdUpdate] = useState<string>("");
@@ -50,6 +52,7 @@ export default function ListName() {
   const handleOpen = () => {
     setOpen(true);
     setIdUpdate("");
+    listAllUserData();
   };
 
   useEffect(() => {

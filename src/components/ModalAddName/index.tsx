@@ -59,7 +59,7 @@ export default function ModalAddName({
   setOpen,
   idUpdate,
 }: UIPropsModal) {
-  const { listAllUserData, lisUserData } = useUsers();
+  const { lisUserData } = useUsers();
   const { createName, updateNameData, updateName, nameData } = useName();
 
   const [name, setName] = useState<string>("");
@@ -72,8 +72,6 @@ export default function ModalAddName({
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
-    listAllUserData();
-
     if (updateNameData) {
       const filterUserIds = nameData!
         .filter((name) => {
@@ -138,7 +136,7 @@ export default function ModalAddName({
     }
 
     const newData: UInameCreate = { name, date, user_id, type };
-    console.log(newData);
+
     idUpdate ? updateName(idUpdate, newData) : createName(newData);
 
     setOpen(false);
