@@ -16,10 +16,12 @@ import Checkbox from "@mui/material/Checkbox";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import CircularProgress from "@mui/material/CircularProgress";
 import { UInameCreate } from "../../types";
 import { useName } from "../../contexts/hooks/NewName";
 import { toast } from "react-toastify";
 import { useUsers } from "../../contexts/hooks/Users";
+import { useLoading } from "../../contexts/hooks/Loanding";
 
 const style = {
   position: "absolute" as "absolute",
@@ -61,6 +63,7 @@ export default function ModalAddName({
 }: UIPropsModal) {
   const { lisUserData } = useUsers();
   const { createName, updateNameData, updateName, nameData } = useName();
+  const { isLoadingFetch } = useLoading();
 
   const [name, setName] = useState<string>("");
   const [date, setDate] = useState<string>("");
@@ -78,7 +81,7 @@ export default function ModalAddName({
           return name.id === idUpdate;
         })
         .flatMap((name) => name.users.map((user) => user.user_id));
-
+      console.log(lisUserData);
       const filterNames = lisUserData
         ?.filter((value) => {
           return filterUserIds.includes(value.id);
@@ -163,105 +166,111 @@ export default function ModalAddName({
               <Typography component="h1" variant="h5">
                 {idUpdate ? "Atualizar" : "Criar Nome"}
               </Typography>
-              <Box
-                component="form"
-                onSubmit={handleSubmit}
-                noValidate
-                sx={{ mt: 1 }}
-              >
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="name"
-                  label="Nome"
-                  name="name"
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
-                  autoComplete="name"
-                  color="success"
-                  autoFocus
-                />
-                <FormControl>
-                  <RadioGroup
-                    row
-                    aria-labelledby="demo-form-control-label-placement"
-                    name="type"
-                    value={type}
-                    onChange={(event) => setType(event.target.value)}
-                    defaultValue="top"
-                  >
-                    <FormControlLabel
-                      value="geral"
-                      control={<Radio />}
-                      label="Geral"
-                      labelPlacement="start"
-                    />
-                    <FormControlLabel
-                      value="ciclico"
-                      control={<Radio />}
-                      label="Ciclico"
-                      labelPlacement="start"
-                    />
-                  </RadioGroup>
-                </FormControl>
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="date"
-                  type="date"
-                  id="date"
-                  value={date}
-                  onChange={(event) => setDate(event.target.value)}
-                  autoComplete="current-date"
-                  color="success"
-                />
-                <FormControl sx={{ mt: 2 }} fullWidth>
-                  <InputLabel id="demo-multiple-checkbox-label" sx={{}}>
-                    Usuarios
-                  </InputLabel>
-                  <Select
-                    fullWidth
-                    labelId="demo-multiple-checkbox-label"
-                    id="demo-multiple-checkbox"
-                    color="success"
-                    multiple
-                    value={selectedItems.map((i) => i.name)}
-                    onChange={handleChange}
-                    input={<OutlinedInput label="Usuarios" />}
-                    renderValue={(selected) => selected.join(", ")}
-                    MenuProps={MenuProps}
-                  >
-                    {lisUserData &&
-                      lisUserData.map((user) => (
-                        <MenuItem key={user.id} value={user.name}>
-                          <Checkbox
-                            checked={selectedItems.some(
-                              (i) => i.name === user.name
-                            )}
-                          />
-                          <ListItemText primary={user.name} />
-                        </MenuItem>
-                      ))}
-                  </Select>
-                </FormControl>
-
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{
-                    mt: 3,
-                    mb: 2,
-                    borderColor: "#48BD69",
-                    color: "#fff",
-                  }}
-                  color="success"
+              {isLoadingFetch ? (
+                <Box sx={{ display: "flex" }}>
+                  <CircularProgress color="success" />
+                </Box>
+              ) : (
+                <Box
+                  component="form"
+                  onSubmit={handleSubmit}
+                  noValidate
+                  sx={{ mt: 1 }}
                 >
-                  {idUpdate ? "Atualizar" : "Cadastrar"}
-                </Button>
-              </Box>
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="name"
+                    label="Nome"
+                    name="name"
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
+                    autoComplete="name"
+                    color="success"
+                    autoFocus
+                  />
+                  <FormControl>
+                    <RadioGroup
+                      row
+                      aria-labelledby="demo-form-control-label-placement"
+                      name="type"
+                      value={type}
+                      onChange={(event) => setType(event.target.value)}
+                      defaultValue="top"
+                    >
+                      <FormControlLabel
+                        value="geral"
+                        control={<Radio />}
+                        label="Geral"
+                        labelPlacement="start"
+                      />
+                      <FormControlLabel
+                        value="ciclico"
+                        control={<Radio />}
+                        label="Ciclico"
+                        labelPlacement="start"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="date"
+                    type="date"
+                    id="date"
+                    value={date}
+                    onChange={(event) => setDate(event.target.value)}
+                    autoComplete="current-date"
+                    color="success"
+                  />
+                  <FormControl sx={{ mt: 2 }} fullWidth>
+                    <InputLabel id="demo-multiple-checkbox-label" sx={{}}>
+                      Usuarios
+                    </InputLabel>
+                    <Select
+                      fullWidth
+                      labelId="demo-multiple-checkbox-label"
+                      id="demo-multiple-checkbox"
+                      color="success"
+                      multiple
+                      value={selectedItems.map((i) => i.name)}
+                      onChange={handleChange}
+                      input={<OutlinedInput label="Usuarios" />}
+                      renderValue={(selected) => selected.join(", ")}
+                      MenuProps={MenuProps}
+                    >
+                      {lisUserData &&
+                        lisUserData.map((user) => (
+                          <MenuItem key={user.id} value={user.name}>
+                            <Checkbox
+                              checked={selectedItems.some(
+                                (i) => i.name === user.name
+                              )}
+                            />
+                            <ListItemText primary={user.name} />
+                          </MenuItem>
+                        ))}
+                    </Select>
+                  </FormControl>
+
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{
+                      mt: 3,
+                      mb: 2,
+                      borderColor: "#48BD69",
+                      color: "#fff",
+                    }}
+                    color="success"
+                  >
+                    {idUpdate ? "Atualizar" : "Cadastrar"}
+                  </Button>
+                </Box>
+              )}
             </Box>
           </Container>
         </Box>

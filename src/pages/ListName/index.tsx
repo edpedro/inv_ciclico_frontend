@@ -52,7 +52,6 @@ export default function ListName() {
   const handleOpen = () => {
     setOpen(true);
     setIdUpdate("");
-    listAllUserData();
   };
 
   useEffect(() => {
@@ -68,6 +67,7 @@ export default function ListName() {
     listNameData(id);
     setOpen(true);
     setIdUpdate(id);
+    listAllUserData();
   }
 
   function handleAlocateEnd(id: string) {
