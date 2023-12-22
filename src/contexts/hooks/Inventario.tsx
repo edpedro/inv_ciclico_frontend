@@ -8,6 +8,8 @@ import {
 } from "react";
 import useApi from "../../services/api";
 import {
+  UIAlocateEnd,
+  UIDataAlocate,
   UIhistoricList,
   UIinventarioCreate,
   UIinventarioList,
@@ -25,6 +27,7 @@ type Props = {
 interface InventarioContextData {
   inventarioData?: UIinventarioList[];
   historicData?: UIhistoricList[];
+  alocateAddressData?: UIAlocateEnd[];
   listIdInventarioData: (id: string) => Promise<void>;
   deleteInventario: (id: string) => Promise<void>;
   downloadInventario: (id: string, name: string, date: string) => Promise<void>;
@@ -32,6 +35,9 @@ interface InventarioContextData {
   updateAdminSecondCount: (id: string, data: UIsecondUpdate) => Promise<void>;
   updateAdminWms: (id: string, data: UIwmsUpdate) => Promise<void>;
   historicAllItem: (dataItem: UIitemHistoric) => Promise<void>;
+  alocateAddress: (id: string, data: UIDataAlocate) => Promise<void>;
+  getAllAlocateAddress: (id: string) => Promise<void>;
+  removeAlocateAddress: (id: string, data: UIDataAlocate) => Promise<void>;
 }
 
 const InventarioContext = createContext<InventarioContextData>(
@@ -43,6 +49,8 @@ export const InventarioProvider = ({ children }: Props) => {
 
   const [inventarioData, setInventarioData] = useState<UIinventarioList[]>();
   const [historicData, setHistoricData] = useState<UIhistoricList[]>();
+  const [alocateAddressData, setAlocateAddressData] =
+    useState<UIAlocateEnd[]>();
 
   const listIdInventarioData = useCallback(async (id: string) => {
     try {
@@ -132,6 +140,42 @@ export const InventarioProvider = ({ children }: Props) => {
     const { data } = await api.post("/ciclico/historico", dataItem);
     setHistoricData(data);
   }, []);
+
+  const alocateAddress = useCallback(
+    async (id: string, data: UIDataAlocate) => {
+      try {
+        await api.post(`/ciclico/endereco/user/${id}`, data);
+
+        getAllAlocateAddress(id);
+
+        toast.success("Atualizado com sucesso.");
+      } catch (error) {
+        toast.error("Não autorizado");
+      }
+    },
+    []
+  );
+
+  const getAllAlocateAddress = useCallback(async (id: string) => {
+    const { data } = await api.get(`/ciclico/endereco/user/${id}`);
+
+    setAlocateAddressData(data);
+  }, []);
+
+  const removeAlocateAddress = useCallback(
+    async (id: string, data: UIDataAlocate) => {
+      try {
+        await api.delete(`/ciclico/endereco/user/${id}`, { data });
+
+        getAllAlocateAddress(id);
+
+        toast.success("Deletado com sucesso.");
+      } catch (error) {
+        toast.error("Não autorizado");
+      }
+    },
+    []
+  );
   return (
     <InventarioContext.Provider
       value={{
@@ -144,6 +188,10 @@ export const InventarioProvider = ({ children }: Props) => {
         updateAdminWms,
         historicAllItem,
         historicData,
+        alocateAddressData,
+        getAllAlocateAddress,
+        alocateAddress,
+        removeAlocateAddress,
       }}
     >
       {children}

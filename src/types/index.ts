@@ -122,3 +122,20 @@ export interface UIhistoricList {
 export interface UIitemHistoric {
   item: string;
 }
+
+export interface UIAlocateEnd {
+  id: number;
+  endereco: string;
+  baseNameInventario_id: string;
+  users: User[];
+}
+
+export type UIDataAlocate = {
+  user_ids: string[];
+  baseInventario_ids: number[];
+}[];
+
+export interface User {
+  id: string;
+  name: string;
+}

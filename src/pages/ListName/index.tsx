@@ -23,6 +23,7 @@ import AppsIcon from "@mui/icons-material/Apps";
 import { styled } from "@mui/material/styles";
 import ModalAlocateEndInventario from "../../components/ModalAlocateEndInventario";
 import { useUsers } from "../../contexts/hooks/Users";
+import { useInventario } from "../../contexts/hooks/Inventario";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -33,6 +34,7 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function ListName() {
   const { nameData, loadNameData, listNameData } = useName();
   const { listAllUserData } = useUsers();
+  const { getAllAlocateAddress } = useInventario();
 
   const [idDelete, setIdDelete] = useState<string>("");
   const [idUpdate, setIdUpdate] = useState<string>("");
@@ -70,10 +72,14 @@ export default function ListName() {
     listAllUserData();
   }
 
-  function handleAlocateEnd(id: string) {
+  function handleAlocateEnd(id: string, name: string) {
     listNameData(id);
     setOpenAlocateEnd(true);
     setIdUpdate(id);
+    listAllUserData();
+    setIdInventario(id);
+    getAllAlocateAddress(id);
+    setNameInventario(name);
   }
   const fusoHorario = "America/Sao_Paulo";
 
@@ -159,7 +165,7 @@ export default function ListName() {
                     <AppsIcon
                       fontSize="small"
                       sx={{ marginLeft: "10px", cursor: "pointer" }}
-                      onClick={() => handleAlocateEnd(data.id)}
+                      onClick={() => handleAlocateEnd(data.id, data.name)}
                     />
                     <EditIcon
                       fontSize="small"
@@ -199,6 +205,7 @@ export default function ListName() {
           setOpenAlocateEnd={setOpenAlocateEnd}
           idInventario={idInventario}
           nameInventario={nameInventario}
+          idUpdate={idUpdate}
         />
       )}
       {open && (
