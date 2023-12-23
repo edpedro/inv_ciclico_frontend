@@ -1,4 +1,4 @@
-import { FormEvent, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -12,275 +12,15 @@ import ListItemText from "@mui/material/ListItemText";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { useUsers } from "../../contexts/hooks/Users";
 import { useName } from "../../contexts/hooks/NewName";
 import { toast } from "react-toastify";
 import { useInventario } from "../../contexts/hooks/Inventario";
-import { UIDataAlocate, UIuserList } from "../../types";
-
-const data: UIAlocateEnd[] = [
-  {
-    id: 34,
-    endereco: "ARM A.01.5",
-    baseNameInventario_id: "5cc4b22b-a0b7-42f9-9892-e6ba046dcda3",
-    users: [
-      {
-        id: "e7a250c0-935a-45f5-b3d1-501a0a304cb1",
-        name: "Jose",
-      },
-      {
-        id: "e7a250c0-935a-45f5-b3d1-501a0a304cb1",
-        name: "Eduardo",
-      },
-    ],
-  },
-  {
-    id: 35,
-    endereco: "ARM C.06.7",
-    baseNameInventario_id: "5cc4b22b-a0b7-42f9-9892-e6ba046dcda3",
-    users: [
-      {
-        id: "e7a250c0-935a-45f5-b3d1-501a0a304cb1",
-        name: "Jose",
-      },
-    ],
-  },
-  {
-    id: 36,
-    endereco: "ARM C.43.1",
-    baseNameInventario_id: "5cc4b22b-a0b7-42f9-9892-e6ba046dcda3",
-    users: [],
-  },
-  {
-    id: 37,
-    endereco: "ARM B.43.1",
-    baseNameInventario_id: "5cc4b22b-a0b7-42f9-9892-e6ba046dcda3",
-    users: [],
-  },
-  {
-    id: 38,
-    endereco: "ARM B.45.2",
-    baseNameInventario_id: "5cc4b22b-a0b7-42f9-9892-e6ba046dcda3",
-    users: [],
-  },
-  {
-    id: 39,
-    endereco: "ARM E.45.2",
-    baseNameInventario_id: "5cc4b22b-a0b7-42f9-9892-e6ba046dcda3",
-    users: [],
-  },
-  {
-    id: 40,
-    endereco: "ARM E.45.2",
-    baseNameInventario_id: "5cc4b22b-a0b7-42f9-9892-e6ba046dcda3",
-    users: [],
-  },
-  {
-    id: 41,
-    endereco: "ARM A.45.2",
-    baseNameInventario_id: "5cc4b22b-a0b7-42f9-9892-e6ba046dcda3",
-    users: [
-      {
-        id: "e7a250c0-935a-45f5-b3d1-501a0a304cb1",
-        name: "Pedro",
-      },
-    ],
-  },
-  {
-    id: 43,
-    endereco: "ARM A.45.2",
-    baseNameInventario_id: "5cc4b22b-a0b7-42f9-9892-e6ba046dcda3",
-    users: [
-      {
-        id: "e7a250c0-935a-45f5-b3d1-501a0a304cb1",
-        name: "Pedro",
-      },
-    ],
-  },
-  {
-    id: 44,
-    endereco: "ARM A.47.2",
-    baseNameInventario_id: "5cc4b22b-a0b7-42f9-9892-e6ba046dcda3",
-    users: [
-      {
-        id: "e7a250c0-935a-45f5-b3d1-501a0a304cb1",
-        name: "Pedro",
-      },
-    ],
-  },
-  {
-    id: 84,
-    endereco: "ARM A.47.2",
-    baseNameInventario_id: "5cc4b22b-a0b7-42f9-9892-e6ba046dcda3",
-    users: [
-      {
-        id: "e7a250c0-935a-45f5-b3d1-501a0a304cb1",
-        name: "Pedro",
-      },
-    ],
-  },
-  {
-    id: 83,
-    endereco: "ARM A.47.2",
-    baseNameInventario_id: "5cc4b22b-a0b7-42f9-9892-e6ba046dcda3",
-    users: [
-      {
-        id: "e7a250c0-935a-45f5-b3d1-501a0a304cb1",
-        name: "Pedro",
-      },
-    ],
-  },
-  {
-    id: 82,
-    endereco: "ARM A.47.2",
-    baseNameInventario_id: "5cc4b22b-a0b7-42f9-9892-e6ba046dcda3",
-    users: [
-      {
-        id: "e7a250c0-935a-45f5-b3d1-501a0a304cb1",
-        name: "Pedro",
-      },
-    ],
-  },
-  {
-    id: 81,
-    endereco: "ARM A.47.2",
-    baseNameInventario_id: "5cc4b22b-a0b7-42f9-9892-e6ba046dcda3",
-    users: [
-      {
-        id: "e7a250c0-935a-45f5-b3d1-501a0a304cb1",
-        name: "Pedro",
-      },
-    ],
-  },
-  {
-    id: 80,
-    endereco: "ARM A.47.2",
-    baseNameInventario_id: "5cc4b22b-a0b7-42f9-9892-e6ba046dcda3",
-    users: [
-      {
-        id: "e7a250c0-935a-45f5-b3d1-501a0a304cb1",
-        name: "Pedro",
-      },
-    ],
-  },
-  {
-    id: 79,
-    endereco: "ARM A.47.2",
-    baseNameInventario_id: "5cc4b22b-a0b7-42f9-9892-e6ba046dcda3",
-    users: [
-      {
-        id: "e7a250c0-935a-45f5-b3d1-501a0a304cb1",
-        name: "Pedro",
-      },
-    ],
-  },
-  {
-    id: 78,
-    endereco: "ARM A.47.2",
-    baseNameInventario_id: "5cc4b22b-a0b7-42f9-9892-e6ba046dcda3",
-    users: [
-      {
-        id: "e7a250c0-935a-45f5-b3d1-501a0a304cb1",
-        name: "Pedro",
-      },
-    ],
-  },
-  {
-    id: 77,
-    endereco: "ARM A.47.2",
-    baseNameInventario_id: "5cc4b22b-a0b7-42f9-9892-e6ba046dcda3",
-    users: [
-      {
-        id: "e7a250c0-935a-45f5-b3d1-501a0a304cb1",
-        name: "Pedro",
-      },
-    ],
-  },
-  {
-    id: 76,
-    endereco: "ARM A.47.2",
-    baseNameInventario_id: "5cc4b22b-a0b7-42f9-9892-e6ba046dcda3",
-    users: [
-      {
-        id: "e7a250c0-935a-45f5-b3d1-501a0a304cb1",
-        name: "Pedro",
-      },
-    ],
-  },
-  {
-    id: 75,
-    endereco: "ARM A.47.2",
-    baseNameInventario_id: "5cc4b22b-a0b7-42f9-9892-e6ba046dcda3",
-    users: [
-      {
-        id: "e7a250c0-935a-45f5-b3d1-501a0a304cb1",
-        name: "Pedro",
-      },
-    ],
-  },
-  {
-    id: 74,
-    endereco: "ARM A.47.2",
-    baseNameInventario_id: "5cc4b22b-a0b7-42f9-9892-e6ba046dcda3",
-    users: [
-      {
-        id: "e7a250c0-935a-45f5-b3d1-501a0a304cb1",
-        name: "Pedro",
-      },
-    ],
-  },
-  {
-    id: 73,
-    endereco: "ARM A.47.2",
-    baseNameInventario_id: "5cc4b22b-a0b7-42f9-9892-e6ba046dcda3",
-    users: [
-      {
-        id: "e7a250c0-935a-45f5-b3d1-501a0a304cb1",
-        name: "Pedro",
-      },
-    ],
-  },
-  {
-    id: 72,
-    endereco: "ARM H.47.2",
-    baseNameInventario_id: "5cc4b22b-a0b7-42f9-9892-e6ba046dcda3",
-    users: [
-      {
-        id: "e7a250c0-935a-45f5-b3d1-501a0a304cb1",
-        name: "Pedro",
-      },
-    ],
-  },
-  {
-    id: 71,
-    endereco: "ARM G.47.2",
-    baseNameInventario_id: "5cc4b22b-a0b7-42f9-9892-e6ba046dcda3",
-    users: [
-      {
-        id: "e7a250c0-935a-45f5-b3d1-501a0a304cb1",
-        name: "Pedro",
-      },
-      {
-        id: "e7a250c0-935a-45f5-b3d1-501a0a304cb1",
-        name: "Pedro",
-      },
-    ],
-  },
-  {
-    id: 70,
-    endereco: "ARM G.47.2",
-    baseNameInventario_id: "5cc4b22b-a0b7-42f9-9892-e6ba046dcda3",
-    users: [
-      {
-        id: "e7a250c0-935a-45f5-b3d1-501a0a304cb1",
-        name: "Pedro",
-      },
-    ],
-  },
-];
+import { UIuserList, UIAlocateEnd } from "../../types";
+import CircularProgress from "@mui/material/CircularProgress";
+import { useLoading } from "../../contexts/hooks/Loanding";
+import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -311,23 +51,6 @@ interface SelectedItem {
   id: string | undefined;
 }
 
-interface User {
-  id: string;
-  name: string;
-}
-
-interface UIAlocateEnd {
-  id: number;
-  endereco: string;
-  baseNameInventario_id: string;
-  users: User[];
-}
-
-interface UIData {
-  user_ids: string[];
-  baseInventario_ids: number[];
-}
-
 interface UIPropsModal {
   setOpenAlocateEnd: (value: boolean) => void;
   openAlocateEnd: boolean;
@@ -343,6 +66,7 @@ export default function ModalAlocateEndInventario({
   nameInventario,
   idUpdate,
 }: UIPropsModal) {
+  const { isLoadingFetch } = useLoading();
   const { updateNameData, nameData } = useName();
   const { lisUserData } = useUsers();
   const { alocateAddressData, alocateAddress, removeAlocateAddress } =
@@ -519,14 +243,29 @@ export default function ModalAlocateEndInventario({
                 alignItems: "center",
               }}
             >
-              <Typography component="h1" variant="h5">
-                {nameInventario} -{" "}
-                {updateNameData &&
-                updateNameData.firstStatus === true &&
-                updateNameData?.secondStatus === true
-                  ? "Finalizado"
-                  : "Pendente"}
-              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Typography component="h1" variant="h5">
+                  {nameInventario} -{" "}
+                  {updateNameData &&
+                  updateNameData.firstStatus === true &&
+                  updateNameData?.secondStatus === true
+                    ? "Finalizado"
+                    : "Pendente"}
+                </Typography>
+                <CancelPresentationIcon
+                  fontSize="small"
+                  color="error"
+                  sx={{ marginLeft: "10px", cursor: "pointer" }}
+                  onClick={handleClose}
+                />
+              </Box>
+
               <Box
                 component="form"
                 noValidate
@@ -644,31 +383,39 @@ export default function ModalAlocateEndInventario({
                     Atualizar
                   </Button>
                 </Box>
+                {isLoadingFetch ? (
+                  <Box
+                    sx={{ display: "flex", justifyContent: "center", mt: 2 }}
+                  >
+                    <CircularProgress color="success" />
+                  </Box>
+                ) : (
+                  <div style={{ display: "flex", flexDirection: "row" }}>
+                    {Object.keys(dataAddress)
+                      .sort()
+                      .map((key) => (
+                        <div key={key} style={{ margin: "10px" }}>
+                          {dataAddress[key].map((item: UIAlocateEnd) => (
+                            <div
+                              key={item.id}
+                              style={{ display: "flex", alignItems: "center" }}
+                            >
+                              <Checkbox
+                                checked={arrayAddressId.includes(item.id)}
+                                onClick={() => handlerAdressCheckbox(item.id)}
+                              />
 
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                  {Object.keys(dataAddress)
-                    .sort()
-                    .map((key) => (
-                      <div key={key} style={{ margin: "10px" }}>
-                        {dataAddress[key].map((item: UIAlocateEnd) => (
-                          <div
-                            key={item.id}
-                            style={{ display: "flex", alignItems: "center" }}
-                          >
-                            <Checkbox
-                              checked={arrayAddressId.includes(item.id)}
-                              onClick={() => handlerAdressCheckbox(item.id)}
-                            />
-
-                            <span>
-                              {item.endereco.replace("ARM ", "")} (
-                              {item.users.map((user) => user.name).join(", ")})
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    ))}
-                </div>
+                              <span>
+                                {item.endereco.replace("ARM ", "")} (
+                                {item.users.map((user) => user.name).join(", ")}
+                                )
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      ))}
+                  </div>
+                )}
               </Box>
             </Box>
           </Container>
