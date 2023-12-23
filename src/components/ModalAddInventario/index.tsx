@@ -145,7 +145,7 @@ export default function ModalAddInventario({
                   }}
                   color="success"
                 >
-                  Upload
+                  Processar
                 </Button>
               </Box>
             </Box>

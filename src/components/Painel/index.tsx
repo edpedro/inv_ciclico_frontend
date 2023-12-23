@@ -127,6 +127,7 @@ const Painel: React.FC<Props> = ({ children }) => {
             >
               Sistema de Inventário
             </Typography>
+            <Typography sx={{ mb: 1 }}>{authData?.name}</Typography>
             <div>
               <IconButton
                 size="large"
@@ -154,7 +155,6 @@ const Painel: React.FC<Props> = ({ children }) => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <Typography sx={{ m: 1 }}>{authData?.name}</Typography>
                 <MenuItem onClick={handleExit}>Sair</MenuItem>
               </Menu>
             </div>
