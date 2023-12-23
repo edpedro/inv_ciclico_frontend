@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import axios, { AxiosInstance } from "axios";
 import { useLoading } from "../contexts/hooks/Loanding";
 
 interface UItoken {
