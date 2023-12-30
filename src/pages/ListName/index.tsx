@@ -49,15 +49,18 @@ export default function ListName() {
     setOpenAddInventario(true);
     setIdInventario(id);
     setNameInventario(name);
+    listAllUserData();
   };
 
   const handleOpen = () => {
     setOpen(true);
     setIdUpdate("");
+    listAllUserData();
   };
 
   useEffect(() => {
     loadNameData();
+    listAllUserData();
   }, []);
 
   function handleDelete(id: string) {

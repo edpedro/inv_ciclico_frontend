@@ -4,11 +4,14 @@ import Typography from "@mui/material/Typography";
 import { useName } from "../../contexts/hooks/NewName";
 
 import mapaSistema from "../../assets/mapaSistema.png";
+import { useUsers } from "../../contexts/hooks/Users";
 
 export default function Home() {
   const { loadNameData } = useName();
+  const { listAllUserData } = useUsers();
 
   useEffect(() => {
+    listAllUserData();
     loadNameData();
   }, []);
 

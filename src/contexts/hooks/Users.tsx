@@ -19,7 +19,7 @@ type Props = {
 interface UserContextData {
   lisUserData?: UIuserList[];
   userFindData?: UIuserList;
-  listAllUserData: () => Promise<void>;
+  listAllUserData: () => void;
   registerUsers: (
     name: string,
     username: string,
@@ -88,7 +88,7 @@ export const UsersProvider = ({ children }: Props) => {
   }
 
   async function listAllUserData() {
-    const { data } = await api.get(`/points/users/`);
+    const { data } = await api.get("/points/users/");
 
     setListUserData(data);
   }

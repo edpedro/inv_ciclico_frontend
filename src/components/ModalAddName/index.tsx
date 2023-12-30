@@ -132,7 +132,7 @@ export default function ModalAddName({
     const type = data.get("type") as string;
     const user_id = userIds as string[];
 
-    if (!name || !date) {
+    if (!name || !date || !type) {
       toast.error("Favor preencher todos dados!");
 
       return;
