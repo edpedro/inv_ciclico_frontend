@@ -66,8 +66,8 @@ const GraphicBarraV: React.FC = () => {
     },
   };
   const columnStyle = {
-    width: "280px",
-    height: "180px",
+    width: "200px",
+    height: "100px",
   };
   return <Column {...config} style={columnStyle} />;
 };

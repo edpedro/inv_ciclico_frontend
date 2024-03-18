@@ -15,7 +15,8 @@ import Container from "@mui/material/Container";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { mainListItems, secondaryListItems } from "../listItems/listItems";
 import { useAuth } from "../../contexts/hooks/Auth";
 
@@ -79,8 +80,11 @@ interface Props {
 
 const Painel: React.FC<Props> = ({ children }) => {
   const [open, setOpen] = useState(true);
+  const theme = useTheme();
 
   const { signOut, authData } = useAuth();
+
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -104,7 +108,7 @@ const Painel: React.FC<Props> = ({ children }) => {
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-        <AppBar position="fixed" open={open}>
+        <AppBar position="fixed" open={isMobile ? false : open}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -160,7 +164,7 @@ const Painel: React.FC<Props> = ({ children }) => {
             </div>
           </Toolbar>
         </AppBar>
-        <Drawer variant="permanent" open={open}>
+        <Drawer variant="permanent" open={isMobile ? false : open}>
           <Toolbar
             sx={{
               display: "flex",

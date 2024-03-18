@@ -57,7 +57,7 @@ const GraphicPizza = () => {
   };
   const columnStyle = {
     width: "500px",
-    height: "300px",
+    height: "190px",
   };
   return <Pie {...config} style={columnStyle} />;
 };

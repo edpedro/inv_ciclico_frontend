@@ -84,6 +84,23 @@ export interface UIdashboardList {
   totalDivergencia: number;
   totalAcertos: number;
   evolucaoContagem: string;
+  tempoInventario: string;
+  usersPoints?: {
+    id: string;
+    name: string;
+    username: string;
+    totalPoints: number;
+  }[];
+  indicadorDesempenho?: {
+    Endereco: string;
+    TotalEnd: number;
+    TotalSkus: number;
+    Acuracidade: number;
+  }[];
+  evolucaoPorRua: {
+    Rua: string;
+    EvolRua: string;
+  }[];
 }
 
 export interface UIsecondUpdate {

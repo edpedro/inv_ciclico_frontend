@@ -23,8 +23,7 @@ export default function SelectAutoInv({ nameInv, handleChange }: UIProps) {
 
   return (
     <div>
-      <FormControl sx={{ m: 1, minWidth: 250, minHeight: 10 }}>
-        <InputLabel id="demo-simple-select-label">Inventario</InputLabel>
+      <FormControl sx={{ m: 1, minWidth: 220 }}>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
@@ -32,11 +31,15 @@ export default function SelectAutoInv({ nameInv, handleChange }: UIProps) {
           color="success"
           onChange={handleChange}
           autoWidth
-          label="Inventario"
+          sx={{ height: "40px", py: "0px" }}
         >
           {nameData &&
             nameData.map((value) => (
-              <MenuItem key={value.id} value={value.name}>
+              <MenuItem
+                key={value.id}
+                value={value.name}
+                sx={{ height: "30px", py: "0px" }}
+              >
                 {value.name}
               </MenuItem>
             ))}

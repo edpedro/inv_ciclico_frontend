@@ -14,16 +14,16 @@ const GraphicAcuracidade = () => {
     indicator: false || undefined,
     statistic: {
       title: {
-        offsetY: -36,
+        offsetY: -30,
         style: {
-          fontSize: "36px",
+          fontSize: "28px",
           color: "#4B535E",
         },
         formatter: () => `${dashboardData?.acuracidade}%`,
       },
       content: {
         style: {
-          fontSize: "24px",
+          fontSize: "20px",
           lineHeight: "44px",
           color: "#4B535E",
         },
@@ -33,7 +33,7 @@ const GraphicAcuracidade = () => {
   };
   const columnStyle = {
     width: "280px",
-    height: "140px",
+    height: "100px",
   };
   return <Gauge {...config} style={columnStyle} />;
 };

@@ -36,8 +36,8 @@ const GraphicBarraH = () => {
     color: ["#db111b", "#ebb504"],
   };
   const columnStyle = {
-    width: "280px",
-    height: "180px",
+    width: "260px",
+    height: "150px",
   };
   return <Bar {...config} style={columnStyle} />;
 };
