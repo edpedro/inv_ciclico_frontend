@@ -75,31 +75,32 @@ export default function ModalAddName({
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
-    if (updateNameData && lisUserData) {
-      const filterUserIds = nameData!
-        .filter((name) => {
-          return name.id === idUpdate;
-        })
-        .flatMap((name) => name.users.map((user) => user.user_id));
-
-      const filterNames = lisUserData
-        ?.filter((value) => {
-          return filterUserIds.includes(value.id);
-        })
-        .map(({ id, name }) => ({ id, name })) as SelectedItem[];
-
-      setName(updateNameData?.name as string);
-      setDate(updateNameData?.date as string);
-      setType(updateNameData?.type as string);
-      setSelectedItems(filterNames);
-      setUsersIds(filterUserIds);
-    }
     if (!idUpdate) {
       setName("");
       setDate("");
       setType("");
       setSelectedItems([]);
       setUsersIds([]);
+    } else {
+      if (updateNameData && lisUserData) {
+        const filterUserIds = nameData!
+          .filter((name) => {
+            return name.id === idUpdate;
+          })
+          .flatMap((name) => name.users.map((user) => user.user_id));
+
+        const filterNames = lisUserData
+          ?.filter((value) => {
+            return filterUserIds.includes(value.id);
+          })
+          .map(({ id, name }) => ({ id, name })) as SelectedItem[];
+
+        setName(updateNameData?.name as string);
+        setDate(updateNameData?.date as string);
+        setType(updateNameData?.type as string);
+        setSelectedItems(filterNames);
+        setUsersIds(filterUserIds);
+      }
     }
   }, [updateNameData, idUpdate, lisUserData]);
 

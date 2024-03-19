@@ -13,6 +13,7 @@ export default function Home() {
   useEffect(() => {
     listAllUserData();
     loadNameData();
+    listAllUserData();
   }, []);
 
   return (

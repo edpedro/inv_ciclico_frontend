@@ -49,13 +49,11 @@ export default function ListName() {
     setOpenAddInventario(true);
     setIdInventario(id);
     setNameInventario(name);
-    listAllUserData();
   };
 
   const handleOpen = () => {
     setOpen(true);
     setIdUpdate("");
-    listAllUserData();
   };
 
   useEffect(() => {
@@ -72,14 +70,12 @@ export default function ListName() {
     listNameData(id);
     setOpen(true);
     setIdUpdate(id);
-    listAllUserData();
   }
 
   function handleAlocateEnd(id: string, name: string) {
     listNameData(id);
     setOpenAlocateEnd(true);
     setIdUpdate(id);
-    listAllUserData();
     setIdInventario(id);
     getAllAlocateAddress(id);
     setNameInventario(name);

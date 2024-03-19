@@ -129,7 +129,7 @@ const Painel: React.FC<Props> = ({ children }) => {
               noWrap
               sx={{ flexGrow: 1, marginBottom: "10px" }}
             >
-              Sistema de Inventário
+              XInventario
             </Typography>
             <Typography sx={{ mb: 1 }}>{authData?.name}</Typography>
             <div>
