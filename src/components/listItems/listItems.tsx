@@ -7,6 +7,8 @@ import PeopleIcon from "@mui/icons-material/People";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import LineAxisIcon from "@mui/icons-material/LineAxis";
+import LayersIcon from "@mui/icons-material/Layers";
+import GridViewIcon from "@mui/icons-material/GridView";
 import { Link } from "react-router-dom";
 
 export const mainListItems = (
@@ -60,6 +62,30 @@ export const secondaryListItems = (
           <PeopleIcon />
         </ListItemIcon>
         <ListItemText primary="Criar Usuario" />
+      </ListItemButton>
+    </Link>
+  </>
+);
+
+export const reversaListItems = (
+  <>
+    <ListSubheader component="div" inset>
+      Reversa
+    </ListSubheader>
+    <Link to="/protocolo" style={{ textDecoration: "none", color: "#000" }}>
+      <ListItemButton>
+        <ListItemIcon>
+          <LayersIcon />
+        </ListItemIcon>
+        <ListItemText primary="Protocolo" />
+      </ListItemButton>
+    </Link>
+    <Link to="/baseserial" style={{ textDecoration: "none", color: "#000" }}>
+      <ListItemButton>
+        <ListItemIcon>
+          <GridViewIcon />
+        </ListItemIcon>
+        <ListItemText primary="Baseserial" />
       </ListItemButton>
     </Link>
   </>

@@ -156,3 +156,38 @@ export interface User {
   id: string;
   name: string;
 }
+
+export interface UINameProtocoloList {
+  id: string;
+  name: string;
+  date: string;
+  user: {
+    name: string;
+  };
+}
+
+export interface UIProtocoloList {
+  id: string;
+  codigo: string;
+  serial: string;
+  caixa: number;
+  nameProtocols: {
+    id: string;
+    name: string;
+    date: string;
+    user: {
+      name: string;
+    };
+  };
+}
+
+export interface UIStatusJobs {
+  id: string;
+  job: string;
+  status: string;
+  progresso: number;
+}
+
+export interface UIBaseCreate {
+  file: IFile | null;
+}

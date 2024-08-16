@@ -10,6 +10,8 @@ import ListName from "../pages/ListName";
 import Register from "../pages/Register";
 import Users from "../pages/Users";
 import Dashboard from "../pages/Dashboard";
+import Reversa from "../pages/Protocolo";
+import BaseSerial from "../pages/BaseSerial";
 
 const Routes = () => {
   const { isLoadingStorage } = useAuth();
@@ -36,6 +38,8 @@ const Routes = () => {
         <Route path="/name/inventario" element={<ListName />} />
         <Route path="/inventario" element={<Inventario />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/protocolo" element={<Reversa />} />
+        <Route path="/baseserial" element={<BaseSerial />} />
       </Route>
       <Route path="*" element={<Home />} />
     </Router>

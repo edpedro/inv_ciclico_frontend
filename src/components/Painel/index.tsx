@@ -17,7 +17,11 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { mainListItems, secondaryListItems } from "../listItems/listItems";
+import {
+  mainListItems,
+  secondaryListItems,
+  reversaListItems,
+} from "../listItems/listItems";
 import { useAuth } from "../../contexts/hooks/Auth";
 
 const drawerWidth: number = 220;
@@ -182,6 +186,9 @@ const Painel: React.FC<Props> = ({ children }) => {
             {mainListItems}
             <Divider sx={{ my: 1 }} />
             {secondaryListItems}
+
+            <Divider sx={{ my: 1 }} />
+            {reversaListItems}
           </List>
         </Drawer>
 
