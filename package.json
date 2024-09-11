@@ -27,7 +27,8 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.10.0",
     "react-toastify": "^9.1.2",
-    "serve": "^14.2.3"
+    "serve": "^14.2.3",
+    "vite-plugin-rewrite-all": "^1.0.2"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.195",

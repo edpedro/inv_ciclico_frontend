@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -13,14 +13,14 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
 import ButtonGroup from "@mui/material/ButtonGroup";
+import CircularProgress from "@mui/material/CircularProgress";
+import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
 import { useUsers } from "../../contexts/hooks/Users";
 import { useName } from "../../contexts/hooks/NewName";
 import { toast } from "react-toastify";
 import { useInventario } from "../../contexts/hooks/Inventario";
 import { UIuserList, UIAlocateEnd } from "../../types";
-import CircularProgress from "@mui/material/CircularProgress";
 import { useLoading } from "../../contexts/hooks/Loanding";
-import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -73,7 +73,6 @@ export default function ModalAlocateEndInventario({
     useInventario();
 
   const [selectedItems, setSelectedItems] = useState<SelectedItem[]>([]);
-
   const [listUsersData, setListUsersData] = useState<UIuserList[]>([]);
   const [userIds, setUsersIds] = useState<string[]>([]);
   const [addressIds, setAddressIds] = useState<number[]>([]);
@@ -89,45 +88,31 @@ export default function ModalAlocateEndInventario({
   useEffect(() => {
     if (updateNameData && alocateAddressData && lisUserData) {
       const filterUserIds = nameData!
-        .filter((name) => {
-          return name.id === idUpdate;
-        })
+        .filter((name) => name.id === idUpdate)
         .flatMap((name) => name.users.map((user) => user.user_id));
 
       const filterNames = lisUserData
-        ?.filter((value) => {
-          return filterUserIds.includes(value.id);
-        })
+        ?.filter((value) => filterUserIds.includes(value.id))
         .map(({ id, name }) => ({ id, name })) as SelectedItem[];
 
       const listUsersFiltered = updateNameData.users.map((ids) => ids.user_id);
 
       const listUsersFilteredData = lisUserData
-        ?.filter((value) => {
-          return listUsersFiltered.includes(value.id);
-        })
+        ?.filter((value) => listUsersFiltered.includes(value.id))
         .map(({ id, name }) => ({ id, name })) as UIuserList[];
 
       setListUsersData(listUsersFilteredData);
       setSelectedItems(filterNames);
       setUsersIds(filterUserIds);
 
-      const filterLetters = alocateAddressData.map((letter) =>
-        letter.endereco.slice(0, -5)
-      );
-
-      const letterDuplicated = Array.from(new Set(filterLetters));
-
-      setAddress(letterDuplicated);
-
       const result = alocateAddressData.sort((a, b) =>
-        a.endereco
-          .replace("ARM ", "")
-          .localeCompare(b.endereco.replace("ARM ", ""))
+        a.endereco.localeCompare(b.endereco)
       );
+
       const grouped = result.reduce<Record<string, UIAlocateEnd[]>>(
         (acc, item) => {
-          const key = item.endereco.replace("ARM ", "").split(".")[0];
+          const match = item.endereco.match(/^(ARM|E ARM) ([A-Z])/);
+          const key = match ? match[2] : "Outros";
           if (!acc[key]) {
             acc[key] = [];
           }
@@ -138,8 +123,16 @@ export default function ModalAlocateEndInventario({
       );
 
       setDataAddress(grouped);
+      setAddress(Object.keys(grouped).sort());
     }
-  }, [updateNameData, idInventario, lisUserData, alocateAddressData, idUpdate]);
+  }, [
+    updateNameData,
+    idInventario,
+    lisUserData,
+    alocateAddressData,
+    idUpdate,
+    nameData,
+  ]);
 
   const handleChange = (event: SelectChangeEvent<typeof userIds>) => {
     const {
@@ -147,12 +140,12 @@ export default function ModalAlocateEndInventario({
     } = event;
 
     if (Array.isArray(value)) {
-      const items = value!.map((name: string) => {
+      const items = value.map((name: string) => {
         const item = lisUserData!.find((user) => user.name === name);
         return { name, id: item?.id };
       });
 
-      const ids = items!
+      const ids = items
         .map((item) => item.id)
         .filter((id) => id !== undefined) as string[];
 
@@ -165,7 +158,10 @@ export default function ModalAlocateEndInventario({
     setSelectedButton(latter);
     if (alocateAddressData) {
       const filtered = alocateAddressData
-        .filter((latterFilter) => latterFilter.endereco.slice(0, -5) === latter)
+        .filter((latterFilter) => {
+          const match = latterFilter.endereco.match(/^(ARM|E ARM) ([A-Z])/);
+          return match && match[2] === latter;
+        })
         .map((value) => value.id);
 
       setAddressIds(filtered);
@@ -181,7 +177,6 @@ export default function ModalAlocateEndInventario({
   const handlerAdressCheckbox = (latter: number) => {
     setArrayAddressId((prevArray) => {
       const index = prevArray.indexOf(latter);
-
       if (index !== -1) {
         return [...prevArray.slice(0, index), ...prevArray.slice(index + 1)];
       } else {
@@ -224,6 +219,83 @@ export default function ModalAlocateEndInventario({
     }
     alocateAddress(idInventario, data);
   };
+
+  const renderAddressList = () => (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "wrap",
+        gap: "20px",
+      }}
+    >
+      {Object.keys(dataAddress)
+        .sort()
+        .map((key) => (
+          <div
+            key={key}
+            style={{
+              flex: "1 1 calc(33% - 20px)",
+              boxSizing: "border-box",
+              overflow: "hidden",
+            }}
+          >
+            <Typography
+              variant="h6"
+              style={{
+                textAlign: "center",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {key}
+            </Typography>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                overflowY: "auto",
+              }}
+            >
+              {dataAddress[key]
+                .sort((a, b) => a.endereco.localeCompare(b.endereco))
+                .map((item) => (
+                  <div
+                    key={item.id}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginBottom: "10px", // Ajuste a margem para espaçar os itens
+                      maxWidth: "100%", // Evita que o item exceda a largura do contêiner
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    <Checkbox
+                      checked={arrayAddressId.includes(item.id)}
+                      onClick={() => handlerAdressCheckbox(item.id)}
+                    />
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        ml: 1,
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {item.endereco.replace(/(ARM |E ARM )/, "")} (
+                      {item.users.map((user) => user.name).join(", ")})
+                    </Typography>
+                  </div>
+                ))}
+            </div>
+          </div>
+        ))}
+    </div>
+  );
 
   return (
     <div>
@@ -274,7 +346,7 @@ export default function ModalAlocateEndInventario({
                 }}
               >
                 <FormControl sx={{ mt: 2, width: 300 }}>
-                  <InputLabel id="demo-multiple-checkbox-label" sx={{}}>
+                  <InputLabel id="demo-multiple-checkbox-label">
                     Usuarios
                   </InputLabel>
                   <Select
@@ -390,31 +462,7 @@ export default function ModalAlocateEndInventario({
                     <CircularProgress color="success" />
                   </Box>
                 ) : (
-                  <div style={{ display: "flex", flexDirection: "row" }}>
-                    {Object.keys(dataAddress)
-                      .sort()
-                      .map((key) => (
-                        <div key={key} style={{ margin: "10px" }}>
-                          {dataAddress[key].map((item: UIAlocateEnd) => (
-                            <div
-                              key={item.id}
-                              style={{ display: "flex", alignItems: "center" }}
-                            >
-                              <Checkbox
-                                checked={arrayAddressId.includes(item.id)}
-                                onClick={() => handlerAdressCheckbox(item.id)}
-                              />
-
-                              <span>
-                                {item.endereco.replace("ARM ", "")} (
-                                {item.users.map((user) => user.name).join(", ")}
-                                )
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      ))}
-                  </div>
+                  renderAddressList()
                 )}
               </Box>
             </Box>
