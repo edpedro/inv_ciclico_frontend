@@ -9,8 +9,7 @@ const useApi = () => {
   const { setLoadingFetch } = useLoading();
 
   const api: AxiosInstance = axios.create({
-    baseURL: import.meta.env.VITE_URL || "http://localhost:3000/",
-    //baseURL: "http://localhost:3000/",
+    baseURL: import.meta.env.VITE_URL,
   });
 
   api.interceptors.request.use(

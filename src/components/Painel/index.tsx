@@ -184,14 +184,16 @@ const Painel: React.FC<Props> = ({ children }) => {
             </IconButton>
           </Toolbar>
           <Divider />
-          <List component="nav">
-            {mainListItems}
-            <Divider sx={{ my: 1 }} />
-            {secondaryListItems}
+          {authData && (
+            <List component="nav">
+              {mainListItems}
+              <Divider sx={{ my: 1 }} />
+              {secondaryListItems}
 
-            <Divider sx={{ my: 1 }} />
-            {reversaListItems}
-          </List>
+              <Divider sx={{ my: 1 }} />
+              {reversaListItems}
+            </List>
+          )}
         </Drawer>
 
         <Box
