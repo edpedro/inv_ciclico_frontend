@@ -1,11 +1,12 @@
 import { Gauge } from "@ant-design/plots";
-import { useDashboard } from "../../contexts/hooks/Dashboard";
 
-const GraphicAcuracidade = () => {
-  const { dashboardData } = useDashboard();
+interface ProsAcuracidade {
+  acuracidade: number;
+}
 
+const GraphicAcuracidade = ({ acuracidade }: ProsAcuracidade) => {
   const config = {
-    percent: Number(dashboardData?.acuracidade) / 100,
+    percent: Number(acuracidade) / 100,
     range: {
       color: "l(0) 0:#9de0b1 1:#1bad47",
     },
@@ -19,7 +20,7 @@ const GraphicAcuracidade = () => {
           fontSize: "28px",
           color: "#4B535E",
         },
-        formatter: () => `${dashboardData?.acuracidade}%`,
+        formatter: () => `${acuracidade}%`,
       },
       content: {
         style: {

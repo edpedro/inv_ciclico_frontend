@@ -8,17 +8,20 @@ interface DataItem {
   value: number;
 }
 
-const GraphicBarraH = () => {
-  const { dashboardData } = useDashboard();
+interface PropsDashboardData {
+  totalFalta: number;
+  totalSobra: number;
+}
 
+const GraphicBarraH = ({ totalFalta, totalSobra }: PropsDashboardData) => {
   const data: DataItem[] = [
     {
       year: "Falta",
-      value: dashboardData ? dashboardData?.totalFalta : 0,
+      value: totalFalta ? totalFalta : 0,
     },
     {
       year: "Sobra",
-      value: dashboardData ? dashboardData?.totalSobra : 0,
+      value: totalSobra ? totalSobra : 0,
     },
   ];
   const config = {

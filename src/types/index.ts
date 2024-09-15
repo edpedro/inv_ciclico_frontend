@@ -91,7 +91,7 @@ export interface UIdashboardList {
     username: string;
     totalPoints: number;
   }[];
-  indicadorDesempenho?: {
+  indicadorDesempenho: {
     Endereco: string;
     TotalEnd: number;
     TotalSkus: number;

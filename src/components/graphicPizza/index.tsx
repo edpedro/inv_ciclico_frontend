@@ -1,22 +1,27 @@
 import { Pie } from "@ant-design/plots";
-import { useDashboard } from "../../contexts/hooks/Dashboard";
 
 interface DataItem {
   type: string;
   value: number;
 }
 
-const GraphicPizza = () => {
-  const { dashboardData } = useDashboard();
+interface PropsDashboardData {
+  totalSomaDivergencias: number;
+  totalSomaContagem: number;
+}
 
+const GraphicPizza = ({
+  totalSomaDivergencias,
+  totalSomaContagem,
+}: PropsDashboardData) => {
   const data: DataItem[] = [
     {
       type: "Divergência",
-      value: dashboardData ? dashboardData?.totalSomaDivergencias : 0,
+      value: totalSomaDivergencias ? totalSomaDivergencias : 0,
     },
     {
       type: "Acertos",
-      value: dashboardData ? dashboardData?.totalSomaContagem : 0,
+      value: totalSomaContagem ? totalSomaContagem : 0,
     },
   ];
 

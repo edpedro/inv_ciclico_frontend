@@ -112,7 +112,7 @@ const Painel: React.FC<Props> = ({ children }) => {
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-        <AppBar position="fixed" open={isMobile ? false : open}>
+        <AppBar position="fixed" open={isMobile || !authData ? false : open}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -136,39 +136,41 @@ const Painel: React.FC<Props> = ({ children }) => {
               XInventario
             </Typography>
             <Typography sx={{ mb: 1 }}>{authData?.name}</Typography>
-            <div>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-                sx={{ mb: 2 }}
-              >
-                <AccountCircle />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={handleExit}>Sair</MenuItem>
-              </Menu>
-            </div>
+            {authData && (
+              <div>
+                <IconButton
+                  size="large"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleMenu}
+                  color="inherit"
+                  sx={{ mb: 2 }}
+                >
+                  <AccountCircle />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                >
+                  <MenuItem onClick={handleExit}>Sair</MenuItem>
+                </Menu>
+              </div>
+            )}
           </Toolbar>
         </AppBar>
-        <Drawer variant="permanent" open={isMobile ? false : open}>
+        <Drawer variant="permanent" open={isMobile || !authData ? false : open}>
           <Toolbar
             sx={{
               display: "flex",

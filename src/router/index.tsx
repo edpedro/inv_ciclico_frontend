@@ -12,6 +12,7 @@ import Users from "../pages/Users";
 import Dashboard from "../pages/Dashboard";
 import Reversa from "../pages/Protocolo";
 import BaseSerial from "../pages/BaseSerial";
+import SharedDashboard from "../pages/SharedDashboard";
 
 const Routes = () => {
   const { isLoadingStorage } = useAuth();
@@ -32,6 +33,7 @@ const Routes = () => {
     <Router>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/dashboard/shared/:id" element={<SharedDashboard />} />
       <Route element={<PrivateRoutes />}>
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />

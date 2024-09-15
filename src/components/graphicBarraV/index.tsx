@@ -8,32 +8,31 @@ interface DataItem {
   type: string;
   sales: number;
 }
+interface ProsDashboardData {
+  dashboardData: UIdashboardList;
+}
 
-const GraphicBarraV: React.FC = () => {
-  const { dashboardData } = useDashboard();
+const GraphicBarraV: React.FC<ProsDashboardData> = ({ dashboardData }) => {
+  const memoizedData = useMemo(() => {
+    if (!dashboardData) {
+      return [];
+    }
 
-  const { totalDivergencia, totalAcertos } = dashboardData as UIdashboardList;
+    const { totalDivergencia = 0, totalAcertos = 0 } =
+      dashboardData as UIdashboardList;
 
-  const memoizedContextValue = useMemo(
-    () => ({
-      totalDivergencia,
-      totalAcertos,
-    }),
-    [dashboardData]
-  );
+    return [
+      { type: "Divergência", sales: totalDivergencia },
+      { type: "Acertos", sales: totalAcertos },
+    ];
+  }, [dashboardData]);
 
-  const data: DataItem[] = [
-    {
-      type: "Divergência",
-      sales: memoizedContextValue ? memoizedContextValue?.totalDivergencia : 0,
-    },
-    {
-      type: "Acertos",
-      sales: memoizedContextValue ? memoizedContextValue?.totalAcertos : 0,
-    },
-  ];
+  if (memoizedData.length === 0) {
+    return <div>No data available for the chart</div>;
+  }
+
   const config = {
-    data,
+    data: memoizedData,
     xField: "type",
     yField: "sales",
     columnWidthRatio: 0.3,
@@ -50,26 +49,15 @@ const GraphicBarraV: React.FC = () => {
       },
     },
     meta: {
-      type: {
-        alias: "categoria",
-      },
-      sales: {
-        alias: "Total",
-      },
+      type: { alias: "categoria" },
+      sales: { alias: "Total" },
     },
-    columnStyle: ({ type }: { type: string }) => {
-      if (type === "Divergência") {
-        return { fill: "#db111b" };
-      } else if (type === "Acertos") {
-        return { fill: "#1bad47" };
-      }
-    },
+    columnStyle: ({ type }: { type: string }) => ({
+      fill: type === "Divergência" ? "#db111b" : "#1bad47",
+    }),
   };
-  const columnStyle = {
-    width: "200px",
-    height: "100px",
-  };
-  return <Column {...config} style={columnStyle} />;
+
+  return <Column {...config} style={{ width: "200px", height: "100px" }} />;
 };
 
 export default GraphicBarraV;

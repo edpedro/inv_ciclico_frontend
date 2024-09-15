@@ -1,11 +1,15 @@
 import { Bullet } from "@ant-design/plots";
-import { useDashboard } from "../../contexts/hooks/Dashboard";
 
-const GraphicNEvoluc = () => {
-  const { dashboardData } = useDashboard();
+interface PropsEvolucaoPorRua {
+  evolucaoPorRua: {
+    Rua: string;
+    EvolRua: string;
+  }[];
+}
 
+const GraphicNEvoluc = ({ evolucaoPorRua }: PropsEvolucaoPorRua) => {
   const dataNew =
-    dashboardData?.evolucaoPorRua.map((item) => {
+    evolucaoPorRua.map((item) => {
       return {
         title: item.Rua,
         ranges: [100],

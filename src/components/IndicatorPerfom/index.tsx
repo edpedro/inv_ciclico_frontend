@@ -6,7 +6,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { useDashboard } from "../../contexts/hooks/Dashboard";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -33,9 +32,18 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export default function IndicatorPerfom() {
-  const { dashboardData } = useDashboard();
+interface PropsDashboardData {
+  indicadorDesempenho: {
+    Endereco: string;
+    TotalEnd: number;
+    TotalSkus: number;
+    Acuracidade: number;
+  }[];
+}
 
+export default function IndicatorPerfom({
+  indicadorDesempenho,
+}: PropsDashboardData) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 50 }} aria-label="customized table">
@@ -48,9 +56,8 @@ export default function IndicatorPerfom() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {dashboardData &&
-            dashboardData.indicadorDesempenho &&
-            dashboardData.indicadorDesempenho.map((item) => (
+          {indicadorDesempenho &&
+            indicadorDesempenho.map((item) => (
               <StyledTableRow key={item.Endereco}>
                 <StyledTableCell>{item.Endereco}</StyledTableCell>
                 <StyledTableCell>{item.TotalEnd}</StyledTableCell>

@@ -23,6 +23,8 @@ import IndicatorPerfom from "../../components/IndicatorPerfom";
 import GraphicNEvoluc from "../../components/graphicNEvoluc";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import ShareIcon from "@mui/icons-material/Share";
+import { toast } from "react-toastify";
 
 export default function Dashboard() {
   const { dashboardData, ListDashboard } = useDashboard();
@@ -67,6 +69,24 @@ export default function Dashboard() {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTable = useMediaQuery(theme.breakpoints.down("md"));
 
+  function handleShare(id: string) {
+    const link = `${window.location.origin}/dashboard/shared/${id}`;
+
+    // Copia o link para o clipboard (opcional)
+    navigator.clipboard.writeText(link).then(() => {
+      toast("Link copiado!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    });
+  }
+
   return (
     <Painel>
       <Loading />
@@ -79,6 +99,14 @@ export default function Dashboard() {
         }}
       >
         <SelectAutoInv nameInv={nameInv} handleChange={handleChange} />
+        {idDashboard && (
+          <ShareIcon
+            onClick={() => handleShare(idDashboard)}
+            fontSize="small"
+            sx={{ cursor: "pointer" }}
+          />
+        )}
+
         {!isMobile && (
           <Typography
             variant="h6"
@@ -97,7 +125,9 @@ export default function Dashboard() {
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={3}>
               <Grid item sm={6} xs={12} md={4}>
-                <IndicatorPerfom />
+                <IndicatorPerfom
+                  indicadorDesempenho={dashboardData.indicadorDesempenho}
+                />
               </Grid>
               <Grid item xs={6} sm={2} md={2}>
                 <Grid container spacing={1}>
@@ -450,7 +480,9 @@ export default function Dashboard() {
                           marginLeft: 2,
                         }}
                       >
-                        <GraphicAcuracidade />
+                        <GraphicAcuracidade
+                          acuracidade={Number(dashboardData.acuracidade)}
+                        />
                       </Box>
                     </Card>
                   </Grid>
@@ -476,7 +508,7 @@ export default function Dashboard() {
                           marginLeft: 2,
                         }}
                       >
-                        <GraphicBarraV />
+                        <GraphicBarraV dashboardData={dashboardData} />
                       </Box>
                     </Card>
                   </Grid>
@@ -507,7 +539,9 @@ export default function Dashboard() {
                           justifyContent: "center",
                         }}
                       >
-                        <GraphicNEvoluc />
+                        <GraphicNEvoluc
+                          evolucaoPorRua={dashboardData.evolucaoPorRua}
+                        />
                       </Box>
                     </Card>
                   </Grid>
@@ -538,7 +572,12 @@ export default function Dashboard() {
                           justifyContent: "center",
                         }}
                       >
-                        <GraphicPizza />
+                        <GraphicPizza
+                          totalSomaDivergencias={
+                            dashboardData.totalSomaDivergencias
+                          }
+                          totalSomaContagem={dashboardData.totalSomaContagem}
+                        />
                       </Box>
                     </Card>
                   </Grid>
@@ -568,7 +607,10 @@ export default function Dashboard() {
                           marginLeft: 2,
                         }}
                       >
-                        <GraphicBarraH />
+                        <GraphicBarraH
+                          totalFalta={dashboardData.totalFalta}
+                          totalSobra={dashboardData.totalSobra}
+                        />
                       </Box>
                     </Card>
                   </Grid>
