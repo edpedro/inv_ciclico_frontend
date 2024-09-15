@@ -37,7 +37,7 @@ export default function SharedDashboard() {
       try {
         setLoading(true);
         const { data } = await axios.get(
-          `http://localhost:3000/dashboard/${id}`
+          `${import.meta.env.VITE_URL}dashboard/${id}`
         );
         setDashboardData(data);
       } catch (err) {
