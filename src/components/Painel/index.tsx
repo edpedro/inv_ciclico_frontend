@@ -21,6 +21,7 @@ import {
   mainListItems,
   secondaryListItems,
   reversaListItems,
+  expedicaoListItems,
 } from "../listItems/listItems";
 import { useAuth } from "../../contexts/hooks/Auth";
 
@@ -188,10 +189,11 @@ const Painel: React.FC<Props> = ({ children }) => {
             <List component="nav">
               {mainListItems}
               <Divider sx={{ my: 1 }} />
-              {secondaryListItems}
-
+              {expedicaoListItems}
               <Divider sx={{ my: 1 }} />
               {reversaListItems}
+              <Divider sx={{ my: 1 }} />
+              {secondaryListItems}
             </List>
           )}
         </Drawer>

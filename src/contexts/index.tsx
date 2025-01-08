@@ -7,6 +7,7 @@ import { InventarioProvider } from "./hooks/Inventario";
 import { UsersProvider } from "./hooks/Users";
 import { DashboardProvider } from "./hooks/Dashboard";
 import { ReversaProvider } from "./hooks/Reversa";
+import { NewExpedicaoProvider } from "./hooks/Expedicao";
 
 interface AppProviderProps {
   children: ReactNode;
@@ -20,7 +21,9 @@ const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
           <NewNameProvider>
             <InventarioProvider>
               <DashboardProvider>
-                <ReversaProvider>{children}</ReversaProvider>
+                <ReversaProvider>
+                  <NewExpedicaoProvider>{children}</NewExpedicaoProvider>
+                </ReversaProvider>
               </DashboardProvider>
             </InventarioProvider>
           </NewNameProvider>

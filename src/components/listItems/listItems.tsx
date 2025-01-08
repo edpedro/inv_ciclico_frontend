@@ -51,17 +51,28 @@ export const mainListItems = (
   </>
 );
 
-export const secondaryListItems = (
+export const expedicaoListItems = (
   <>
     <ListSubheader component="div" inset>
-      Usuarios
+      Expedição
     </ListSubheader>
-    <Link to="/users" style={{ textDecoration: "none", color: "#000" }}>
+    <Link
+      to="/name/expedicao"
+      style={{ textDecoration: "none", color: "#000" }}
+    >
       <ListItemButton>
         <ListItemIcon>
-          <PeopleIcon />
+          <AssignmentIcon />
         </ListItemIcon>
-        <ListItemText primary="Criar Usuario" />
+        <ListItemText primary="Criar Expedicao" />
+      </ListItemButton>
+    </Link>
+    <Link to="/expedicao" style={{ textDecoration: "none", color: "#000" }}>
+      <ListItemButton>
+        <ListItemIcon>
+          <GridViewIcon />
+        </ListItemIcon>
+        <ListItemText primary="Analisar" />
       </ListItemButton>
     </Link>
   </>
@@ -86,6 +97,22 @@ export const reversaListItems = (
           <GridViewIcon />
         </ListItemIcon>
         <ListItemText primary="Baseserial" />
+      </ListItemButton>
+    </Link>
+  </>
+);
+
+export const secondaryListItems = (
+  <>
+    <ListSubheader component="div" inset>
+      Usuarios
+    </ListSubheader>
+    <Link to="/users" style={{ textDecoration: "none", color: "#000" }}>
+      <ListItemButton>
+        <ListItemIcon>
+          <PeopleIcon />
+        </ListItemIcon>
+        <ListItemText primary="Criar Usuario" />
       </ListItemButton>
     </Link>
   </>

@@ -13,6 +13,8 @@ import Dashboard from "../pages/Dashboard";
 import Reversa from "../pages/Protocolo";
 import BaseSerial from "../pages/BaseSerial";
 import SharedDashboard from "../pages/SharedDashboard";
+import CriarNameExpedicao from "../pages/CriarNameExpedicao";
+import Expedicao from "../pages/Expedicao";
 
 const Routes = () => {
   const { isLoadingStorage } = useAuth();
@@ -40,6 +42,8 @@ const Routes = () => {
         <Route path="/name/inventario" element={<ListName />} />
         <Route path="/inventario" element={<Inventario />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/name/expedicao" element={<CriarNameExpedicao />} />
+        <Route path="/expedicao" element={<Expedicao />} />
         <Route path="/protocolo" element={<Reversa />} />
         <Route path="/baseserial" element={<BaseSerial />} />
       </Route>

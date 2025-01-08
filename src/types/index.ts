@@ -191,3 +191,46 @@ export interface UIStatusJobs {
 export interface UIBaseCreate {
   file: IFile | null;
 }
+
+export interface UIExpedicaoCreate {
+  date: string;
+  name: string;
+}
+export interface UIexpedicaoList {
+  id: string;
+  date: string;
+  name: string;
+  pallet: string;
+  status: string;
+  blocked: boolean;
+  volumes: string;
+  uploadPDF: boolean;
+  uploadExcel: boolean;
+  created_at: string;
+  updated_at: UIuser;
+  user: {
+    name: string;
+  };
+}
+export interface UIexpedicaoUpdate {
+  date: string;
+  name: string;
+}
+
+export interface UIexpedicaoUpload {
+  baseExpedicao_id: string;
+  files: File[];
+}
+export interface UInotafiscalList {
+  id: string;
+  number: string;
+  codigo: string;
+  description: string;
+  quantityNF: number;
+  totalValue: number;
+  quantityPhysical: number;
+  supply: string;
+  status: string;
+  conference_user: string;
+  baseExpedicao_id: string;
+}
