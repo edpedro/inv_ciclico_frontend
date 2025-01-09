@@ -66,7 +66,7 @@ export default function CriarNameExpedicao() {
   }
 
   const fusoHorario = "America/Sao_Paulo";
-
+  console.log(expedicaoData);
   return (
     <Painel>
       <Typography variant="h5" gutterBottom sx={{ marginBottom: "20px" }}>
@@ -91,6 +91,8 @@ export default function CriarNameExpedicao() {
             <TableRow>
               <TableCell>Nome</TableCell>
               <TableCell>Data</TableCell>
+              <TableCell>Volume</TableCell>
+              <TableCell>Palete</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Ações</TableCell>
             </TableRow>
@@ -106,8 +108,10 @@ export default function CriarNameExpedicao() {
                       "dd/MM/yyyy"
                     )}
                   </TableCell>
+                  <TableCell>{data.volumes}</TableCell>
+                  <TableCell>{data.pallet}</TableCell>
                   <TableCell>
-                    {data.status === "pendente" ? (
+                    {data.status === "Pendente" ? (
                       <Item sx={{ backgroundColor: "#FFFF00" }}>Pendente</Item>
                     ) : data.status === "conferido" ? (
                       <Item sx={{ backgroundColor: "#48BD69" }}>Conferido</Item>
